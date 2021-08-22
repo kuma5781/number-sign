@@ -3,6 +3,7 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import global.ResultSupport.RichResult
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -19,6 +20,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+//    Ok(views.html.index())
+    Ok("{\"id\": 1, \"name\": \"taro\"}").enableCors
   }
 }
