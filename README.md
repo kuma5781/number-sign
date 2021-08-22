@@ -20,3 +20,17 @@
 ```
 $ docker compose up
 ```
+
+## Scalaフォーマット
+- `./app`内をフォーマット
+  ```
+  $ sbt scalafmt
+  ```
+- `*.sbt`および`project/*.scala`ファイルをフォーマット
+  ```
+  $ sbt scalafmtSbt
+  ```
+- テストコードをフォーマット
+  ```
+  $ sbt test:scalafmt
+  ```
