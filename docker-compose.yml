@@ -7,6 +7,8 @@ services:
     volumes:
       - ".:/root/play-docker"
     working_dir: /root/play-docker
+    environment:
+      - FRONTEND_URL=http://localhost:3000
     entrypoint: bash -c "sbt run"
   react:
     build: ./docker/react
