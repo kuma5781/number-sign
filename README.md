@@ -6,14 +6,14 @@
 ## 起動前準備
 - javaはバージョン8推奨
 - Dockerコンテナのビルド
-    ```
-    $ docker compose build
-    ```
+  ```
+  $ docker compose build
+  ```
 - モジュールのインストール
-    ```
-    $ cd ui
-    $ npm install
-    ```
+  ```
+  $ cd ui
+  $ npm install
+  ```
 
 ## 起動
 プロジェクトルートディレクトリで以下を実行
