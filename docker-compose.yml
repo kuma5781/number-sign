@@ -8,3 +8,11 @@ services:
       - ".:/root/play-docker"
     working_dir: /root/play-docker
     entrypoint: bash -c "sbt run"
+  react:
+    build: ./docker/react
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./ui:/root/react-docker"
+    working_dir: /root/react-docker
+    entrypoint: bash -c "npm start"
