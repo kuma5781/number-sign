@@ -1,0 +1,10 @@
+version: '3'
+services:
+  play:
+    build: ./docker/play
+    ports:
+      - "9000:9000"
+    volumes:
+      - ".:/root/play-docker"
+    working_dir: /root/play-docker
+    entrypoint: bash -c "sbt run"
