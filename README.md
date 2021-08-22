@@ -20,3 +20,14 @@
 ```
 $ docker compose up
 ```
+
+## DBの見方
+- コンテナを起動時, コンテナに入る
+  ```
+  $ docker exec -i -t mysqlのコンテナ名 bash
+  ```
+- Mysqlにログイン
+  ```
+  mysql -u root -p -h 127.0.0.1 -P 3306
+  ```
+  - パスワードは, `docker-compose.yml`の`MYSQL_ROOT_PASSWORD`変数に記入
