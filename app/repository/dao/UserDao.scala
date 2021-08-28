@@ -2,10 +2,10 @@ package repository.dao
 
 import java.sql.ResultSet
 
-import global.DBApiSupport.RichDBApi
-import play.api.db.DBApi
+import domain.`object`.db.Sql
+import global.DBSupport.RichSql
 
-class UserDao(dbApi: DBApi) {
+class UserDao() {
 
   case class UserDto(
       id: Int,
@@ -13,12 +13,12 @@ class UserDao(dbApi: DBApi) {
   )
 
   def selectAll(): Seq[UserDto] = {
-    val sql = "select * from user"
+    val sql = Sql("select * from user")
     val userDto = (rs: ResultSet) => {
       val userId = rs.getInt("user_id")
       val userName = rs.getString("user_name")
       UserDto(userId, userName)
     }
-    dbApi.selectRecords(sql, userDto)
+    sql.selectRecords(userDto)
   }
 }

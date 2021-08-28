@@ -1,12 +1,11 @@
 package service
 
-import repository.UserRepository
 import domain.`object`.user.User
-import play.api.db.DBApi
+import repository.UserRepository
 
-class UserService(dbApi: DBApi) {
+class UserService() {
 
-	private val userRepository = new UserRepository(dbApi)
+	private val userRepository = new UserRepository
 
 	def findAll(): Seq[User] = userRepository.findAll()
 }
