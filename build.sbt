@@ -14,8 +14,7 @@ libraryDependencies ++= Seq(
   filters,
   jdbc,
   "mysql" % "mysql-connector-java" % "8.0.15",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
-  "com.google.code.gson" % "gson" % "latest.integration"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )
 
 // Adds additional packages into Twirl
