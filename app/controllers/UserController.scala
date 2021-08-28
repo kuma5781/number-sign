@@ -4,7 +4,7 @@ import domain.`object`.user.User
 import global.ResultSupport.RichResult
 import javax.inject._
 import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.{JsObject, Json, Writes}
+import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.mvc._
 import service.UserService
 

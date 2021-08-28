@@ -5,7 +5,7 @@ import repository.UserRepository
 
 class UserService() {
 
-	private val userRepository = new UserRepository
+  private val userRepository = new UserRepository
 
-	def findAll(): Seq[User] = userRepository.findAll()
+  def findAll(): Seq[User] = userRepository.findAll()
 }

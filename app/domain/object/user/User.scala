@@ -1,6 +1,6 @@
 package domain.`object`.user
 
-case class User (
-	id: UserId,
-  name: UserName
-                )
+case class User(
+    id: UserId,
+    name: UserName
+)

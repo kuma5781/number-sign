@@ -1,3 +1,3 @@
 package domain.`object`.user
 
-case class UserName (value: String)
+case class UserName(value: String)
