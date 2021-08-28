@@ -10,7 +10,7 @@ import play.api.mvc._
   * application's home page.
   */
 @Singleton
-class HomeController @Inject()(dbApi: DBApi, val controllerComponents: ControllerComponents) extends BaseController{
+class HomeController @Inject()(dbApi: DBApi, val controllerComponents: ControllerComponents) extends BaseController {
 
   /**
 <<<<<<< HEAD
@@ -20,7 +20,7 @@ class HomeController @Inject()(dbApi: DBApi, val controllerComponents: Controlle
     * will be called when the application receives a `GET` request with
     * a path of `/`.
     */
-  def index(): Action[AnyContent] = Action {Ok(getFullList()).enableCors}
+  def index(): Action[AnyContent] = Action { Ok(getFullList()).enableCors }
 //    Ok(views.html.index())
 
   def getFullList(): String = {
@@ -29,7 +29,7 @@ class HomeController @Inject()(dbApi: DBApi, val controllerComponents: Controlle
     try {
       val stmt = con.createStatement
       val rs = stmt.executeQuery("SELECT * FROM applicant")
-      var a= ""
+      var a = ""
       while (rs.next) {
         val applicantName = rs.getString("applicant_name")
         a += applicantName
