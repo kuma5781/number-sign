@@ -22,11 +22,7 @@ $ docker compose up
 ```
 
 ## DBの見方
-- コンテナを起動時, コンテナに入る
-  ```
-  $ docker exec -i -t mysqlのコンテナ名 bash
-  ```
-- Mysqlにログイン
+- コンテナを起動時, Mysqlにログイン
   ```
   mysql -u root -p -h 127.0.0.1 -P 3306
   ```
