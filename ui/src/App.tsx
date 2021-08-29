@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const reactAppBackendUrl = process.env.REACT_APP_BACKEND_URL as string;
+const BackendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
 const App: React.FC = () => {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    fetch(reactAppBackendUrl)
+    fetch(BackendUrl)
       .then((response) => response.json())
       .then((json) => console.log(json.name))
       .catch((err) => console.error(err));

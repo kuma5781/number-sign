@@ -21,7 +21,7 @@
 $ docker compose up
 ```
 
-## eslintコマンド
+## フロントエンドのコード整形コマンド
 ```
 $ npm run lint:fix
 ```
