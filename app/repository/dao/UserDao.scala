@@ -2,11 +2,12 @@ package repository.dao
 
 import java.sql.ResultSet
 
+import play.api.db.DBApi
+import repository.dao.DBAccessor.RichDBApi
+
 import scala.util.Try
 
-class UserDao() {
-
-  private val bdAccessor = new DBAccessor
+class UserDao(dbApi: DBApi) {
 
   case class UserDto(
       id: Int,
@@ -25,16 +26,16 @@ class UserDao() {
 
   def selectAll(): Try[Seq[UserDto]] = {
     val sql = "select * from user"
-    bdAccessor.selectRecords(sql, userDto)
+    dbApi.selectRecords(sql, userDto)
   }
 
   def selectBy(userId: Int): Try[UserDto] = {
     val sql = s"select * from user where user_id = $userId"
-    bdAccessor.selectRecord(sql, userDto)
+    dbApi.selectRecord(sql, userDto)
   }
 
   def insert(newUserDto: NewUserDto): Try[Int] = {
     val sql = s"insert into user (user_name) values (${newUserDto.name})"
-    bdAccessor.insertRecord(sql)
+    dbApi.insertRecord(sql)
   }
 }

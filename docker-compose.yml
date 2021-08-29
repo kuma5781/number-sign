@@ -9,8 +9,9 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
-      - MYSQL_ROOT_USERNAME=root
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
     entrypoint: bash -c "sbt run"
 
   react:
@@ -41,8 +42,9 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
-      - MYSQL_ROOT_USERNAME=root
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
     entrypoint: bash -c "sbt test"
     profiles:
       - extra
