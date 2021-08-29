@@ -35,10 +35,14 @@ $ docker compose up
   $ sbt test:scalafmt
   ```
 
+## フロントエンドのコード整形コマンド
+```
+$ npm run lint:fix
+```
+
 ## DBの見方
 - コンテナを起動時, Mysqlにログイン
   ```
   mysql -u root -p -h 127.0.0.1 -P 3306
   ```
   - パスワードは, `docker-compose.yml`の`MYSQL_ROOT_PASSWORD`変数に記入
-  
