@@ -1,12 +1,14 @@
 package controllers
 
-import domain.`object`.user.User
+import domain.`object`.user.{ User, UserId }
 import global.ResultSupport.RichResult
 import javax.inject._
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.mvc._
 import service.UserService
+
+import scala.util.{ Failure, Success }
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
@@ -21,7 +23,19 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
 
   def index(): Action[AnyContent] =
     Action {
-      val users = userService.findAll()
-      Ok(Json.toJson(users)).enableCors
+      val result = userService.findAll() match {
+        case Success(users) => Ok(Json.toJson(users))
+        case Failure(e) => NotFound(e.toString)
+      }
+      result.enableCors
+    }
+
+  def show(userId: Int): Action[AnyContent] =
+    Action {
+      val result = userService.findBy(UserId(userId)) match {
+        case Success(user) => Ok(Json.toJson(user))
+        case Failure(e) => NotFound(e.toString)
+      }
+      result.enableCors
     }
 }
