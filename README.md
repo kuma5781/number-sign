@@ -21,6 +21,11 @@
 $ docker compose up
 ```
 
+## フロントエンドのコード整形コマンド
+```
+$ npm run lint:fix
+```
+
 ## DBの見方
 - コンテナを起動時, Mysqlにログイン
   ```
