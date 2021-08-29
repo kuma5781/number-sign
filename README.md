@@ -35,6 +35,11 @@ $ docker compose up
   $ sbt test:scalafmt
   ```
 
+## フロントエンドのコード整形コマンド
+```
+$ npm run lint:fix
+```
+
 ## DBの見方
 - コンテナを起動時, Mysqlにログイン
   ```
