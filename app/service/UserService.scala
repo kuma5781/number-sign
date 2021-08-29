@@ -1,6 +1,6 @@
 package service
 
-import domain.`object`.user.{User, UserId}
+import domain.`object`.user.{ User, UserId }
 import play.api.db.DBApi
 import repository.UserRepository
 

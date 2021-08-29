@@ -1,6 +1,6 @@
 package repository
 
-import domain.`object`.user.{User, UserId, UserName}
+import domain.`object`.user.{ User, UserId, UserName }
 import play.api.db.DBApi
 import repository.dao.UserDao
 
