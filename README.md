@@ -22,9 +22,9 @@ $ docker compose up
 ```
 
 ## Scalaテスト
-コンテナを起動時以下のコマンドを実行
+Mysqlコンテナを起動時以下のコマンドを実行
 ```
-$ docker exec -it number-sign_play_1 sbt test
+$ docker-compose up play-test
 ```
 
 ## Scalaフォーマット
@@ -47,7 +47,7 @@ $ npm run lint:fix
 ```
 
 ## DBの見方
-- コンテナを起動時, Mysqlにログイン
+- Mysqlコンテナを起動時, ログイン
   ```
   mysql -u root -p -h 127.0.0.1 -P 3306
   ```
