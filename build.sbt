@@ -10,11 +10,11 @@ scalaVersion := "2.13.6"
 routesGenerator := InjectedRoutesGenerator
 
 libraryDependencies ++= Seq(
-	guice,
-	filters,
-	jdbc,
-	"mysql" % "mysql-connector-java" % "8.0.15",
-	"org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+  guice,
+  filters,
+  jdbc,
+  "mysql" % "mysql-connector-java" % "8.0.15",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )
 
 // Adds additional packages into Twirl
