@@ -9,7 +9,10 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
     entrypoint: bash -c "sbt run"
+
   react:
     build: ./docker/react
     ports:
@@ -18,3 +21,13 @@ services:
       - "./ui:/root/react-docker"
     working_dir: /root/react-docker
     entrypoint: bash -c "npm start"
+
+  mysql:
+    image: mysql:8
+    volumes:
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
