@@ -21,6 +21,12 @@
 $ docker compose up
 ```
 
+## Scalaテスト
+コンテナを起動時以下のコマンドを実行
+```
+$ docker exec -it number-sign_play_1 sbt test
+```
+
 ## Scalaフォーマット
 - `./app`内をフォーマット
   ```
