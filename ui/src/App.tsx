@@ -12,7 +12,7 @@ const App: React.FC = () => {
       .then((response) => response.json())
       .then((json) => console.log(json.name))
       .catch((err) => console.error(err));
-  }, []);
+  });
 
   return (
     <div className="App">
