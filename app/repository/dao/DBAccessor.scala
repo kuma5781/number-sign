@@ -18,7 +18,7 @@ object DBAccessor {
         while (rs.next) records = records :+ getRecoed(rs)
         records
       }
-      connection(readRecords)
+      connect(readRecords)
     }
 
     def selectRecord[T](sql: String, getRecord: ResultSet => T): Try[T] = {
@@ -27,15 +27,15 @@ object DBAccessor {
         if (rs.next) getRecord(rs)
         else throw new Exception(s"Not found record")
       }
-      connection(readRecord)
+      connect(readRecord)
     }
 
     def insertRecord(sql: String): Try[Int] = {
       val createRecord = (stmt: Statement) => stmt.executeUpdate(sql)
-      connection(createRecord)
+      connect(createRecord)
     }
 
-    private def connection[T](fun: Statement => T): Try[T] = {
+    private def connect[T](fun: Statement => T): Try[T] = {
       val con = db.getConnection()
       val createRecord = Try {
         val stmt = con.createStatement
