@@ -5,7 +5,6 @@ import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
 import org.specs2.mock.Mockito.theStubbed
-import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.test.Helpers._
 import play.api.test._
 import service.UserService
@@ -20,13 +19,6 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     val userController = new UserController(stubControllerComponents())
     // userServiceフィールドをmock
     Whitebox.setInternalState(userController, "userService", userService)
-
-    implicit val userWrites = new Writes[User] {
-      def writes(user: User): JsObject = Json.obj(
-        "id" -> user.id.value,
-        "name" -> user.name.value
-      )
-    }
   }
 
   "#index" should {
@@ -37,7 +29,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.index().apply(FakeRequest(GET, "/user"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe Json.toJson(users).toString()
+      contentAsString(home) mustBe "[{\"id\":1,\"name\":\"太郎\"},{\"id\":2,\"name\":\"次郎\"}]"
     }
 
     "return NotFound error" in new Context {
@@ -59,7 +51,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe Json.toJson(user).toString()
+      contentAsString(home) mustBe "{\"id\":1,\"name\":\"太郎\"}"
     }
 
     "return NotFound error" in new Context {

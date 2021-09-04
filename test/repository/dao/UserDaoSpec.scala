@@ -23,7 +23,7 @@ class UserDaoSpec extends PlaySpec {
   }
 
   "#selectAll" should {
-    "get all user records" in new Context {
+    "return all user records" in new Context {
       DBSupport.dbTest(
         tableName, {
           val userName1 = "太郎"
@@ -43,7 +43,7 @@ class UserDaoSpec extends PlaySpec {
   }
 
   "#selectBy" should {
-    "get a user record associated with userId" in new Context {
+    "return a user record associated with userId" in new Context {
       DBSupport.dbTest(
         tableName, {
           val userName = "太郎"
