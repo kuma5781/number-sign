@@ -10,7 +10,7 @@ import play.api.test.Helpers._
 import play.api.test._
 import service.UserService
 
-import scala.util.Success
+import scala.util.{ Failure, Success }
 
 class UserControllerSpec extends PlaySpec with MockitoSugar {
 
@@ -18,6 +18,8 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     val userService = mock[UserService]
 
     val userController = new UserController(stubControllerComponents())
+    // userServiceフィールドをmock
+    Whitebox.setInternalState(userController, "userService", userService)
 
     implicit val userWrites = new Writes[User] {
       def writes(user: User): JsObject = Json.obj(
@@ -31,12 +33,21 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     "return Json phased Users" in new Context {
       val users = Seq(User(UserId(1), UserName("太郎")), User(UserId(2), UserName("次郎")))
       userService.findAll() returns Success(users)
-      Whitebox.setInternalState(userController, "userService", userService)
 
       val home = userController.index().apply(FakeRequest(GET, "/user"))
 
       status(home) mustBe OK
       contentAsString(home) mustBe Json.toJson(users).toString()
+    }
+
+    "return NotFound error" in new Context {
+      val exception = new Exception(s"DB connection error")
+      userService.findAll() returns Failure(exception)
+
+      val home = userController.index().apply(FakeRequest(GET, "/user"))
+
+      status(home) mustBe NOT_FOUND
+      contentAsString(home) mustBe exception.toString
     }
   }
 
@@ -44,12 +55,21 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     "return Json phased User" in new Context {
       val user = User(UserId(1), UserName("太郎"))
       userService.findBy(UserId(1)) returns Success(user)
-      Whitebox.setInternalState(userController, "userService", userService)
 
       val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
 
       status(home) mustBe OK
       contentAsString(home) mustBe Json.toJson(user).toString()
+    }
+
+    "return NotFound error" in new Context {
+      val exception = new Exception(s"DB connection error")
+      userService.findBy(UserId(1)) returns Failure(exception)
+
+      val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
+
+      status(home) mustBe NOT_FOUND
+      contentAsString(home) mustBe exception.toString
     }
   }
 }
