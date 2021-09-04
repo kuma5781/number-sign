@@ -8,10 +8,10 @@ import scala.util.Try
 
 object DBAccessor {
 
-  val driver = DBProperties.driver
-  val url = DBProperties.url
-  val username = DBProperties.username
-  val password = DBProperties.password
+  private val driver = DBProperties.driver
+  private val url = DBProperties.url
+  private val username = DBProperties.username
+  private val password = DBProperties.password
 
   Class.forName(driver)
 
