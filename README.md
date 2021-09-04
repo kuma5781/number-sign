@@ -21,6 +21,12 @@
 $ docker compose up
 ```
 
+## Scalaテスト
+Mysqlコンテナを起動時以下のコマンドを実行
+```
+$ docker compose up play-test
+```
+
 ## Scalaフォーマット
 - `./app`内をフォーマット
   ```
@@ -34,6 +40,10 @@ $ docker compose up
   ```
   $ sbt test:scalafmt
   ```
+- 全てのScalaファイルをフォーマット
+  ```
+  $ sbt scalafmt & sbt scalafmtSbt & sbt test:scalafmt
+  ```
 
 ## フロントエンドのコード整形コマンド
 ```
@@ -41,7 +51,7 @@ $ npm run lint:fix
 ```
 
 ## DBの見方
-- コンテナを起動時, Mysqlにログイン
+- Mysqlコンテナを起動時, ログイン
   ```
   mysql -u root -p -h 127.0.0.1 -P 3306
   ```

@@ -9,8 +9,10 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
-      - MYSQL_ROOT_USERNAME=root
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
+      - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
     entrypoint: bash -c "sbt run"
 
   react:
@@ -31,3 +33,20 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
+
+  play-test:
+    build: ./docker/play
+    ports:
+      - "9001:9001"
+    volumes:
+      - ".:/root/play-docker"
+    working_dir: /root/play-docker
+    environment:
+      - FRONTEND_URL=http://localhost:3000
+      - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
+      - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db_test
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+    entrypoint: bash -c "sbt test"
+    profiles:
+      - extra
