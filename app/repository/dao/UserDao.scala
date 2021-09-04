@@ -19,8 +19,8 @@ class UserDao(dbApi: DBApi) {
   )
 
   private val userDto = (rs: ResultSet) => {
-    val userId = rs.getInt("user_id")
-    val userName = rs.getString("user_name")
+    val userId = rs.getInt("id")
+    val userName = rs.getString("name")
     UserDto(userId, userName)
   }
 

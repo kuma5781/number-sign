@@ -13,6 +13,9 @@ libraryDependencies ++= Seq(
   guice,
   filters,
   jdbc,
+  "org.specs2" %% "specs2-core" % "4.5.1",
+  "org.specs2" %% "specs2-mock" % "4.5.1",
+  "org.specs2" %% "specs2-scalacheck" % "4.5.1",
   "mysql" % "mysql-connector-java" % "8.0.15",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )

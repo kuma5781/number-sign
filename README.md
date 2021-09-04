@@ -24,7 +24,7 @@ $ docker compose up
 ## Scalaテスト
 Mysqlコンテナを起動時以下のコマンドを実行
 ```
-$ docker-compose up play-test
+$ docker compose up play-test
 ```
 
 ## Scalaフォーマット
