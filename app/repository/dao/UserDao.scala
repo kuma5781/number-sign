@@ -35,4 +35,9 @@ class UserDao {
     val sql = s"insert into user (name) values (${newUserDto.name})"
     DBAccessor.insertRecord(sql)
   }
+
+  def deleteBy(userId: Int): Try[Int] = {
+    val sql = s"delete from user where id = $userId"
+    DBAccessor.deleteRecord(sql)
+  }
 }

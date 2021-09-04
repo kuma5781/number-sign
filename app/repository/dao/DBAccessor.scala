@@ -39,6 +39,11 @@ object DBAccessor {
     connect(createRecord)
   }
 
+  def deleteRecord(sql: String): Try[Int] = {
+    val removeRecord = (stmt: Statement) => stmt.executeUpdate(sql)
+    connect(removeRecord)
+  }
+
   private def connect[T](fun: Statement => T): Try[T] = {
     val con = DriverManager.getConnection(url, username, password)
     val createRecord = Try {
