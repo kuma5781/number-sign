@@ -15,6 +15,7 @@ object DBAccessor {
 
   Class.forName(driver)
 
+  // 複数のレコードを取得
   def selectRecords[T](sql: String, getRecoed: ResultSet => T): Try[Seq[T]] = {
     val readRecords = (stmt: Statement) => {
       val rs = stmt.executeQuery(sql)
@@ -25,6 +26,7 @@ object DBAccessor {
     connect(readRecords)
   }
 
+  // 1つのレコードを取得
   def selectRecord[T](sql: String, getRecord: ResultSet => T): Try[T] = {
     val readRecord = (stmt: Statement) => {
       val rs = stmt.executeQuery(sql)
@@ -34,14 +36,10 @@ object DBAccessor {
     connect(readRecord)
   }
 
-  def insertRecord(sql: String): Try[Int] = {
-    val createRecord = (stmt: Statement) => stmt.executeUpdate(sql)
-    connect(createRecord)
-  }
-
-  def deleteRecord(sql: String): Try[Int] = {
-    val removeRecord = (stmt: Statement) => stmt.executeUpdate(sql)
-    connect(removeRecord)
+  // insert, update, deleteの実行
+  def execute(sql: String): Try[Int] = {
+    val executeSql = (stmt: Statement) => stmt.executeUpdate(sql)
+    connect(executeSql)
   }
 
   private def connect[T](fun: Statement => T): Try[T] = {

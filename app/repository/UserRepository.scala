@@ -1,7 +1,7 @@
 package repository
 
-import domain.`object`.user.{ User, UserId, UserName }
-import repository.dao.UserDao
+import domain.`object`.user.{NewUser, User, UserId, UserName}
+import repository.dao.{NewUserDto, UserDao}
 
 import scala.util.Try
 
@@ -25,5 +25,10 @@ class UserRepository(userDao: UserDao = new UserDao) {
         UserName(dto.name)
       )
     }
+  }
+
+  def insert(newUser: NewUser): Try[Int] = {
+    val newUserDto = NewUserDto(newUser.name.value)
+    userDao.insert(newUserDto)
   }
 }
