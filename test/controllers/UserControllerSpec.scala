@@ -28,8 +28,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
   }
 
   "#index" should {
-
-    "render Json phased Users" in new Context {
+    "return Json phased Users" in new Context {
       val users = Seq(User(UserId(1), UserName("太郎")), User(UserId(2), UserName("次郎")))
       userService.findAll() returns Success(users)
       Whitebox.setInternalState(userController, "userService", userService)
@@ -42,7 +41,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
   }
 
   "#show" should {
-    "render Json phased User" in new Context {
+    "return Json phased User" in new Context {
       val user = User(UserId(1), UserName("太郎"))
       userService.findBy(UserId(1)) returns Success(user)
       Whitebox.setInternalState(userController, "userService", userService)
