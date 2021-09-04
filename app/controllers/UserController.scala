@@ -3,7 +3,6 @@ package controllers
 import domain.`object`.user.{ User, UserId }
 import global.ResultSupport.RichResult
 import javax.inject._
-import play.api.db.DBApi
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.mvc._
@@ -12,9 +11,9 @@ import service.UserService
 import scala.util.{ Failure, Success }
 
 @Singleton
-class UserController @Inject()(dbApi: DBApi, val controllerComponents: ControllerComponents) extends BaseController {
+class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  private val userService = new UserService(dbApi)
+  val userService: UserService = new UserService
 
   implicit val userWrites = new Writes[User] {
     def writes(user: User): JsObject = Json.obj(

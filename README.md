@@ -40,6 +40,10 @@ $ docker compose up play-test
   ```
   $ sbt test:scalafmt
   ```
+- 全てのScalaファイルをフォーマット
+  ```
+  $ sbt scalafmt & sbt scalafmtSbt & sbt test:scalafmt
+  ```
 
 ## フロントエンドのコード整形コマンド
 ```

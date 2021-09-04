@@ -6,5 +6,5 @@ create table user
   name varchar(255) not null,
   created_at TIMESTAMP not null default CURRENT_TIMESTAMP,
   updated_at TIMESTAMP not null default CURRENT_TIMESTAMP,
-  primary key (user_id)
+  primary key (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

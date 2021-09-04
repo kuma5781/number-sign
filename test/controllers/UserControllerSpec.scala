@@ -1,13 +1,15 @@
 package controllers
 
-import domain.`object`.user.{User, UserId, UserName}
+import domain.`object`.user.{ User, UserId, UserName }
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import org.specs2.mock.Mockito.theStubbed
-import play.api.test._
 import play.api.test.Helpers._
+import play.api.test._
 import service.UserService
+import org.powermock.reflect.Whitebox
+import play.api.libs.json.{ JsObject, Json, Writes }
 
 import scala.util.Success
 
@@ -15,35 +17,41 @@ class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
   trait Context {
     val userService = mock[UserService]
+
+    val userController = new UserController(stubControllerComponents())
+
+    implicit val userWrites = new Writes[User] {
+      def writes(user: User): JsObject = Json.obj(
+        "id" -> user.id.value,
+        "name" -> user.name.value
+      )
+    }
   }
 
   "#index" should {
 
-//    "render the index page from a new instance of controller" in {
-//      val controller = new UserController(stubControllerComponents())
-//      val home = controller.index().apply(FakeRequest(GET, "/user"))
-//
-//      println()
-//    }
+    "render Json phased Users" in new Context {
+      val users = Seq(User(UserId(1), UserName("太郎")), User(UserId(2), UserName("次郎")))
+      userService.findAll() returns Success(users)
+      Whitebox.setInternalState(userController, "userService", userService)
 
-    "render the index page from the application" in new Context {
-      userService.findAll() returns Success(Seq(User(UserId(1), UserName("太郎"))))
-
-      val controller = inject[UserController]
-      val home = controller.index().apply(FakeRequest(GET, "/user"))
+      val home = userController.index().apply(FakeRequest(GET, "/user"))
 
       status(home) mustBe OK
-      contentAsString(home) must include("{\"id\": 1, \"name\":\"太郎\"}")
+      contentAsString(home) mustBe Json.toJson(users).toString()
     }
+  }
 
-    "render the index page from the router" in {
-//      val request = FakeRequest(GET, "/")
-//      val home = route(app, request).get
-//
-//      status(home) mustBe OK
-//      contentType(home) mustBe Some("text/html")
-//      contentAsString(home) must include("Welcome to Play")
-      assert(1 == 1)
+  "#show" should {
+    "render Json phased User" in new Context {
+      val user = User(UserId(1), UserName("太郎"))
+      userService.findBy(UserId(1)) returns Success(user)
+      Whitebox.setInternalState(userController, "userService", userService)
+
+      val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
+
+      status(home) mustBe OK
+      contentAsString(home) mustBe Json.toJson(user).toString()
     }
   }
 }

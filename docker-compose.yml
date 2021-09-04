@@ -9,6 +9,7 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
+      - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
       - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
@@ -42,6 +43,7 @@ services:
     working_dir: /root/play-docker
     environment:
       - FRONTEND_URL=http://localhost:3000
+      - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
       - MYSQL_URL=jdbc:mysql://mysql:3306/number_sign_db_test
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
