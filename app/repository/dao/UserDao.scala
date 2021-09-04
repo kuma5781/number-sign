@@ -27,12 +27,12 @@ class UserDao {
   }
 
   def selectBy(userId: Int): Try[UserDto] = {
-    val sql = s"select * from user where user_id = $userId"
+    val sql = s"select * from user where id = $userId"
     DBAccessor.selectRecord(sql, userDto)
   }
 
   def insert(newUserDto: NewUserDto): Try[Int] = {
-    val sql = s"insert into user (user_name) values (${newUserDto.name})"
+    val sql = s"insert into user (name) values (${newUserDto.name})"
     DBAccessor.insertRecord(sql)
   }
 }
