@@ -13,7 +13,7 @@ import play.api.libs.json.{ JsObject, Json, Writes }
 
 import scala.util.Success
 
-class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
+class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with MockitoSugar {
 
   trait Context {
     val userService = mock[UserService]
