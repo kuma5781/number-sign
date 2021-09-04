@@ -1,19 +1,18 @@
 package controllers
 
 import domain.`object`.user.{ User, UserId, UserName }
+import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
-import org.scalatestplus.play.guice._
 import org.specs2.mock.Mockito.theStubbed
+import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.test.Helpers._
 import play.api.test._
 import service.UserService
-import org.powermock.reflect.Whitebox
-import play.api.libs.json.{ JsObject, Json, Writes }
 
 import scala.util.Success
 
-class UserControllerSpec extends PlaySpec with GuiceOneAppPerTest with MockitoSugar {
+class UserControllerSpec extends PlaySpec with MockitoSugar {
 
   trait Context {
     val userService = mock[UserService]
