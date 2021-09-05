@@ -1,10 +1,11 @@
 package controllers
 
 import domain.`object`.user.{ NewUser, User, UserId, UserName }
+import global.JsonSupport.{ reads, RichRequest }
 import global.ResultSupport.RichResult
 import javax.inject._
 import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.{ JsObject, Json, Writes }
+import play.api.libs.json._
 import play.api.mvc._
 import service.UserService
 
@@ -21,6 +22,8 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
       "name" -> user.name.value
     )
   }
+
+  implicit val userNameReads = reads("name", UserName)
 
   def index(): Action[AnyContent] =
     Action {
@@ -40,26 +43,44 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
       result.enableCors
     }
 
-  def save(userName: String): Action[AnyContent] = {
-    val newUser = NewUser(UserName(userName))
-    Action {
-      val result = userService.save(newUser) match {
-        case Success(_) => Ok("User record saved successfully")
+  def save(): Action[AnyContent] = {
+    Action { request =>
+      val maybeUserName = request.getObject[UserName]
+      val result = maybeUserName match {
+        case Success(userName) =>
+          val newUser = NewUser(userName)
+          userService.save(newUser) match {
+            case Success(_) => Ok("User record saved successfully")
+            case Failure(e) => NotFound(e.toString)
+          }
         case Failure(e) => NotFound(e.toString)
       }
       result.enableCors
     }
   }
 
-  def update(userId: Int, userName: String): Action[AnyContent] = {
-    val user = User(UserId(userId), UserName(userName))
-    Action {
-      val result = userService.update(user) match {
-        case Success(_) => Ok("User record updated successfully")
+  def update(userId: Int): Action[AnyContent] = {
+    Action { request =>
+      val maybeUserName = request.getObject[UserName]
+      val result = maybeUserName match {
+        case Success(userName) =>
+          val user = User(UserId(userId), userName)
+          userService.update(user) match {
+            case Success(_) => Ok("User record updated successfully")
+            case Failure(e) => NotFound(e.toString)
+          }
         case Failure(e) => NotFound(e.toString)
       }
       result.enableCors
     }
   }
 
+  def remove(userId: Int): Action[AnyContent] =
+    Action {
+      val result = userService.removeBy(UserId(userId)) match {
+        case Success(_) => Ok("User record deleted successfully")
+        case Failure(e) => NotFound(e.toString)
+      }
+      result.enableCors
+    }
 }

@@ -4,10 +4,19 @@
 # ~~~~
 
 # ユーザ情報の一覧を取得
-GET     /user                       controllers.UserController.index()
+GET    /user                        controllers.UserController.index()
 
-# 特定のユーザIDのユーザ情報を取得
-GET     /user/:userId              controllers.UserController.show(userId: Int)
+# ユーザ情報を1件取得
+GET    /user/:userId                controllers.UserController.show(userId: Int)
+
+# ユーザ情報を登録 (必要なリクエストボディ: {"name": {ユーザ名})
+POST   /user                        controllers.UserController.save()
+
+# ユーザ情報を更新 (必要なリクエストボディ: {"name": {ユーザ名})
+PUT    /user/:userId                controllers.UserController.update(userId: Int)
+
+# ユーザ情報を削除
+DELETE /user/:userId                controllers.UserController.remove(userId: Int)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET    /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
