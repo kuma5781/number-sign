@@ -78,7 +78,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
   def remove(userId: Int): Action[AnyContent] =
     Action {
       val result = userService.removeBy(UserId(userId)) match {
-        case Success(_) => Ok("User record deleted successfully")
+        case Success(_) => Ok("User record removed successfully")
         case Failure(e) => NotFound(e.toString)
       }
       result.enableCors
