@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.svg';
+
+// Todo: バックエンドとの接続が別のページで確認できたらこのページは必要ない
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
