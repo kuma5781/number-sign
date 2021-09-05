@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   GoogleButton,
   IAuthorizationOptions,
@@ -15,11 +15,12 @@ const Login: React.FC = () => {
 
   return (
     <GoogleButton
-      // placeholder="demo/search.png" // Optional
       options={options}
       apiUrl="http://localhost:5000/google_login"
       defaultStyle
-    />
+    >
+      ログイン
+    </GoogleButton>
   );
 };
 

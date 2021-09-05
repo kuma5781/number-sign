@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Top from './Top';
 import Login from './Login';
 import App from '../App';
 
+// 各ページの呼び出し画面
 const Router: React.FC = () => (
   <BrowserRouter>
     <Switch>
