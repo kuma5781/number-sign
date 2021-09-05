@@ -1,6 +1,6 @@
 package service
 
-import domain.`object`.user.{NewUser, User, UserId}
+import domain.`object`.user.{ NewUser, User, UserId }
 import repository.UserRepository
 
 import scala.util.Try

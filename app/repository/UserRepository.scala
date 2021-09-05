@@ -1,7 +1,7 @@
 package repository
 
-import domain.`object`.user.{NewUser, User, UserId, UserName}
-import repository.dao.{NewUserDto, UserDao, UserDto}
+import domain.`object`.user.{ NewUser, User, UserId, UserName }
+import repository.dao.{ NewUserDto, UserDao, UserDto }
 
 import scala.util.Try
 
