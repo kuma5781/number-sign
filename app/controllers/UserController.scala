@@ -1,6 +1,6 @@
 package controllers
 
-import domain.`object`.user.{ User, UserId }
+import domain.`object`.user.{ NewUser, User, UserId, UserName }
 import global.ResultSupport.RichResult
 import javax.inject._
 import play.api.libs.json.Format.GenericFormat
@@ -39,4 +39,27 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
       }
       result.enableCors
     }
+
+  def save(userName: String): Action[AnyContent] = {
+    val newUser = NewUser(UserName(userName))
+    Action {
+      val result = userService.save(newUser) match {
+        case Success(_) => Ok("User record saved successfully")
+        case Failure(e) => NotFound(e.toString)
+      }
+      result.enableCors
+    }
+  }
+
+  def update(userId: Int, userName: String): Action[AnyContent] = {
+    val user = User(UserId(userId), UserName(userName))
+    Action {
+      val result = userService.update(user) match {
+        case Success(_) => Ok("User record updated successfully")
+        case Failure(e) => NotFound(e.toString)
+      }
+      result.enableCors
+    }
+  }
+
 }
