@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import logo from './logo.svg';
 
-// バックエンドとの接続を確認するためにこのページを保持
+// Todo: バックエンドとの接続が別のページで確認できたらこのページは必要ない
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
