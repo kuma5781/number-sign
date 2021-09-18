@@ -1,4 +1,4 @@
-package global
+package supports
 
 import play.api.libs.json.{ JsDefined, JsSuccess, Reads }
 import play.api.mvc.{ AnyContent, Request }

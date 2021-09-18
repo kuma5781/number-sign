@@ -1,8 +1,8 @@
 package controllers
 
 import domain.`object`.user.{ NewUser, User, UserId, UserName }
-import global.JsonSupport.{ reads, RichRequest }
-import global.ResultSupport.RichResult
+import supports.JsonSupport.{ reads, RichRequest }
+import supports.ResultSupport.RichResult
 import javax.inject._
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json._
