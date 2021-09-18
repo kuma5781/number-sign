@@ -1,10 +1,8 @@
 use number_sign_db;
 
-create table user
+create table note
 (
   id int unsigned not null auto_increment,
-  name varchar(64) not null,
-  email varchar(255) not null unique,
   created_at TIMESTAMP not null default CURRENT_TIMESTAMP,
   updated_at TIMESTAMP not null default CURRENT_TIMESTAMP,
   primary key (id)
