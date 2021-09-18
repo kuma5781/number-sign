@@ -9,11 +9,11 @@ GET    /user                        controllers.UserController.index()
 # ユーザ情報を1件取得
 GET    /user/:userId                controllers.UserController.show(userId: Int)
 
-# ユーザ情報を登録 (必要なリクエストボディ: {"name": {ユーザ名})
+# ユーザ情報を登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})
 POST   /user                        controllers.UserController.save()
 
 # ユーザ情報を更新 (必要なリクエストボディ: {"name": {ユーザ名})
-PUT    /user/:userId                controllers.UserController.update(userId: Int)
+PUT    /user/:userId                controllers.UserController.updateName(userId: Int)
 
 # ユーザ情報を削除
 DELETE /user/:userId                controllers.UserController.remove(userId: Int)

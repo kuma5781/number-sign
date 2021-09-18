@@ -6,7 +6,7 @@ create table folder
   user_id int unsigned not null,
   name varchar(255) not null,
   created_at TIMESTAMP not null default CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP not null default CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   primary key (id),
   foreign key (user_id) references user (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

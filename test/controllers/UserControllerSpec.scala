@@ -1,6 +1,6 @@
 package controllers
 
-import domain.`object`.user.{ NewUser, User, UserId, UserName }
+import domain.`object`.user.{ Email, NewUser, User, UserId, UserName }
 import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
@@ -21,20 +21,41 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     // userServiceフィールドをmock
     Whitebox.setInternalState(userController, "userService", userService)
 
+    val userIdDto1 = 1
+    val userId1 = UserId(userIdDto1)
+    val userName1 = UserName("太郎")
+    val email1 = Email("taro@xxx.com")
+    val user1 = User(userId1, userName1, email1)
+    val newUser1 = NewUser(userName1, email1)
+
+    val userId2 = UserId(2)
+    val userName2 = UserName("次郎")
+    val email2 = Email("jiro@xxx.com")
+    val user2 = User(userId2, userName2, email2)
+
+    val users = Seq(user1, user2)
+
     implicit val userNameWrites = new Writes[UserName] {
       def writes(userName: UserName): JsObject = Json.obj("name" -> userName.value)
+    }
+
+    implicit val newUserWrites = new Writes[NewUser] {
+      def writes(newUser: NewUser): JsObject = Json.obj(
+        "name" -> newUser.name.value,
+        "email" -> newUser.email.value
+      )
     }
   }
 
   "#index" should {
     "return Json phased Users" in new Context {
-      val users = Seq(User(UserId(1), UserName("太郎")), User(UserId(2), UserName("次郎")))
       userService.findAll() returns Success(users)
 
       val home = userController.index().apply(FakeRequest(GET, "/user"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "[{\"id\":1,\"name\":\"太郎\"},{\"id\":2,\"name\":\"次郎\"}]"
+      contentAsString(home) mustBe
+        "[{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"},{\"id\":2,\"name\":\"次郎\",\"email\":\"jiro@xxx.com\"}]"
     }
 
     "return NotFound error" in new Context {
@@ -50,20 +71,19 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
   "#show" should {
     "return Json phased User" in new Context {
-      val user = User(UserId(1), UserName("太郎"))
-      userService.findBy(UserId(1)) returns Success(user)
+      userService.findBy(userId1) returns Success(user1)
 
-      val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
+      val home = userController.show(userIdDto1).apply(FakeRequest(GET, "/user/1"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "{\"id\":1,\"name\":\"太郎\"}"
+      contentAsString(home) mustBe "{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"}"
     }
 
     "return NotFound error" in new Context {
       val exception = new Exception(s"DB connection error")
-      userService.findBy(UserId(1)) returns Failure(exception)
+      userService.findBy(userId1) returns Failure(exception)
 
-      val home = userController.show(1).apply(FakeRequest(GET, "/user/1"))
+      val home = userController.show(userIdDto1).apply(FakeRequest(GET, "/user/1"))
 
       status(home) mustBe NOT_FOUND
       contentAsString(home) mustBe exception.toString
@@ -72,23 +92,19 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
   "#save" should {
     "return OK" in new Context {
-      val userName = UserName("太郎")
-      val newUser = NewUser(userName)
-      userService.save(newUser) returns Success(1)
+      userService.save(newUser1) returns Success(1)
 
-      val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(userName)))
+      val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(newUser1)))
 
       status(home) mustBe OK
       contentAsString(home) mustBe "User record saved successfully"
     }
 
     "return NotFound error" in new Context {
-      val userName = UserName("太郎")
-      val newUser = NewUser(userName)
       val exception = new Exception(s"DB connection error")
-      userService.save(newUser) returns Failure(exception)
+      userService.save(newUser1) returns Failure(exception)
 
-      val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(userName)))
+      val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(newUser1)))
 
       status(home) mustBe NOT_FOUND
       contentAsString(home) mustBe exception.toString
@@ -97,23 +113,21 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
   "#update" should {
     "return OK" in new Context {
-      val userName = UserName("太郎")
-      val user = User(UserId(1), userName)
-      userService.update(user) returns Success(1)
+      userService.updateName(userId1, userName1) returns Success(1)
 
-      val home = userController.update(1).apply(FakeRequest(PUT, "/user").withJsonBody(Json.toJson(userName)))
+      val home =
+        userController.updateName(userIdDto1).apply(FakeRequest(PUT, "/user").withJsonBody(Json.toJson(userName1)))
 
       status(home) mustBe OK
       contentAsString(home) mustBe "User record updated successfully"
     }
 
     "return NotFound error" in new Context {
-      val userName = UserName("太郎")
-      val user = User(UserId(1), userName)
       val exception = new Exception(s"DB connection error")
-      userService.update(user) returns Failure(exception)
+      userService.updateName(userId1, userName1) returns Failure(exception)
 
-      val home = userController.update(1).apply(FakeRequest(PUT, "/user").withJsonBody(Json.toJson(userName)))
+      val home =
+        userController.updateName(userIdDto1).apply(FakeRequest(PUT, "/user").withJsonBody(Json.toJson(userName1)))
 
       status(home) mustBe NOT_FOUND
       contentAsString(home) mustBe exception.toString
@@ -122,9 +136,9 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
   "#remove" should {
     "return OK" in new Context {
-      userService.removeBy(UserId(1)) returns Success(1)
+      userService.removeBy(userId1) returns Success(1)
 
-      val home = userController.remove(1).apply(FakeRequest(DELETE, "/user"))
+      val home = userController.remove(userIdDto1).apply(FakeRequest(DELETE, "/user"))
 
       status(home) mustBe OK
       contentAsString(home) mustBe "User record removed successfully"
@@ -132,9 +146,9 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
     "return NotFound error" in new Context {
       val exception = new Exception(s"DB connection error")
-      userService.removeBy(UserId(1)) returns Failure(exception)
+      userService.removeBy(userId1) returns Failure(exception)
 
-      val home = userController.remove(1).apply(FakeRequest(DELETE, "/user"))
+      val home = userController.remove(userIdDto1).apply(FakeRequest(DELETE, "/user"))
 
       status(home) mustBe NOT_FOUND
       contentAsString(home) mustBe exception.toString

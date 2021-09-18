@@ -7,7 +7,7 @@ create table comment
   note_id int unsigned not null,
   content text not null,
   created_at TIMESTAMP not null default CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP not null default CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   primary key (id),
   foreign key (user_id) references user (id),
   foreign key (note_id) references note (id)

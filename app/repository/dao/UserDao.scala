@@ -2,16 +2,10 @@ package repository.dao
 
 import java.sql.ResultSet
 
+import domain.`object`.user.NewUser.NewUserDto
+import domain.`object`.user.User.UserDto
+
 import scala.util.Try
-
-case class UserDto(
-    id: Int,
-    name: String
-)
-
-case class NewUserDto(
-    name: String
-)
 
 class UserDao {
 
@@ -20,7 +14,8 @@ class UserDao {
   private val userDto = (rs: ResultSet) => {
     val userId = rs.getInt("id")
     val userName = rs.getString("name")
-    UserDto(userId, userName)
+    val email = rs.getString("email")
+    UserDto(userId, userName, email)
   }
 
   def selectAll(): Try[Seq[UserDto]] = {
@@ -34,12 +29,12 @@ class UserDao {
   }
 
   def insert(newUserDto: NewUserDto): Try[Int] = {
-    val sql = s"insert into $tableName (name) values ('${newUserDto.name}')"
+    val sql = s"insert into $tableName (name, email) values ('${newUserDto.name}', '${newUserDto.email}')"
     DBAccessor.execute(sql)
   }
 
-  def update(userDto: UserDto): Try[Int] = {
-    val sql = s"update $tableName set name = '${userDto.name}' where id = ${userDto.id}"
+  def updateName(userId: Int, userName: String): Try[Int] = {
+    val sql = s"update $tableName set name = '$userName' where id = $userId"
     DBAccessor.execute(sql)
   }
 

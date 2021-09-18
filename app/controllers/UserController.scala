@@ -1,15 +1,17 @@
 package controllers
 
+import domain.`object`.user.NewUser.NewUserDto
 import domain.`object`.user.{ NewUser, User, UserId, UserName }
-import supports.JsonSupport.{ reads, RichRequest }
-import supports.ResultSupport.RichResult
 import javax.inject._
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json._
 import play.api.mvc._
 import service.UserService
+import supports.JsonSupport.{ reads, RichRequest }
+import supports.ResultSupport.RichResult
 
-import scala.util.{ Failure, Success }
+import scala.util.{ Failure, Success, Try }
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
@@ -19,11 +21,17 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
   implicit val userWrites = new Writes[User] {
     def writes(user: User): JsObject = Json.obj(
       "id" -> user.id.value,
-      "name" -> user.name.value
+      "name" -> user.name.value,
+      "email" -> user.email.value
     )
   }
 
   implicit val userNameReads = reads("name", UserName)
+
+  implicit val newUserReads = (
+    (JsPath \ "name").read[String] and
+      (JsPath \ "email").read[String]
+  )(NewUserDto)
 
   def index(): Action[AnyContent] =
     Action {
@@ -45,10 +53,10 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
 
   def save(): Action[AnyContent] = {
     Action { request =>
-      val maybeUserName = request.getObject[UserName]
-      val result = maybeUserName match {
-        case Success(userName) =>
-          val newUser = NewUser(userName)
+      val maybeNewUserDto: Try[NewUserDto] = request.getObject[NewUserDto]
+      val result = maybeNewUserDto match {
+        case Success(newUserDto) =>
+          val newUser = NewUser(newUserDto)
           userService.save(newUser) match {
             case Success(_) => Ok("User record saved successfully")
             case Failure(e) => NotFound(e.toString)
@@ -59,13 +67,12 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
     }
   }
 
-  def update(userId: Int): Action[AnyContent] = {
+  def updateName(userId: Int): Action[AnyContent] = {
     Action { request =>
       val maybeUserName = request.getObject[UserName]
       val result = maybeUserName match {
         case Success(userName) =>
-          val user = User(UserId(userId), userName)
-          userService.update(user) match {
+          userService.updateName(UserId(userId), userName) match {
             case Success(_) => Ok("User record updated successfully")
             case Failure(e) => NotFound(e.toString)
           }
