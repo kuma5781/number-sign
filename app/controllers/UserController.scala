@@ -11,7 +11,7 @@ import service.UserService
 import supports.JsonSupport.{ reads, RichRequest }
 import supports.ResultSupport.RichResult
 
-import scala.util.{ Failure, Success, Try }
+import scala.util.{ Failure, Success }
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
@@ -53,7 +53,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
 
   def save(): Action[AnyContent] = {
     Action { request =>
-      val maybeNewUserDto: Try[NewUserDto] = request.getObject[NewUserDto]
+      val maybeNewUserDto = request.getObject[NewUserDto]
       val result = maybeNewUserDto match {
         case Success(newUserDto) =>
           val newUser = NewUser(newUserDto)
