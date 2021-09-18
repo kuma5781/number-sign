@@ -1,14 +1,14 @@
 use number_sign_db;
 
-create table note
+create table comment
 (
   id int unsigned not null auto_increment,
   user_id int unsigned not null,
-  title varchar(255) not null,
+  note_id int unsigned not null,
   content text not null,
-  status enum ('active', 'trashed') not null default 'active',
   created_at TIMESTAMP not null default CURRENT_TIMESTAMP,
   updated_at TIMESTAMP not null default CURRENT_TIMESTAMP,
   primary key (id),
-  foreign key (user_id) references user (id)
+  foreign key (user_id) references user (id),
+  foreign key (note_id) references note (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
