@@ -57,13 +57,13 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "[{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"},{\"id\":2,\"name\":\"次郎\",\"email\":\"jiro@xxx.com\"}]"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       userService.findAll() returns Failure(exception)
 
       val home = userController.index().apply(FakeRequest(GET, "/user"))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }
@@ -78,13 +78,13 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"}"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       userService.findBy(userId1) returns Failure(exception)
 
       val home = userController.show(userIdDto1).apply(FakeRequest(GET, s"/user/$userIdDto1"))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }
@@ -99,13 +99,13 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "User record saved successfully"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       userService.save(newUser1) returns Failure(exception)
 
       val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(newUser1)))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }
@@ -123,7 +123,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "User record updated successfully"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       userService.updateName(userId1, userName1) returns Failure(exception)
 
@@ -132,7 +132,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
           .updateName(userIdDto1)
           .apply(FakeRequest(PUT, s"/user/name/$userIdDto1").withJsonBody(Json.toJson(userName1)))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }
@@ -147,13 +147,13 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "User record removed successfully"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       userService.removeBy(userId1) returns Failure(exception)
 
       val home = userController.remove(userIdDto1).apply(FakeRequest(DELETE, s"/user/$userIdDto1"))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }

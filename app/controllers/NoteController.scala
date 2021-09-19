@@ -33,9 +33,9 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
           val newNote = NewNote(newNoteDto)
           noteService.save(newNote) match {
             case Success(_) => Ok("Note record saved successfully")
-            case Failure(e) => NotFound(e.toString)
+            case Failure(e) => BadRequest(e.toString)
           }
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }

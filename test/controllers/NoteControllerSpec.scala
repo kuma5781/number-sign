@@ -6,7 +6,7 @@ import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
-import play.api.http.Status.{ NOT_FOUND, OK }
+import play.api.http.Status.{ BAD_REQUEST, OK }
 import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{ contentAsString, defaultAwaitTimeout, status, stubControllerComponents, POST }
@@ -47,13 +47,13 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "Note record saved successfully"
     }
 
-    "return NotFound error" in new Context {
+    "return BadRequest" in new Context {
       val exception = new Exception(s"DB connection error")
       noteService.save(newNote) returns Failure(exception)
 
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNote)))
 
-      status(home) mustBe NOT_FOUND
+      status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString
     }
   }

@@ -39,7 +39,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
     Action {
       val result = userService.findAll() match {
         case Success(users) => Ok(Json.toJson(users))
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
@@ -48,7 +48,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
     Action {
       val result = userService.findBy(UserId(userId)) match {
         case Success(user) => Ok(Json.toJson(user))
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
@@ -61,9 +61,9 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
           val newUser = NewUser(newUserDto)
           userService.save(newUser) match {
             case Success(_) => Ok("User record saved successfully")
-            case Failure(e) => NotFound(e.toString)
+            case Failure(e) => BadRequest(e.toString)
           }
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
@@ -76,9 +76,9 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
         case Success(userName) =>
           userService.updateName(UserId(userId), userName) match {
             case Success(_) => Ok("User record updated successfully")
-            case Failure(e) => NotFound(e.toString)
+            case Failure(e) => BadRequest(e.toString)
           }
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
@@ -88,7 +88,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
     Action {
       val result = userService.removeBy(UserId(userId)) match {
         case Success(_) => Ok("User record removed successfully")
-        case Failure(e) => NotFound(e.toString)
+        case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
