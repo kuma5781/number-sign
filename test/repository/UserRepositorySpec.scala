@@ -20,7 +20,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     val userNameDto1 = "太郎"
     val emailDto1 = "taro@xxx.com"
     val userDto1 = UserDto(userIdDto1, userNameDto1, emailDto1)
-    val newUSerDto1 = NewUserDto(userNameDto1, emailDto1)
+    val newUserDto1 = NewUserDto(userNameDto1, emailDto1)
 
     val userId1 = UserId(userIdDto1)
     val userName1 = UserName(userNameDto1)
@@ -70,13 +70,13 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
 
   "#save" should {
     "return Success" in new Context {
-      userDao.insert(newUSerDto1) returns Success(1)
+      userDao.insert(newUserDto1) returns Success(1)
       userRepository.save(newUser1) mustBe Success(1)
     }
 
     "return Exception" in new Context {
       val exception = new Exception(s"DB connection error")
-      userDao.insert(newUSerDto1) returns Failure(exception)
+      userDao.insert(newUserDto1) returns Failure(exception)
       userRepository.save(newUser1) mustBe Failure(exception)
     }
   }

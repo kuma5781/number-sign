@@ -9,3 +9,13 @@ case class Note(
     content: NoteContent,
     status: NoteStatus
 )
+
+object Note {
+  case class NoteDto(
+      id: Int,
+      userId: Int,
+      title: String,
+      content: String,
+      status: String
+  )
+}

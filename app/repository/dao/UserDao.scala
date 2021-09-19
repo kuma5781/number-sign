@@ -12,10 +12,10 @@ class UserDao {
   private val tableName = "user"
 
   private val userDto = (rs: ResultSet) => {
-    val userId = rs.getInt("id")
-    val userName = rs.getString("name")
+    val id = rs.getInt("id")
+    val name = rs.getString("name")
     val email = rs.getString("email")
-    UserDto(userId, userName, email)
+    UserDto(id, name, email)
   }
 
   def selectAll(): Try[Seq[UserDto]] = {

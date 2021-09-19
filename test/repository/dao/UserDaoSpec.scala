@@ -11,7 +11,6 @@ class UserDaoSpec extends PlaySpec {
 
   trait Context {
     val userDao = new UserDao
-
     val tableName = "user"
 
     val userName1 = "太郎"
@@ -23,10 +22,10 @@ class UserDaoSpec extends PlaySpec {
     val newUserDto2 = NewUserDto(userName2, email2)
 
     val userDto = (rs: ResultSet) => {
-      val userId = rs.getInt("id")
-      val userName = rs.getString("name")
+      val id = rs.getInt("id")
+      val name = rs.getString("name")
       val email = rs.getString("email")
-      UserDto(userId, userName, email)
+      UserDto(id, name, email)
     }
 
     val selectAllSql = s"select * from $tableName"
