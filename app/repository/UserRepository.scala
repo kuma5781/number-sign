@@ -8,15 +8,13 @@ import scala.util.Try
 
 class UserRepository(userDao: UserDao = new UserDao) {
 
-  def findAll(): Try[Seq[User]] = {
+  def findAll(): Try[Seq[User]] =
     userDao.selectAll().map { dtos =>
       dtos.map(User(_))
     }
-  }
 
-  def findBy(userId: UserId): Try[User] = {
+  def findBy(userId: UserId): Try[User] =
     userDao.selectBy(userId.value).map(User(_))
-  }
 
   def save(newUser: NewUser): Try[Int] = {
     val newUserDto = NewUserDto(
@@ -26,11 +24,9 @@ class UserRepository(userDao: UserDao = new UserDao) {
     userDao.insert(newUserDto)
   }
 
-  def updateName(userId: UserId, userName: UserName): Try[Int] = {
+  def updateName(userId: UserId, userName: UserName): Try[Int] =
     userDao.updateName(userId.value, userName.value)
-  }
 
-  def removeBy(userId: UserId): Try[Int] = {
+  def removeBy(userId: UserId): Try[Int] =
     userDao.deleteBy(userId.value)
-  }
 }

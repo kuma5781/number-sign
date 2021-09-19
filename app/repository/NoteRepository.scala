@@ -1,6 +1,6 @@
 package repository
 
-import domain.`object`.note.NewNote
+import domain.`object`.note.{ NewNote, NoteId, NoteStatus }
 import domain.`object`.note.NewNote.NewNoteDto
 import repository.dao.NoteDao
 
@@ -16,4 +16,7 @@ class NoteRepository(noteDao: NoteDao = new NoteDao) {
     )
     noteDao.insert(newNoteDto)
   }
+
+  def updateStatus(noteId: NoteId, noteStatus: NoteStatus): Try[Int] =
+    noteDao.updateStatus(noteId.value, noteStatus.value)
 }

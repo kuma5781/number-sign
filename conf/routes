@@ -13,13 +13,19 @@ GET    /user/:userId                controllers.UserController.show(userId: Int)
 POST   /user                        controllers.UserController.save()
 
 # ユーザの名前を更新 (必要なリクエストボディ: {"name": {ユーザ名})
-PUT    /user/name/:userId                controllers.UserController.updateName(userId: Int)
+PUT    /user/name/:userId           controllers.UserController.updateName(userId: Int)
 
 # ユーザ情報を削除
 DELETE /user/:userId                controllers.UserController.remove(userId: Int)
 
 # ノート情報を登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "title": {タイトル}, "content": {内容}})
 POST   /note                        controllers.NoteController.save()
+
+# ノートをゴミ箱に入れる
+PUT    /note/trash/:noteId          controllers.NoteController.trash(noteId: Int)
+
+# ノートをゴミ箱から戻す
+PUT    /note/activate/:noteId       controllers.NoteController.activate(noteId: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)

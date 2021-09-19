@@ -1,6 +1,6 @@
 package controllers
 
-import domain.`object`.note.NewNote
+import domain.`object`.note.{ NewNote, NoteId }
 import domain.`object`.note.NewNote.NewNoteDto
 import javax.inject.{ Inject, Singleton }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
@@ -25,7 +25,7 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
       (JsPath \ "content").read[String]
   )(NewNoteDto)
 
-  def save(): Action[AnyContent] = {
+  def save(): Action[AnyContent] =
     Action { request =>
       val maybeNewNoteDto = request.getObject[NewNoteDto]
       val result = maybeNewNoteDto match {
@@ -39,5 +39,22 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
       }
       result.enableCors
     }
-  }
+
+  def trash(noteId: Int): Action[AnyContent] =
+    Action {
+      val result = noteService.trash(NoteId(noteId)) match {
+        case Success(_) => Ok("Note trashed successfully")
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
+
+  def activate(noteId: Int): Action[AnyContent] =
+    Action {
+      val result = noteService.activate(NoteId(noteId)) match {
+        case Success(_) => Ok("Note activated successfully")
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
 }

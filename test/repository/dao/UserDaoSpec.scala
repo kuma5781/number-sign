@@ -85,7 +85,7 @@ class UserDaoSpec extends PlaySpec {
   }
 
   "#updateName" should {
-    "update user record associated with userId" in new Context {
+    "update user.name record associated with userId" in new Context {
       DBSupport.dbTest(
         tableName, {
           DBAccessor.execute(insertSql(newUserDto1))
