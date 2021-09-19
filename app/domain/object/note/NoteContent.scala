@@ -1,3 +1,3 @@
 package domain.`object`.note
 
-case class NoteContent (value: String)
+case class NoteContent(value: String)
