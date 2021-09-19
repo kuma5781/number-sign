@@ -81,7 +81,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#update" should {
+  "#updateName" should {
     "return Success" in new Context {
       userDao.updateName(userIdDto1, userNameDto1) returns Success(1)
       userRepository.updateName(userId1, userName1) mustBe Success(1)

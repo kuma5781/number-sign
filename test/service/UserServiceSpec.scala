@@ -67,7 +67,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#update" should {
+  "#updateName" should {
     "return Success" in new Context {
       userRepository.updateName(userId1, userName1) returns Success(1)
       userService.updateName(userId1, userName1) mustBe Success(1)

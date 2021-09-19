@@ -85,7 +85,7 @@ class UserDaoSpec extends PlaySpec {
     }
   }
 
-  "#update" should {
+  "#updateName" should {
     "update user record associated with userId" in new Context {
       DBSupport.dbTest(
         tableName, {

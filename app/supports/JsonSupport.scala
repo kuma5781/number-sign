@@ -5,7 +5,7 @@ import play.api.mvc.{ AnyContent, Request }
 
 import scala.util.Try
 
-object JsonSupport {
+trait JsonSupport {
   implicit class RichRequest(request: Request[AnyContent]) {
     def getObject[T](implicit rds: Reads[T]): Try[T] =
       Try(request.body.asJson.get.validate[T].get)

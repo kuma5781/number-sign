@@ -8,15 +8,17 @@ import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json._
 import play.api.mvc._
 import service.UserService
-import supports.JsonSupport.{ reads, RichRequest }
-import supports.ResultSupport.RichResult
+import supports.{ JsonSupport, ResultSupport }
 
 import scala.util.{ Failure, Success }
 
 @Singleton
-class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class UserController @Inject()(val controllerComponents: ControllerComponents)
+  extends BaseController
+  with JsonSupport
+  with ResultSupport {
 
-  val userService: UserService = new UserService
+  val userService = new UserService
 
   implicit val userWrites = new Writes[User] {
     def writes(user: User): JsObject = Json.obj(
@@ -28,7 +30,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
 
   implicit val userNameReads = reads("name", UserName)
 
-  implicit val newUserReads = (
+  implicit val newUserDtoReads = (
     (JsPath \ "name").read[String] and
       (JsPath \ "email").read[String]
   )(NewUserDto)
