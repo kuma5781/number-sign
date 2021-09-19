@@ -2,7 +2,7 @@ package supports
 
 import play.api.mvc.Result
 
-object ResultSupport {
+trait ResultSupport {
   implicit class RichResult(result: Result) {
     def enableCors = result.withHeaders(
       "Access-Control-Allow-Origin" -> "*",
