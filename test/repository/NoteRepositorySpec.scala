@@ -31,7 +31,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
   }
 
   "#saveAndGetNoteId" should {
-    "return last inserted id" in new Context {
+    "return last inserted noteId" in new Context {
       noteDao.insertAndGetId(newNoteDto) returns Success(noteIdDto)
       noteRepository.saveAndGetNoteId(newNote) mustBe Success(noteId)
     }
