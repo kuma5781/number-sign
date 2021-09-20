@@ -17,7 +17,7 @@ class NoteDaoSpec extends PlaySpec {
     val userId = 1
     val title = "title"
     val content = "content"
-    val newNoteDto = NewNoteDto(userId, title, content)
+    val newNoteDto = NewNoteDto(userId, title, content, None)
 
     val noteDto = (rs: ResultSet) => {
       val id = rs.getInt("id")
@@ -35,14 +35,15 @@ class NoteDaoSpec extends PlaySpec {
 			""".stripMargin
   }
 
-  "#insert" should {
-    "insert user record" in new Context {
+  "#insertAndGetId" should {
+    "insert note record and return last inserted id" in new Context {
       DBSupport.dbTest(
         tableName, {
-          noteDao.insert(newNoteDto)
+          val noteId = noteDao.insertAndGetId(newNoteDto).get
 
           val noteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
 
+          noteDtos(0).id mustBe noteId
           noteDtos(0).userId mustBe userId
           noteDtos(0).title mustBe title
           noteDtos(0).content mustBe content

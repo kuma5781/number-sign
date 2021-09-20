@@ -21,25 +21,25 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     val userIdDto = 1
     val titleDto = "title"
     val contentDto = "content"
-    val newNoteDto = NewNoteDto(userIdDto, titleDto, contentDto)
+    val newNoteDto = NewNoteDto(userIdDto, titleDto, contentDto, None)
 
     val noteId = NoteId(noteIdDto)
     val userId = UserId(userIdDto)
     val title = Title(titleDto)
     val content = NoteContent(contentDto)
-    val newNote = NewNote(userId, title, content)
+    val newNote = NewNote(userId, title, content, None)
   }
 
-  "#save" should {
-    "return Success" in new Context {
-      noteDao.insert(newNoteDto) returns Success(1)
-      noteRepository.save(newNote) mustBe Success(1)
+  "#saveAndGetNoteId" should {
+    "return last inserted id" in new Context {
+      noteDao.insertAndGetId(newNoteDto) returns Success(noteIdDto)
+      noteRepository.saveAndGetNoteId(newNote) mustBe Success(noteId)
     }
 
     "return Exception" in new Context {
       val exception = new Exception(s"DB connection error")
-      noteDao.insert(newNoteDto) returns Failure(exception)
-      noteRepository.save(newNote) mustBe Failure(exception)
+      noteDao.insertAndGetId(newNoteDto) returns Failure(exception)
+      noteRepository.saveAndGetNoteId(newNote) mustBe Failure(exception)
     }
   }
 

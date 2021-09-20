@@ -3,22 +3,22 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-# ユーザ情報の一覧を取得
+# ユーザの一覧を取得
 GET    /user                        controllers.UserController.index()
 
-# ユーザ情報を1件取得
+# ユーザを1件取得
 GET    /user/:userId                controllers.UserController.show(userId: Int)
 
-# ユーザ情報を登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})
+# ユーザを登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})
 POST   /user                        controllers.UserController.save()
 
 # ユーザの名前を更新 (必要なリクエストボディ: {"name": {ユーザ名})
 PUT    /user/name/:userId           controllers.UserController.updateName(userId: Int)
 
-# ユーザ情報を削除
+# ユーザを削除
 DELETE /user/:userId                controllers.UserController.remove(userId: Int)
 
-# ノート情報を登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "title": {タイトル}, "content": {内容}})
+# ノートを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "title": {タイトル}, "content": {内容}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /note                        controllers.NoteController.save()
 
 # ノートをゴミ箱に入れる
@@ -26,6 +26,9 @@ PUT    /note/trash/:noteId          controllers.NoteController.trash(noteId: Int
 
 # ノートをゴミ箱から戻す
 PUT    /note/activate/:noteId       controllers.NoteController.activate(noteId: Int)
+
+# フォルダを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "name": {フォルダ名}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
+POST   /folder                      controllers.FolderController.save()
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)

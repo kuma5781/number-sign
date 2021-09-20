@@ -8,13 +8,13 @@ class NoteDao {
 
   private val tableName = "note"
 
-  def insert(newNoteDto: NewNoteDto): Try[Int] = {
+  def insertAndGetId(newNoteDto: NewNoteDto): Try[Int] = {
     val sql =
       s"""
 		     |insert into $tableName (user_id, title, content) values
-		     |('${newNoteDto.userId}', '${newNoteDto.title}', '${newNoteDto.content}')
+		     |(${newNoteDto.userId}, '${newNoteDto.title}', '${newNoteDto.content}')
 			""".stripMargin
-    DBAccessor.execute(sql)
+    DBAccessor.executeAndGetId(sql)
   }
 
   def updateStatus(noteId: Int, noteStatus: String): Try[Int] = {

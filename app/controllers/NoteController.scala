@@ -1,7 +1,7 @@
 package controllers
 
-import domain.`object`.note.{ NewNote, NoteId }
 import domain.`object`.note.NewNote.NewNoteDto
+import domain.`object`.note.{ NewNote, NoteId }
 import javax.inject.{ Inject, Singleton }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.JsPath
@@ -22,7 +22,8 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
   implicit val newNoteDtoReads = (
     (JsPath \ "user_id").read[Int] and
       (JsPath \ "title").read[String] and
-      (JsPath \ "content").read[String]
+      (JsPath \ "content").read[String] and
+      (JsPath \ "parent_folder_id").readNullable[Int]
   )(NewNoteDto)
 
   def save(): Action[AnyContent] =

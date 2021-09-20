@@ -20,18 +20,18 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     val userId = UserId(1)
     val title = Title("title")
     val content = NoteContent("content")
-    val newNote = NewNote(userId, title, content)
+    val newNote = NewNote(userId, title, content, None)
   }
 
   "#save" should {
     "return Success" in new Context {
-      noteRepository.save(newNote) returns Success(1)
+      noteRepository.saveAndGetNoteId(newNote) returns Success(noteId)
       noteService.save(newNote) mustBe Success(1)
     }
 
     "return Exception" in new Context {
       val exception = new Exception(s"DB connection error")
-      noteRepository.save(newNote) returns Failure(exception)
+      noteRepository.saveAndGetNoteId(newNote) returns Failure(exception)
       noteService.save(newNote) mustBe Failure(exception)
     }
   }

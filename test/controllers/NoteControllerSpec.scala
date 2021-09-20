@@ -28,7 +28,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     val userId = UserId(1)
     val title = Title("title")
     val content = NoteContent("content")
-    val newNote = NewNote(userId, title, content)
+    val newNote = NewNote(userId, title, content, None)
 
     implicit val newNoteWrites = new Writes[NewNote] {
       def writes(newNote: NewNote): JsObject = Json.obj(

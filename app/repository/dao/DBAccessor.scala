@@ -1,6 +1,6 @@
 package repository.dao
 
-import java.sql.{ DriverManager, ResultSet, Statement }
+import java.sql.{DriverManager, ResultSet, Statement}
 
 import domain.`object`.db.DBProperties
 
@@ -34,6 +34,17 @@ object DBAccessor {
       else throw new Exception(s"Not found record")
     }
     connect(readRecord)
+  }
+
+  // 実行&最後にinsertしたIDを返す
+  def executeAndGetId(sql: String): Try[Int] = {
+    val executeSql = (stmt: Statement) => {
+      stmt.executeUpdate(sql)
+      val rs = stmt.executeQuery("select LAST_INSERT_ID()")
+      if (rs.next) rs.getInt("LAST_INSERT_ID()")
+      else throw new Exception(s"Not found LAST_INSERT_ID()")
+    }
+    connect(executeSql)
   }
 
   // insert, update, deleteの実行
