@@ -4,23 +4,23 @@ import { auth } from '../firebase';
 
 // Todo: any型なくす
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
-      await auth.signInWithEmailAndPassword(email.value, password.value);
+      await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
     } catch (e) {
-      setError('メールアドレスまたはパスワードが違います');
+      setError('error');
     }
   };
 
   return (
     <div>
-      <h1>ログイン</h1>
+      <h1>ユーザ登録</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -32,11 +32,11 @@ const Login: React.FC = () => {
           <input name="password" type="password" placeholder="password" />
         </div>
         <div>
-          <button>ログイン</button>
+          <button>登録</button>
         </div>
         <div>
-          ユーザ登録は
-          <Link to="/signup">こちら</Link>
+          ユーザ登録済の場合は
+          <Link to="/login">こちら</Link>
           から
         </div>
       </form>
@@ -44,4 +44,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;
