@@ -1,6 +1,5 @@
 package service
 
-import domain.`object`.folder.NewFolder.NewFolderDto
 import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
 import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar

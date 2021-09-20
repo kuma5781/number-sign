@@ -10,7 +10,7 @@ import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
 import play.api.http.Status.{ BAD_REQUEST, OK }
 import play.api.libs.functional.syntax.{ toFunctionalBuilderOps, unlift }
-import play.api.libs.json.{ JsObject, JsPath, Json, Writes }
+import play.api.libs.json.{ JsPath, Json, Writes }
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{ contentAsString, defaultAwaitTimeout, status, stubControllerComponents, POST, PUT }
 import service.NoteService
