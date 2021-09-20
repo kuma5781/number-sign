@@ -1,6 +1,6 @@
 package repository.dao
 
-import java.sql.{DriverManager, ResultSet, Statement}
+import java.sql.{ DriverManager, ResultSet, Statement }
 
 import domain.`object`.db.DBProperties
 

@@ -1,5 +1,6 @@
 package service
 
+import domain.`object`.folder.NewFolder.NewFolderDto
 import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
 import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
@@ -29,24 +30,24 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
   }
 
   "#save" should {
-    "return Success when newFolder.parentFolderId is not exist" in new Context {
+    "return Success when newFolder has parentFolderId" in new Context {
       folderRepository.saveAndGetFolderId(newFolder1) returns Success(folderId1)
       folderService.save(newFolder1) mustBe Success(1)
     }
 
-    "return Success when newFolder.parentFolderId is exist" in new Context {
+    "return Success when newFolder doesn't have parentFolderId" in new Context {
       folderRepository.saveAndGetFolderId(newFolder2) returns Success(folderId2)
       relayFoldersRepository.save(folderId2, parentFolderId2) returns Success(2)
       folderService.save(newFolder2) mustBe Success(2)
     }
 
-    "return Exception when newFolder.parentFolderId is not exist" in new Context {
+    "return Exception when newFolder has parentFolderId" in new Context {
       val exception = new Exception(s"DB connection error")
       folderRepository.saveAndGetFolderId(newFolder1) returns Failure(exception)
       folderService.save(newFolder1) mustBe Failure(exception)
     }
 
-    "return Exception when newFolder.parentFolderId is exist" in new Context {
+    "return Exception when newFolder doesn't have parentFolderId" in new Context {
       val exception = new Exception(s"DB connection error")
       folderRepository.saveAndGetFolderId(newFolder2) returns Success(folderId2)
       relayFoldersRepository.save(folderId2, parentFolderId2) returns Failure(exception)
