@@ -28,8 +28,8 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     val userId2 = UserId(2)
     val title2 = Title("title2")
     val content2 = NoteContent("content2")
-    val parentFolderId = FolderId(1)
-    val newNote2 = NewNote(userId2, title2, content2, Some(parentFolderId))
+    val parentFolderId2 = FolderId(1)
+    val newNote2 = NewNote(userId2, title2, content2, Some(parentFolderId2))
   }
 
   "#save" should {
@@ -40,7 +40,7 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
 
     "return Success when newNote.parentFolderId is exist" in new Context {
       noteRepository.saveAndGetNoteId(newNote2) returns Success(noteId2)
-      relayNoteFolderRepository.save(noteId2, parentFolderId) returns Success(2)
+      relayNoteFolderRepository.save(noteId2, parentFolderId2) returns Success(2)
       noteService.save(newNote2) mustBe Success(2)
     }
 
@@ -53,7 +53,7 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     "return Exception when newNote.parentFolderId is exist" in new Context {
       val exception = new Exception(s"DB connection error")
       noteRepository.saveAndGetNoteId(newNote2) returns Success(noteId2)
-      relayNoteFolderRepository.save(noteId2, parentFolderId) returns Failure(exception)
+      relayNoteFolderRepository.save(noteId2, parentFolderId2) returns Failure(exception)
       noteService.save(newNote2) mustBe Failure(exception)
     }
   }
