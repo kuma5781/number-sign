@@ -16,4 +16,7 @@ class FolderRepository(folderDao: FolderDao = new FolderDao) {
     )
     folderDao.insertAndGetId(newFolderDto).map(FolderId)
   }
+
+  def removeBy(folderIds: Seq[FolderId]): Try[Int] =
+    folderDao.deleteBy(folderIds.map(_.value))
 }

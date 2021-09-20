@@ -20,4 +20,7 @@ class NoteRepository(noteDao: NoteDao = new NoteDao) {
 
   def updateStatus(noteId: NoteId, noteStatus: NoteStatus): Try[Int] =
     noteDao.updateStatus(noteId.value, noteStatus.value)
+
+  def removeBy(noteIds: Seq[NoteId]): Try[Int] =
+    noteDao.deleteBy(noteIds.map(_.value))
 }

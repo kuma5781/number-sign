@@ -2,6 +2,7 @@ package repository.dao
 
 import java.sql.ResultSet
 
+import domain.`object`.note.RelayNoteFolder.RelayNoteFolderDto
 import org.scalatestplus.play.PlaySpec
 import testSupport.DBSupport
 
@@ -14,10 +15,6 @@ class RelayNoteFolderDaoSpec extends PlaySpec {
     val noteId = 1
     val parentFolderId = 1
 
-    case class RelayNoteFolderDto(
-        noteId: Int,
-        parentFolderId: Int
-    )
     val relayNoteFolderDto = (rs: ResultSet) => {
       val noteId = rs.getInt("note_id")
       val parentFolderId = rs.getInt("parent_folder_id")
