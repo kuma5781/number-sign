@@ -27,7 +27,7 @@ values (1, 1, '6巻'),
        (10, 5, '15話');
 
 insert into comment (user_id, note_id, content)
-values (4, 1, '「デク」って...「頑張れ！！」って感じでなんか好きが私'),
+values (4, 1, '「デク」って...「頑張れ！！」って感じでなんか好きだ私'),
        (2, 4, '死んでねえ');
 
 insert into authority (user_id, note_id, authority)
