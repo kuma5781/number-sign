@@ -61,6 +61,7 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
+        json: 'never',
       },
     ],
     'react/prop-types': 'off',

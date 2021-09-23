@@ -14,6 +14,12 @@
   $ cd ui
   $ npm install
   ```
+- フロントエンド設定ファイル作成
+  - ホームディレクトリ(number-sign)で以下のコマンド実行
+    ```
+    $ cp ui/src/resouces/config_sample.json ui/src/resouces/config.json
+    ```
+  - 設定情報をconfig.jsonに記入する
 
 ## 起動
 プロジェクトルートディレクトリで以下を実行
