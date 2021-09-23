@@ -1,6 +1,8 @@
 package service
 
-import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
+import domain.`object`.folder.{ FolderId, FolderName, NewFolder, RelayFolders }
+import domain.`object`.note.NoteStatus.Trashed
+import domain.`object`.note.{ NoteId, RelayNoteFolder }
 import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -32,8 +34,13 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
     val folderId2 = FolderId(4)
     val userId2 = UserId(2)
     val folderName2 = FolderName("name2")
-    val parentFolderId2 = FolderId(5)
+    val parentFolderId2 = FolderId(3)
     val newFolder2 = NewFolder(userId2, folderName2, Some(parentFolderId2))
+
+    val relayFolders1 = RelayFolders(folderId2, folderId1)
+
+    val noteId1 = NoteId(1)
+    val relayNoteFolder1 = RelayNoteFolder(noteId1, folderId1)
   }
 
   "#save" should {
@@ -59,6 +66,27 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
       folderRepository.saveAndGetFolderId(newFolder2) returns Success(folderId2)
       relayFoldersRepository.save(folderId2, parentFolderId2) returns Failure(exception)
       folderService.save(newFolder2) mustBe Failure(exception)
+    }
+  }
+
+  "#removeBy" should {
+    "return Success" in new Context {
+      relayFoldersRepository.findAllBy(Seq(folderId1)) returns Success(Seq(relayFolders1))
+      relayFoldersRepository.findAllBy(Seq(folderId2)) returns Success(Seq.empty)
+      relayNoteFolderRepository.findAllBy(Seq(folderId1, folderId2)) returns Success(Seq(relayNoteFolder1))
+      relayFoldersRepository.removeBy(Seq(folderId1, folderId2)) returns Success(1)
+      relayNoteFolderRepository.removeBy(Seq(noteId1)) returns Success(1)
+      folderRepository.removeBy(Seq(folderId1, folderId2)) returns Success(1)
+      noteRepository.updateStatus(Seq(noteId1), Trashed) returns Success(1)
+
+      folderService.removeBy(folderId1) mustBe Success(4)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      relayFoldersRepository.findAllBy(Seq(folderId1)) returns Failure(exception)
+
+      folderService.removeBy(folderId1) mustBe Failure(exception)
     }
   }
 }
