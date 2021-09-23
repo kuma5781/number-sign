@@ -39,4 +39,17 @@ class FolderRepositorySpec extends PlaySpec with MockitoSugar {
       folderRepository.saveAndGetFolderId(newFolder) returns Failure(exception)
     }
   }
+
+  "#removeBy" should {
+    "return Success" in new Context {
+      folderDao.deleteBy(Seq(folderIdDto)) returns Success(1)
+      folderRepository.removeBy(Seq(folderId)) returns Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      folderDao.deleteBy(Seq(folderIdDto)) returns Failure(exception)
+      folderRepository.removeBy(Seq(folderId)) returns Failure(exception)
+    }
+  }
 }

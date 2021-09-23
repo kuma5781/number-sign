@@ -56,7 +56,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
   }
 
   "#findBy" should {
-    "return User record associated with userId" in new Context {
+    "return User associated with userId" in new Context {
       userDao.selectBy(userIdDto1) returns Success(userDto1)
       userRepository.findBy(userId1) mustBe Success(user1)
     }

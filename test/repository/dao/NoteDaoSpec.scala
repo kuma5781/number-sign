@@ -14,10 +14,15 @@ class NoteDaoSpec extends PlaySpec {
     val noteDao = new NoteDao
     val tableName = "note"
 
-    val userId = 1
-    val title = "title"
-    val content = "content"
-    val newNoteDto = NewNoteDto(userId, title, content, None)
+    val userId1 = 1
+    val title1 = "title1"
+    val content1 = "content1"
+    val newNoteDto1 = NewNoteDto(userId1, title1, content1, None)
+
+    val userId2 = 2
+    val title2 = "title2"
+    val content2 = "content2"
+    val newNoteDto2 = NewNoteDto(userId2, title2, content2, None)
 
     val noteDto = (rs: ResultSet) => {
       val id = rs.getInt("id")
@@ -39,25 +44,25 @@ class NoteDaoSpec extends PlaySpec {
     "insert note record and return last inserted id" in new Context {
       DBSupport.dbTest(
         tableName, {
-          val noteId = noteDao.insertAndGetId(newNoteDto).get
+          val noteId = noteDao.insertAndGetId(newNoteDto1).get
 
           val noteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
 
           noteDtos(0).id mustBe noteId
-          noteDtos(0).userId mustBe userId
-          noteDtos(0).title mustBe title
-          noteDtos(0).content mustBe content
+          noteDtos(0).userId mustBe userId1
+          noteDtos(0).title mustBe title1
+          noteDtos(0).content mustBe content1
           noteDtos(0).status mustBe Active.value
         }
       )
     }
   }
 
-  "#updateStatus" should {
+  "#updateStatus(noteId: Int, noteStatus: String)" should {
     "update note.status record associated with noteId" in new Context {
       DBSupport.dbTest(
         tableName, {
-          DBAccessor.execute(insertSql(newNoteDto))
+          DBAccessor.execute(insertSql(newNoteDto1))
           val beforeNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
 
           beforeNoteDtos(0).status mustBe Active.value
@@ -67,6 +72,28 @@ class NoteDaoSpec extends PlaySpec {
 
           val updatedNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
           updatedNoteDtos(0).status mustBe Trashed.value
+        }
+      )
+    }
+  }
+
+  "#updateStatus(noteIds: Seq[Int], noteStatus: String)" should {
+    "update note.status records associated with noteIds" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          DBAccessor.execute(insertSql(newNoteDto1))
+          DBAccessor.execute(insertSql(newNoteDto2))
+          val beforeNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
+
+          beforeNoteDtos(0).status mustBe Active.value
+          beforeNoteDtos(1).status mustBe Active.value
+          val noteIds = beforeNoteDtos.map(_.id)
+
+          noteDao.updateStatus(noteIds, Trashed.value)
+
+          val updatedNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
+          updatedNoteDtos(0).status mustBe Trashed.value
+          updatedNoteDtos(1).status mustBe Trashed.value
         }
       )
     }

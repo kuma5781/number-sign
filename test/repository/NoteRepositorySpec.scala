@@ -43,7 +43,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#updateStatus" should {
+  "#updateStatus(noteId: NoteId, noteStatus: NoteStatus)" should {
     "return Success" in new Context {
       noteDao.updateStatus(noteIdDto, Active.value) returns Success(1)
       noteRepository.updateStatus(noteId, Active) mustBe Success(1)
@@ -53,6 +53,19 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
       val exception = new Exception(s"DB connection error")
       noteDao.updateStatus(noteIdDto, Active.value) returns Failure(exception)
       noteRepository.updateStatus(noteId, Active) mustBe Failure(exception)
+    }
+  }
+
+  "#updateStatus(noteIds: Seq[NoteId], noteStatus: NoteStatus)" should {
+    "return Success" in new Context {
+      noteDao.updateStatus(Seq(noteIdDto), Active.value) returns Success(1)
+      noteRepository.updateStatus(Seq(noteId), Active) mustBe Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      noteDao.updateStatus(Seq(noteIdDto), Active.value) returns Failure(exception)
+      noteRepository.updateStatus(Seq(noteId), Active) mustBe Failure(exception)
     }
   }
 }

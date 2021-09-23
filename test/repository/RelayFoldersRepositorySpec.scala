@@ -1,6 +1,7 @@
 package repository
 
-import domain.`object`.folder.FolderId
+import domain.`object`.folder.{ FolderId, RelayFolders }
+import domain.`object`.folder.RelayFolders.RelayFoldersDto
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
@@ -19,6 +20,22 @@ class RelayFoldersRepositorySpec extends PlaySpec with MockitoSugar {
 
     val folderId = FolderId(folderIdDto)
     val parentFolderId = FolderId(parentFolderIdDto)
+
+    val relayFoldersDto = RelayFoldersDto(folderIdDto, parentFolderIdDto)
+    val relayFolders = RelayFolders(folderId, parentFolderId)
+  }
+
+  "#findAllBy" should {
+    "return RelayFolders associated with parentFolderIds" in new Context {
+      relayFoldersDao.selectAllBy(Seq(parentFolderIdDto)) returns Success(Seq(relayFoldersDto))
+      relayFoldersRepository.findAllBy(Seq(parentFolderId)) returns Success(Seq(relayFolders))
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      relayFoldersDao.selectAllBy(Seq(parentFolderIdDto)) returns Failure(exception)
+      relayFoldersRepository.findAllBy(Seq(parentFolderId)) returns Failure(exception)
+    }
   }
 
   "#save" should {
@@ -31,6 +48,19 @@ class RelayFoldersRepositorySpec extends PlaySpec with MockitoSugar {
       val exception = new Exception(s"DB connection error")
       relayFoldersDao.insert(folderIdDto, parentFolderIdDto) returns Failure(exception)
       relayFoldersRepository.save(folderId, parentFolderId) returns Failure(exception)
+    }
+  }
+
+  "#removeBy" should {
+    "return Success" in new Context {
+      relayFoldersDao.deleteBy(Seq(parentFolderIdDto)) returns Success(1)
+      relayFoldersRepository.removeBy(Seq(parentFolderId)) returns Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      relayFoldersDao.deleteBy(Seq(parentFolderIdDto)) returns Failure(exception)
+      relayFoldersRepository.removeBy(Seq(parentFolderId)) returns Failure(exception)
     }
   }
 }

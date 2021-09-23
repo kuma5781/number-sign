@@ -23,7 +23,7 @@ class FolderService(
       case Failure(e) => Failure(e)
     }
 
-  def removeBy(folderId: FolderId): Try[Int] = {
+  def removeBy(folderId: FolderId): Try[Int] =
     for {
       //削除するfolder内のfolderIdを全取得
       folderIds <- findAllChildFolders(Seq(folderId))
@@ -41,7 +41,6 @@ class FolderService(
     } yield {
       removedRelayFolders + removedRelayNoteFolder + removedFolders + trashedNote
     }
-  }
 
   private def findAllChildFolders(parentFolderIds: Seq[FolderId]): Try[Seq[FolderId]] =
     for {
