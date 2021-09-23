@@ -2,37 +2,44 @@ package repository.dao
 
 import java.sql.ResultSet
 
+import domain.`object`.user.NewUser.NewUserDto
+import domain.`object`.user.User.UserDto
+
 import scala.util.Try
 
 class UserDao {
 
-  case class UserDto(
-      id: Int,
-      name: String
-  )
-
-  case class NewUserDto(
-      name: String
-  )
+  private val tableName = "user"
 
   private val userDto = (rs: ResultSet) => {
-    val userId = rs.getInt("id")
-    val userName = rs.getString("name")
-    UserDto(userId, userName)
+    val id = rs.getInt("id")
+    val name = rs.getString("name")
+    val email = rs.getString("email")
+    UserDto(id, name, email)
   }
 
   def selectAll(): Try[Seq[UserDto]] = {
-    val sql = "select * from user"
+    val sql = s"select * from $tableName"
     DBAccessor.selectRecords(sql, userDto)
   }
 
   def selectBy(userId: Int): Try[UserDto] = {
-    val sql = s"select * from user where id = $userId"
+    val sql = s"select * from $tableName where id = $userId"
     DBAccessor.selectRecord(sql, userDto)
   }
 
   def insert(newUserDto: NewUserDto): Try[Int] = {
-    val sql = s"insert into user (name) values (${newUserDto.name})"
-    DBAccessor.insertRecord(sql)
+    val sql = s"insert into $tableName (name, email) values ('${newUserDto.name}', '${newUserDto.email}')"
+    DBAccessor.execute(sql)
+  }
+
+  def updateName(userId: Int, userName: String): Try[Int] = {
+    val sql = s"update $tableName set name = '$userName' where id = $userId"
+    DBAccessor.execute(sql)
+  }
+
+  def deleteBy(userId: Int): Try[Int] = {
+    val sql = s"delete from $tableName where id = $userId"
+    DBAccessor.execute(sql)
   }
 }

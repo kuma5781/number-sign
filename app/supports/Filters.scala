@@ -1,4 +1,4 @@
-package global
+package supports
 
 import javax.inject.Inject
 import play.api.http.DefaultHttpFilters
