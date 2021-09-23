@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   return (
     <div>
       <h1>ログイン</h1>
-      {error && <p className="error">{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>

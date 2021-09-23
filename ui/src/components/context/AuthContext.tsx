@@ -5,34 +5,30 @@ import { auth } from '../../firebase';
 
 // Todo: any型をなくす
 
-type postContextType = {
+type createContextType = {
   user: any,
   loading: boolean
 };
 
 // Todo: Missing return type on function の警告を解消
-export function createCtx<ContextType>() {
+export function contextFilteringByType<ContextType>() {
   const AuthContext = createContext<ContextType | undefined>(undefined);
   const useAuthContext = () => {
-    const maybeUseContext = useContext(AuthContext);
-    if (!maybeUseContext) {
+    const context = useContext(AuthContext);
+    if (!context) {
       throw new Error('useCtx must be inside a Provider with a value');
     }
-    return maybeUseContext;
+    return context;
   };
   return [useAuthContext, AuthContext.Provider] as const;
 }
 
-export const [useAuthContext, SetAuthProvider] = createCtx<postContextType>();
+export const [useAuthContext, SetAuthProvider] = contextFilteringByType<createContextType>();
 
 export const AuthProvider: React.FC = ({ children }: any) => {
   const [user, setUser] = useState<any>('');
   const [loading, setLoading] = useState(true);
 
-  const value = {
-    user,
-    loading,
-  };
   useEffect(() => {
     const unsubscribed = auth.onAuthStateChanged((loginedUser) => {
       setUser(loginedUser);
@@ -49,7 +45,7 @@ export const AuthProvider: React.FC = ({ children }: any) => {
     return <p>loading...</p>;
   }
   return (
-    <SetAuthProvider value={value}>
+    <SetAuthProvider value={{ user, loading }}>
       {!loading && children}
     </SetAuthProvider>
   );

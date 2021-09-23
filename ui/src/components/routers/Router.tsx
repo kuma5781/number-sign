@@ -7,8 +7,6 @@ import { AuthProvider } from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-// PrivateRoute: ログイン済みのユーザが入れるページ
-// PublicRoute: どのユーザでも入れるページ
 const Router: React.FC = () => (
   <AuthProvider>
     <BrowserRouter>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
+// PrivateRoute: ログイン済みのユーザが入れるページ
 const PrivateRoute: React.FC<{
     exact:boolean;
     path:string;
