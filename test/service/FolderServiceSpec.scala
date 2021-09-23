@@ -5,7 +5,7 @@ import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
-import repository.{ FolderRepository, RelayFoldersRepository }
+import repository.{ FolderRepository, NoteRepository, RelayFoldersRepository, RelayNoteFolderRepository }
 
 import scala.util.{ Failure, Success }
 
@@ -13,8 +13,16 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
 
   trait Context {
     val folderRepository = mock[FolderRepository]
+    val noteRepository = mock[NoteRepository]
     val relayFoldersRepository = mock[RelayFoldersRepository]
-    val folderService = new FolderService(folderRepository, relayFoldersRepository)
+    val relayNoteFolderRepository = mock[RelayNoteFolderRepository]
+    val folderService =
+      new FolderService(
+        folderRepository,
+        noteRepository,
+        relayFoldersRepository,
+        relayNoteFolderRepository
+      )
 
     val folderId1 = FolderId(3)
     val userId1 = UserId(1)

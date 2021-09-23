@@ -33,7 +33,7 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
         case Success(newNoteDto) =>
           val newNote = NewNote(newNoteDto)
           noteService.save(newNote) match {
-            case Success(_) => Ok("Note record saved successfully")
+            case Success(_) => Ok("Note saved successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)

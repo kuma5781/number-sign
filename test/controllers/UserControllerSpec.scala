@@ -96,7 +96,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.save().apply(FakeRequest(POST, "/user").withJsonBody(Json.toJson(newUser1)))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "User record saved successfully"
+      contentAsString(home) mustBe "User saved successfully"
     }
 
     "return BadRequest" in new Context {
@@ -120,7 +120,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
           .apply(FakeRequest(PUT, s"/user/name/$userIdDto1").withJsonBody(Json.toJson(userName1)))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "User record updated successfully"
+      contentAsString(home) mustBe "User updated successfully"
     }
 
     "return BadRequest" in new Context {
@@ -144,7 +144,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.remove(userIdDto1).apply(FakeRequest(DELETE, s"/user/$userIdDto1"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "User record removed successfully"
+      contentAsString(home) mustBe "User removed successfully"
     }
 
     "return BadRequest" in new Context {

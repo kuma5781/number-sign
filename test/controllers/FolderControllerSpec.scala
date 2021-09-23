@@ -55,7 +55,7 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
         folderController.save().apply(FakeRequest(POST, "/folder").withJsonBody(Json.toJson(newFolderDto(newFolder1))))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "Folder record saved successfully"
+      contentAsString(home) mustBe "Folder saved successfully"
     }
 
     "return OK when newFolder doesn't have parent_folder_id" in new Context {
@@ -65,7 +65,7 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
         folderController.save().apply(FakeRequest(POST, "/folder").withJsonBody(Json.toJson(newFolderDto(newFolder2))))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "Folder record saved successfully"
+      contentAsString(home) mustBe "Folder saved successfully"
     }
 
     "return BadRequest" in new Context {

@@ -22,8 +22,8 @@ class NoteDao {
     DBAccessor.execute(sql)
   }
 
-	def deleteBy(noteIds: Seq[Int]): Try[Int] = {
-		val sql = s"delete from $tableName where id in (${noteIds.mkString(",")})"
+	def updateStatus(noteIds: Seq[Int], noteStatus: String): Try[Int] = {
+		val sql = s"update $tableName set status = '$noteStatus' where id in (${noteIds.mkString(",")})"
 		DBAccessor.execute(sql)
 	}
 }

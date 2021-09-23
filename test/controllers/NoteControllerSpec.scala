@@ -64,7 +64,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNoteDto(newNote1))))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "Note record saved successfully"
+      contentAsString(home) mustBe "Note saved successfully"
     }
 
     "return OK2 when newNote doesn't have parent_folder_id" in new Context {
@@ -73,7 +73,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNoteDto(newNote2))))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "Note record saved successfully"
+      contentAsString(home) mustBe "Note saved successfully"
     }
 
     "return BadRequest" in new Context {

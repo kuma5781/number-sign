@@ -1,6 +1,6 @@
 package controllers
 
-import domain.`object`.folder.NewFolder
+import domain.`object`.folder.{ FolderId, NewFolder }
 import domain.`object`.folder.NewFolder.NewFolderDto
 import javax.inject.Inject
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
@@ -31,9 +31,18 @@ class FolderController @Inject()(val controllerComponents: ControllerComponents)
         case Success(newFolderDto) =>
           val newFolder = NewFolder(newFolderDto)
           folderService.save(newFolder) match {
-            case Success(_) => Ok("Folder record saved successfully")
+            case Success(_) => Ok("Folder saved successfully")
             case Failure(e) => BadRequest(e.toString)
           }
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
+
+  def remove(folderId: Int): Action[AnyContent] =
+    Action {
+      val result = folderService.removeBy(FolderId(folderId)) match {
+        case Success(_) => Ok("Folder removed successfully")
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors

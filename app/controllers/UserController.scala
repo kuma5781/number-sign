@@ -60,7 +60,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
         case Success(newUserDto) =>
           val newUser = NewUser(newUserDto)
           userService.save(newUser) match {
-            case Success(_) => Ok("User record saved successfully")
+            case Success(_) => Ok("User saved successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)
@@ -74,7 +74,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
       val result = maybeUserName match {
         case Success(userName) =>
           userService.updateName(UserId(userId), userName) match {
-            case Success(_) => Ok("User record updated successfully")
+            case Success(_) => Ok("User updated successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)
@@ -85,7 +85,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
   def remove(userId: Int): Action[AnyContent] =
     Action {
       val result = userService.removeBy(UserId(userId)) match {
-        case Success(_) => Ok("User record removed successfully")
+        case Success(_) => Ok("User removed successfully")
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
