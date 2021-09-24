@@ -13,8 +13,21 @@ const SignUp: React.FC = () => {
     try {
       await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
-    } catch (e) {
-      setError('error');
+    } catch (e: any) {
+      console.log(typeof e);
+      switch (e.code) {
+        case 'network-request-failed':
+          setError('ネットワークエラーです。再度やり直してください。');
+          break;
+        case 'auth/weak-password':
+          setError('パスワードは6文字以上で登録してください。');
+          break;
+        case 'auth/email-already-in-use':
+          setError('メールアドレスが既に使用されています。');
+          break;
+        default:
+          setError('アカウントの作成に失敗しました。再度やり直してください。');
+      }
     }
   };
 
