@@ -7,7 +7,6 @@ import { auth } from '../firebase';
 const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
-  const [defaultError, setDefaultError] = useState('');
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -35,8 +34,7 @@ const SignUp: React.FC = () => {
           setError('パスワードは6文字以上で登録してください。');
           break;
         default:
-          setError('アカウントの作成に失敗しました。再度やり直してください。');
-          setDefaultError(e.message);
+          setError(`ログインに失敗しました。再度やり直してください。${e.message}`);
       }
     }
   };
@@ -45,7 +43,6 @@ const SignUp: React.FC = () => {
     <div>
       <h1>ユーザ登録</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {defaultError && <p style={{ color: 'red' }}>{defaultError}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>

@@ -7,7 +7,6 @@ import { auth } from '../firebase';
 const Login: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
-  const [defaultError, setDefaultError] = useState('');
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -35,8 +34,7 @@ const Login: React.FC = () => {
           setError('ユーザ名またはパスワードが違います。');
           break;
         default:
-          setError('アカウントの作成に失敗しました。再度やり直してください。');
-          setDefaultError(e.message);
+          setError(`アカウントの作成に失敗しました。再度やり直してください。${e.message}`);
       }
     }
   };
@@ -45,7 +43,6 @@ const Login: React.FC = () => {
     <div>
       <h1>ログイン</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {defaultError && <p style={{ color: 'red' }}>{defaultError}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>
