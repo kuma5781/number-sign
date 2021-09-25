@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 
 // Todo: any型なくす
 
@@ -14,7 +14,6 @@ const SignUp: React.FC = () => {
       await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
     } catch (e: any) {
-      console.log(typeof e);
       switch (e.code) {
         case 'network-request-failed':
           setError('ネットワークエラーです。再度やり直してください。');
