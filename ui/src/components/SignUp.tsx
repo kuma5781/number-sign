@@ -34,7 +34,7 @@ const SignUp: React.FC = () => {
           setError('パスワードは6文字以上で登録してください。');
           break;
         default:
-          setError(`ログインに失敗しました。再度やり直してください。${e.message}`);
+          setError(`ログインに失敗しました。再度やり直してください。${e.message}`);
       }
     }
   };
