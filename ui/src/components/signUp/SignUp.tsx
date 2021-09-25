@@ -18,14 +18,23 @@ const SignUp: React.FC = () => {
         case 'network-request-failed':
           setError('ネットワークエラーです。再度やり直してください。');
           break;
-        case 'auth/weak-password':
-          setError('パスワードは6文字以上で登録してください。');
+        case 'auth/missing-email':
+          setError('メールアドレスを入力してください。');
+          break;
+        case 'auth/invalid-email':
+          setError('メールアドレスの形式が正しくありません。');
+          break;
+        case 'auth/internal-error':
+          setError('認証サーバエラー。リクエスト時エラーが発生しました。');
           break;
         case 'auth/email-already-in-use':
           setError('メールアドレスが既に使用されています。');
           break;
+        case 'auth/weak-password':
+          setError('パスワードは6文字以上で登録してください。');
+          break;
         default:
-          setError('アカウントの作成に失敗しました。再度やり直してください。');
+          setError(`ログインに失敗しました。再度やり直してください。${e.message}`);
       }
     }
   };
