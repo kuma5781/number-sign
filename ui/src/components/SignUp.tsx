@@ -7,6 +7,7 @@ import { auth } from '../firebase';
 const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
+  const [defaultError, setDefaultError] = useState('');
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -14,19 +15,28 @@ const SignUp: React.FC = () => {
       await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
     } catch (e: any) {
-      console.log(typeof e);
       switch (e.code) {
         case 'network-request-failed':
           setError('ネットワークエラーです。再度やり直してください。');
           break;
-        case 'auth/weak-password':
-          setError('パスワードは6文字以上で登録してください。');
+        case 'auth/missing-email':
+          setError('メールアドレスを入力してください。');
+          break;
+        case 'auth/invalid-email':
+          setError('メールアドレスの形式が正しくありません。');
+          break;
+        case 'auth/internal-error':
+          setError('認証サーバエラー。リクエスト時エラーが発生しました。');
           break;
         case 'auth/email-already-in-use':
           setError('メールアドレスが既に使用されています。');
           break;
+        case 'auth/weak-password':
+          setError('パスワードは6文字以上で登録してください。');
+          break;
         default:
           setError('アカウントの作成に失敗しました。再度やり直してください。');
+          setDefaultError(e.message);
       }
     }
   };
@@ -35,6 +45,7 @@ const SignUp: React.FC = () => {
     <div>
       <h1>ユーザ登録</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      {defaultError && <p style={{ color: 'red' }}>{defaultError}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>

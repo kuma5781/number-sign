@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
-// PublicRoute: どのユーザでも入れるページ
+// PublicRoute: 未ログインユーザでも入れるページ
 const PublicRoute: React.FC<{
     path:string;
     component:React.FC;
