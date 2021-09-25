@@ -1,6 +1,6 @@
 package service
 
-import domain.`object`.folder.{ FolderId, NewFolder }
+import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
 import domain.`object`.note.NoteStatus.Trashed
 import repository.{ FolderRepository, NoteRepository, RelayFoldersRepository, RelayNoteFolderRepository }
 
@@ -22,6 +22,9 @@ class FolderService(
         }
       case Failure(e) => Failure(e)
     }
+
+  def updateName(folderId: FolderId, name: FolderName): Try[Int] =
+    folderRepository.updateName(folderId, name)
 
   def removeBy(folderId: FolderId): Try[Int] =
     for {

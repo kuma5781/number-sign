@@ -49,6 +49,26 @@ class FolderDaoSpec extends PlaySpec {
     }
   }
 
+  "#updateName" should {
+    "update folder name associated with folderIds" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          DBAccessor.execute(insertSql(newFolderDto1))
+          val beforeFolderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
+
+          beforeFolderDtos(0).name mustBe name1
+          val folderId = beforeFolderDtos(0).id
+
+          folderDao.updateName(folderId, name2)
+
+          val updatedFolderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
+
+          updatedFolderDtos(0).name mustBe name2
+        }
+      )
+    }
+  }
+
   "#deleteBy" should {
     "delete folder records associated with folderIds" in new Context {
       DBSupport.dbTest(

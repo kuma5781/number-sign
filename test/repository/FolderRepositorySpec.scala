@@ -40,6 +40,19 @@ class FolderRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
+  "#updateName" should {
+    "return Success" in new Context {
+      folderDao.updateName(folderIdDto, folderNameDto) returns Success(1)
+      folderRepository.updateName(folderId, folderName) returns Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      folderDao.updateName(folderIdDto, folderNameDto) returns Failure(exception)
+      folderRepository.updateName(folderId, folderName) returns Failure(exception)
+    }
+  }
+
   "#removeBy" should {
     "return Success" in new Context {
       folderDao.deleteBy(Seq(folderIdDto)) returns Success(1)

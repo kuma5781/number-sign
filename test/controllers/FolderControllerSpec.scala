@@ -9,9 +9,17 @@ import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
 import play.api.http.Status.{ BAD_REQUEST, OK }
 import play.api.libs.functional.syntax.{ toFunctionalBuilderOps, unlift }
-import play.api.libs.json.{ JsPath, Json, Writes }
+import play.api.libs.json.{ JsObject, JsPath, Json, Writes }
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{ contentAsString, defaultAwaitTimeout, status, stubControllerComponents, DELETE, POST }
+import play.api.test.Helpers.{
+  contentAsString,
+  defaultAwaitTimeout,
+  status,
+  stubControllerComponents,
+  DELETE,
+  POST,
+  PUT
+}
 import service.FolderService
 
 import scala.util.{ Failure, Success }
@@ -41,6 +49,10 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
       newFolder.name.value,
       newFolder.parentFolderId.map(_.value)
     )
+
+    implicit val folderNameWrites = new Writes[FolderName] {
+      def writes(folderName: FolderName): JsObject = Json.obj("name" -> folderName.value)
+    }
 
     implicit val newNoteWrites: Writes[NewFolderDto] = (
       (JsPath \ "user_id").write[Int] and
@@ -76,6 +88,31 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
 
       val home =
         folderController.save().apply(FakeRequest(POST, "/folder").withJsonBody(Json.toJson(newFolderDto(newFolder1))))
+
+      status(home) mustBe BAD_REQUEST
+      contentAsString(home) mustBe exception.toString
+    }
+  }
+
+  "#updateName" should {
+    "return OK" in new Context {
+      folderService.updateName(folderId1, folderName1) returns Success(1)
+
+      val home = folderController
+        .updateName(folderIdDto1)
+        .apply(FakeRequest(PUT, s"/folder/name/$folderIdDto1").withJsonBody(Json.toJson(folderName1)))
+
+      status(home) mustBe OK
+      contentAsString(home) mustBe "Folder name updated successfully"
+    }
+
+    "return BadRequest" in new Context {
+      val exception = new Exception(s"DB connection error")
+      folderService.updateName(folderId1, folderName1) returns Failure(exception)
+
+      val home = folderController
+        .updateName(folderIdDto1)
+        .apply(FakeRequest(PUT, s"/folder/name/$folderIdDto1").withJsonBody(Json.toJson(folderName1)))
 
       status(home) mustBe BAD_REQUEST
       contentAsString(home) mustBe exception.toString

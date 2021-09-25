@@ -12,7 +12,7 @@ GET    /user/:userId                   controllers.UserController.show(userId: I
 # ユーザを登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})
 POST   /user                           controllers.UserController.save()
 
-# ユーザの名前を更新 (必要なリクエストボディ: {"name": {ユーザ名]})
+# ユーザの名前を更新 (必要なリクエストボディ: {"name": {ユーザ名}})
 PUT    /user/name/:userId              controllers.UserController.updateName(userId: Int)
 
 # ユーザを削除
@@ -32,6 +32,9 @@ PUT    /note/activate/:noteId          controllers.NoteController.activate(noteI
 
 # フォルダを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "name": {フォルダ名}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /folder                         controllers.FolderController.save()
+
+# フォルダ名を更新 (必要なリクエストボディ: {"name": {フォルダ名}})
+PUT   /folder/name//:folderId          controllers.FolderController.updateName(folderId: Int)
 
 # フォルダを削除
 DELETE /folder/:folderId               controllers.FolderController.remove(folderId: Int)
