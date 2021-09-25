@@ -62,12 +62,3 @@ $ npm run lint:fix
   mysql -u root -p -h 127.0.0.1 -P 3306
   ```
   - パスワードは, `docker-compose.yml`の`MYSQL_ROOT_PASSWORD`変数に記入
-
-## CSS
-- CSSファイル作成
-- .css.d.tsファイルの作成, tcm以降のパスはpackage.jsonから作成したいディレクトリの相対パス
-```
-// ./src/components/loginは適宜変更
-$ npm run tcm ./src/components/login
-```
-- 
