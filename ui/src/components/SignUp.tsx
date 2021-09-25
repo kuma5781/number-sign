@@ -4,22 +4,22 @@ import { auth } from '../firebase';
 
 // Todo: any型なくす
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
-      await auth.signInWithEmailAndPassword(email.value, password.value);
+      await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
     } catch (e: any) {
       switch (e.code) {
         case 'network-request-failed':
           setError('ネットワークエラーです。再度やり直してください。');
           break;
-        case 'auth/too-many-requests':
-          setError('アクセス回数の上限を超えました。しばらくして再度ログインしてください。');
+        case 'auth/missing-email':
+          setError('メールアドレスを入力してください。');
           break;
         case 'auth/invalid-email':
           setError('メールアドレスの形式が正しくありません。');
@@ -27,21 +27,21 @@ const Login: React.FC = () => {
         case 'auth/internal-error':
           setError('認証サーバエラー。リクエスト時エラーが発生しました。');
           break;
-        case 'auth/user-not-found':
-          setError('ユーザ名またはパスワードが違います。');
+        case 'auth/email-already-in-use':
+          setError('メールアドレスが既に使用されています。');
           break;
-        case 'auth/wrong-password':
-          setError('ユーザ名またはパスワードが違います。');
+        case 'auth/weak-password':
+          setError('パスワードは6文字以上で登録してください。');
           break;
         default:
-          setError(`アカウントの作成に失敗しました。再度やり直してください。${e.message}`);
+          setError(`ログインに失敗しました。再度やり直してください。${e.message}`);
       }
     }
   };
 
   return (
     <div>
-      <h1>ログイン</h1>
+      <h1>ユーザ登録</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -53,11 +53,11 @@ const Login: React.FC = () => {
           <input name="password" type="password" placeholder="password" />
         </div>
         <div>
-          <button>ログイン</button>
+          <button>登録</button>
         </div>
         <div>
-          ユーザ登録は
-          <Link to="/signup">こちら</Link>
+          ユーザ登録済の場合は
+          <Link to="/login">こちら</Link>
           から
         </div>
       </form>
@@ -65,4 +65,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;
