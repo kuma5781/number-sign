@@ -43,6 +43,19 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
+  "#updateTitleAndContent" should {
+    "return Success" in new Context {
+      noteDao.updateTitleAndContent(noteIdDto, titleDto, contentDto) returns Success(1)
+      noteRepository.updateTitleAndContent(noteId, title, content) returns Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      noteDao.updateTitleAndContent(noteIdDto, titleDto, contentDto) returns Failure(exception)
+      noteRepository.updateTitleAndContent(noteId, title, content) returns Failure(exception)
+    }
+  }
+
   "#updateStatus(noteId: NoteId, noteStatus: NoteStatus)" should {
     "return Success" in new Context {
       noteDao.updateStatus(noteIdDto, Active.value) returns Success(1)
