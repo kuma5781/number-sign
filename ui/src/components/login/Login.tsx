@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import './Login.css';
 import { auth } from '../../firebase';
-import styles from './styles.css';
 
 // Todo: any型なくす
 
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   return (
     <div>
       <h1>ログイン</h1>
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>

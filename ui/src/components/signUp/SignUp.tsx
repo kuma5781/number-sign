@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
+import './SignUp.css';
 
 // Todo: any型なくす
 
@@ -42,7 +43,7 @@ const SignUp: React.FC = () => {
   return (
     <div>
       <h1>ユーザ登録</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>
