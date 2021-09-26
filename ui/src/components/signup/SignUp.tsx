@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
+import './SignUp.css';
 
 // Todo: any型なくす
 
