@@ -18,6 +18,9 @@ PUT    /user/name/:userId              controllers.UserController.updateName(use
 # ユーザを削除
 DELETE /user/:userId                   controllers.UserController.remove(userId: Int)
 
+# ノートを1件取得
+GET    /note/:noteId                   controllers.NoteController.show(noteId: Int)
+
 # ノートを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "title": {タイトル}, "content": {内容}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /note                           controllers.NoteController.save()
 

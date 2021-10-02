@@ -1,8 +1,9 @@
 package repository
 
 import domain.`object`.note.NewNote.NewNoteDto
+import domain.`object`.note.Note.NoteDto
 import domain.`object`.note.NoteStatus.Active
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
+import domain.`object`.note._
 import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -21,13 +22,29 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     val userIdDto = 1
     val titleDto = "title"
     val contentDto = "content"
+    val statusDto = "active"
+    val noteDto = NoteDto(noteIdDto, userIdDto, titleDto, contentDto, statusDto)
     val newNoteDto = NewNoteDto(userIdDto, titleDto, contentDto, None)
 
     val noteId = NoteId(noteIdDto)
     val userId = UserId(userIdDto)
     val title = Title(titleDto)
     val content = NoteContent(contentDto)
+    val note = Note(noteDto).get
     val newNote = NewNote(userId, title, content, None)
+  }
+
+  "findBy" should {
+    "return Note associated with noteId" in new Context {
+      noteDao.selectBy(noteIdDto) returns Success(noteDto)
+      noteRepository.findBy(noteId) mustBe Success(note)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception("DB connection error")
+      noteDao.selectBy(noteIdDto) returns Failure(exception)
+      noteRepository.findBy(noteId) mustBe Failure(exception)
+    }
   }
 
   "#saveAndGetNoteId" should {

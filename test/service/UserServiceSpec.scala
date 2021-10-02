@@ -42,7 +42,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
   }
 
   "#findBy" should {
-    "return a user associated with userId" in new Context {
+    "return User associated with userId" in new Context {
       userRepository.findBy(userId1) returns Success(user1)
       userService.findBy(userId1) mustBe Success(user1)
     }

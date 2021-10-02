@@ -40,6 +40,24 @@ class NoteDaoSpec extends PlaySpec {
 			""".stripMargin
   }
 
+  "#selectBy" should {
+    "return a note record associated with noteId" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          DBAccessor.execute(insertSql(newNoteDto1))
+
+          val noteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
+          val noteId = noteDtos(0).id
+
+          val selectNote = noteDao.selectBy(noteId).get
+          selectNote.userId mustBe userId1
+          selectNote.title mustBe title1
+          selectNote.content mustBe content1
+        }
+      )
+    }
+  }
+
   "#insertAndGetId" should {
     "insert note record and return last inserted id" in new Context {
       DBSupport.dbTest(

@@ -1,7 +1,7 @@
 package service
 
 import domain.`object`.note.NoteStatus.{ Active, Trashed }
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
+import domain.`object`.note.{ NewNote, Note, NoteContent, NoteId, Title }
 import repository.{ NoteRepository, RelayNoteFolderRepository }
 
 import scala.util.{ Failure, Success, Try }
@@ -10,6 +10,8 @@ class NoteService(
     noteRepository: NoteRepository = new NoteRepository,
     relayNoteFolderRepository: RelayNoteFolderRepository = new RelayNoteFolderRepository
 ) {
+
+  def findBy(noteId: NoteId): Try[Note] = noteRepository.findBy(noteId)
 
   def save(newNote: NewNote): Try[Int] =
     noteRepository.saveAndGetNoteId(newNote) match {

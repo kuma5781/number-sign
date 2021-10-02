@@ -1,10 +1,10 @@
 package controllers
 
 import domain.`object`.note.NewNote.NewNoteDto
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
+import domain.`object`.note.{ NewNote, Note, NoteContent, NoteId, Title }
 import javax.inject.{ Inject, Singleton }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.JsPath
+import play.api.libs.json.{ JsObject, JsPath, Json, Writes }
 import play.api.mvc.{ Action, AnyContent, BaseController, ControllerComponents }
 import service.NoteService
 import supports.{ JsonSupport, ResultSupport }
@@ -19,6 +19,16 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
 
   val noteService = new NoteService
 
+  implicit val noteWrites = new Writes[Note] {
+    def writes(note: Note): JsObject = Json.obj(
+      "id" -> note.id.value,
+      "user_id" -> note.userId.value,
+      "title" -> note.title.value,
+      "content" -> note.content.value,
+      "status" -> note.status.value
+    )
+  }
+
   implicit val newNoteDtoReads = (
     (JsPath \ "user_id").read[Int] and
       (JsPath \ "title").read[String] and
@@ -28,6 +38,15 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
 
   implicit val titleReads = reads("title", Title)
   implicit val contentReads = reads("content", NoteContent)
+
+  def show(noteId: Int): Action[AnyContent] =
+    Action {
+      val result = noteService.findBy(NoteId(noteId)) match {
+        case Success(note) => Ok(Json.toJson(note))
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
 
   def save(): Action[AnyContent] =
     Action { request =>

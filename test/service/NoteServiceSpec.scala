@@ -2,7 +2,7 @@ package service
 
 import domain.`object`.folder.FolderId
 import domain.`object`.note.NoteStatus.{ Active, Trashed }
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
+import domain.`object`.note.{ NewNote, Note, NoteContent, NoteId, Title }
 import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -22,6 +22,8 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     val userId1 = UserId(1)
     val title1 = Title("title1")
     val content1 = NoteContent("content1")
+    val status1 = Active
+    val note1 = Note(noteId1, userId1, title1, content1, status1)
     val newNote1 = NewNote(userId1, title1, content1, None)
 
     val noteId2 = NoteId(4)
@@ -30,6 +32,19 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     val content2 = NoteContent("content2")
     val parentFolderId2 = FolderId(1)
     val newNote2 = NewNote(userId2, title2, content2, Some(parentFolderId2))
+  }
+
+  "findBy" should {
+    "return Note associated with noteId" in new Context {
+      noteRepository.findBy(noteId1) returns Success(note1)
+      noteService.findBy(noteId1) mustBe Success(note1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      noteRepository.findBy(noteId1) returns Failure(exception)
+      noteService.findBy(noteId1) mustBe Failure(exception)
+    }
   }
 
   "#save" should {
