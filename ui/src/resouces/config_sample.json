@@ -1,0 +1,10 @@
+{
+    "firebase":{
+        "api_key":"xxx",
+        "auth_domain":"xxx",
+        "priject_id":"xxx",
+        "storage_bucket":"xxx",
+        "mesage_sender_id":"xxx",
+        "app_id":"xxx"
+    }
+}
