@@ -34,17 +34,25 @@ const NoteEditer: React.FC = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <div>
-      <form onSubmit={noteSubmit}>
-        <div>
-          <input name="editTitle" type="text" defaultValue={title} placeholder="" />
-        </div>
-        <div>
-          <textarea id="content" name="editContent" defaultValue={content} onChange={(e) => setMarkdown(e.target.value)} />
-        </div>
-        <button>保存</button>
-      </form>
-      <div className="markdown">
+    <div className="main">
+      <div className="editer">
+        <form onSubmit={noteSubmit}>
+          <div>
+            <input name="editTitle" type="text" className="input-title" defaultValue={title} placeholder="" />
+          </div>
+          <div>
+            <textarea
+              id="content"
+              name="editContent"
+              className="input-content"
+              defaultValue={content}
+              onChange={(e) => setMarkdown(e.target.value)}
+            />
+          </div>
+          <button>保存</button>
+        </form>
+      </div>
+      <div className="preview markdown">
         <span dangerouslySetInnerHTML={{ __html: marked(markdown) }} />
       </div>
     </div>

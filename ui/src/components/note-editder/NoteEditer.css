@@ -1,5 +1,31 @@
-.markdown {
-  padding: 10px;
+button, input, select, textarea {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+.main {
+  overflow: hidden;
+}
+.editer {
+  float: left;
+  width: 50%;
+}
+.input-title {
+  font-size: 24px;
+  padding: 1px 2px;
+  width: calc(100% - 8px);
+}
+.input-content {
+  height: calc(100vh - 66px);
+  padding: 1px 2px;
+  resize: none;
+  width: calc(100% - 6px);
+}
+.preview {
+  border-left: 1px solid #ddd;
+  float: left;
+  height: 100vh;
+  overflow: auto;
+  padding: 0 10px;
+  width: calc(50% - 21px);
 }
 .markdown h1 {
   border-bottom: 1px solid #ddd;
@@ -10,11 +36,13 @@
 .markdown table {
   border-collapse: collapse;
   border-left: 1px solid #ddd;
+  display: block;
+  overflow: auto;
 }
 .markdown th {
-  border-top: 1px solid #ddd;
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
+  border-top: 1px solid #ddd;
   padding: 8px 10px;
 }
 .markdown tbody tr:nth-child(odd) {
@@ -23,6 +51,22 @@
 .markdown td {
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
-  padding: 8px 10px;
   max-width: 600px;
+  padding: 8px 10px;
+}
+.markdown code {
+  background-color: #eee;
+  padding: 0.1em 0.4em;
+}
+.markdown pre {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 1em;
+}
+.markdown pre code {
+  background-color: transparent;
+  display: block;
+  line-height: 1.8;
+  overflow-x: auto;
+  padding: 0.5em 0;
 }
