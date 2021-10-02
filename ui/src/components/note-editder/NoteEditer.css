@@ -1,0 +1,28 @@
+.markdown {
+  padding: 10px;
+}
+.markdown h1 {
+  border-bottom: 1px solid #ddd;
+}
+.markdown h2 {
+  border-bottom: 1px solid #ddd;
+}
+.markdown table {
+  border-collapse: collapse;
+  border-left: 1px solid #ddd;
+}
+.markdown th {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 8px 10px;
+}
+.markdown tbody tr:nth-child(odd) {
+  background-color: #eee;
+}
+.markdown td {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 8px 10px;
+  max-width: 600px;
+}

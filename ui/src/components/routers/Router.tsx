@@ -13,7 +13,7 @@ const Router: React.FC = () => (
     <BrowserRouter>
       <Switch>
         <PrivateRoute exact path="/" component={Top} />
-        <PrivateRoute exact path="/edit" component={NoteEditer} />
+        <PrivateRoute exact path="/edit/:noteId" component={NoteEditer} />
         <PublicRoute path="/signup" component={SignUp} />
         <PublicRoute path="/login" component={Login} />
       </Switch>
