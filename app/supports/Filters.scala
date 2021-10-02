@@ -5,6 +5,6 @@ import play.api.http.DefaultHttpFilters
 import play.filters.cors.CORSFilter
 
 /**
- * Httpフィルタ
- */
+  * Httpフィルタ
+  */
 class Filters @Inject()(corsFilter: CORSFilter) extends DefaultHttpFilters(corsFilter)
