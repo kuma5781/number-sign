@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import { auth } from '../../firebase';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
+
 // Todo: any型をなくす
 
 type createContextType = {
@@ -32,7 +34,17 @@ export const AuthProvider: React.FC = ({ children }: any) => {
   useEffect(() => {
     const unsubscribed = auth.onAuthStateChanged((loginedUser) => {
       setUser(loginedUser);
+      console.log(loginedUser?.email);
       setLoading(false);
+      fetch(`${backendUrl}/user`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: loginedUser?.email }),
+      })
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
     });
 
     return () => {

@@ -1,7 +1,7 @@
 package controllers
 
 import domain.`object`.user.NewUser.NewUserDto
-import domain.`object`.user.{ NewUser, User, UserId, UserName }
+import domain.`object`.user.{ NewUser, User, UserId, UserName, Email }
 import javax.inject._
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.Format.GenericFormat
@@ -28,7 +28,9 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
     )
   }
 
-  implicit val userNameReads = reads("name", UserName)
+  implicit val userNameReads = reads("name", UserName(_))
+  implicit val emailReads = reads("email", Email)
+
 
   implicit val newUserDtoReads = (
     (JsPath \ "name").read[String] and
@@ -55,11 +57,10 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
 
   def save(): Action[AnyContent] =
     Action { request =>
-      val maybeNewUserDto = request.getObject[NewUserDto]
-      val result = maybeNewUserDto match {
-        case Success(newUserDto) =>
-          val newUser = NewUser(newUserDto)
-          userService.save(newUser) match {
+      val maybeEmail = request.getObject[Email]
+      val result = maybeEmail match {
+        case Success(email) =>
+          userService.saveEmail(email) match {
             case Success(_) => Ok("User saved successfully")
             case Failure(e) => BadRequest(e.toString)
           }
