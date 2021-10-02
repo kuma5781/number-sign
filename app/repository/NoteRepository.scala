@@ -1,6 +1,6 @@
 package repository
 
-import domain.`object`.note.{ NewNote, NoteId, NoteStatus }
+import domain.`object`.note.{ NewNote, NoteContent, NoteId, NoteStatus, Title }
 import domain.`object`.note.NewNote.NewNoteDto
 import repository.dao.NoteDao
 
@@ -17,6 +17,9 @@ class NoteRepository(noteDao: NoteDao = new NoteDao) {
     )
     noteDao.insertAndGetId(newNoteDto).map(NoteId)
   }
+
+  def updateTitleAndContent(noteId: NoteId, title: Title, content: NoteContent): Try[Int] =
+    noteDao.updateTitleAndContent(noteId.value, title.value, content.value)
 
   def updateStatus(noteId: NoteId, noteStatus: NoteStatus): Try[Int] =
     noteDao.updateStatus(noteId.value, noteStatus.value)

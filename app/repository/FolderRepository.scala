@@ -1,6 +1,6 @@
 package repository
 
-import domain.`object`.folder.{ FolderId, NewFolder }
+import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
 import domain.`object`.folder.NewFolder.NewFolderDto
 import repository.dao.FolderDao
 
@@ -16,6 +16,9 @@ class FolderRepository(folderDao: FolderDao = new FolderDao) {
     )
     folderDao.insertAndGetId(newFolderDto).map(FolderId)
   }
+
+  def updateName(folderId: FolderId, name: FolderName): Try[Int] =
+    folderDao.updateName(folderId.value, name.value)
 
   def removeBy(folderIds: Seq[FolderId]): Try[Int] =
     folderDao.deleteBy(folderIds.map(_.value))

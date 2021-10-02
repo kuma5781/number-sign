@@ -13,6 +13,11 @@ class FolderDao {
     DBAccessor.executeAndGetId(sql)
   }
 
+  def updateName(folderId: Int, name: String): Try[Int] = {
+    val sql = s"update $tableName set name = '$name' where id = $folderId"
+    DBAccessor.execute(sql)
+  }
+
   def deleteBy(folderIds: Seq[Int]): Try[Int] = {
     val sql = s"delete from $tableName where id in (${folderIds.mkString(",")})"
     DBAccessor.execute(sql)

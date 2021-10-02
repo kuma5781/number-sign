@@ -58,6 +58,19 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     }
   }
 
+  "#updateTitleAndContent" should {
+    "return Success" in new Context {
+      noteRepository.updateTitleAndContent(noteId1, title1, content1) returns Success(1)
+      noteService.updateTitleAndContent(noteId1, title1, content1) mustBe Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      noteRepository.updateTitleAndContent(noteId1, title1, content1) returns Failure(exception)
+      noteService.updateTitleAndContent(noteId1, title1, content1) mustBe Failure(exception)
+    }
+  }
+
   "#trash" should {
     "return Success" in new Context {
       noteRepository.updateStatus(noteId1, Trashed) returns Success(1)
