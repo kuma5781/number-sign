@@ -53,41 +53,39 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
       result.enableCors
     }
 
-  def save(): Action[AnyContent] = {
+  def save(): Action[AnyContent] =
     Action { request =>
       val maybeNewUserDto = request.getObject[NewUserDto]
       val result = maybeNewUserDto match {
         case Success(newUserDto) =>
           val newUser = NewUser(newUserDto)
           userService.save(newUser) match {
-            case Success(_) => Ok("User record saved successfully")
+            case Success(_) => Ok("User saved successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
-  }
 
-  def updateName(userId: Int): Action[AnyContent] = {
+  def updateName(userId: Int): Action[AnyContent] =
     Action { request =>
       val maybeUserName = request.getObject[UserName]
       val result = maybeUserName match {
         case Success(userName) =>
           userService.updateName(UserId(userId), userName) match {
-            case Success(_) => Ok("User record updated successfully")
+            case Success(_) => Ok("User updated successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
     }
-  }
 
   def remove(userId: Int): Action[AnyContent] =
     Action {
       val result = userService.removeBy(UserId(userId)) match {
-        case Success(_) => Ok("User record removed successfully")
+        case Success(_) => Ok("User removed successfully")
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors

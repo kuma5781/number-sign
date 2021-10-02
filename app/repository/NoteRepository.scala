@@ -1,6 +1,6 @@
 package repository
 
-import domain.`object`.note.NewNote
+import domain.`object`.note.{ NewNote, NoteId, NoteStatus }
 import domain.`object`.note.NewNote.NewNoteDto
 import repository.dao.NoteDao
 
@@ -8,12 +8,19 @@ import scala.util.Try
 
 class NoteRepository(noteDao: NoteDao = new NoteDao) {
 
-  def save(newNote: NewNote): Try[Int] = {
+  def saveAndGetNoteId(newNote: NewNote): Try[NoteId] = {
     val newNoteDto = NewNoteDto(
       newNote.userId.value,
       newNote.title.value,
-      newNote.content.value
+      newNote.content.value,
+      None
     )
-    noteDao.insert(newNoteDto)
+    noteDao.insertAndGetId(newNoteDto).map(NoteId)
   }
+
+  def updateStatus(noteId: NoteId, noteStatus: NoteStatus): Try[Int] =
+    noteDao.updateStatus(noteId.value, noteStatus.value)
+
+  def updateStatus(noteIds: Seq[NoteId], noteStatus: NoteStatus): Try[Int] =
+    noteDao.updateStatus(noteIds.map(_.value), noteStatus.value)
 }

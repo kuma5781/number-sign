@@ -49,20 +49,20 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userDao.selectAll() returns Failure(exception)
       userRepository.findAll() mustBe Failure(exception)
     }
   }
 
   "#findBy" should {
-    "return User record associated with userId" in new Context {
+    "return User associated with userId" in new Context {
       userDao.selectBy(userIdDto1) returns Success(userDto1)
       userRepository.findBy(userId1) mustBe Success(user1)
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userDao.selectBy(userIdDto1) returns Failure(exception)
       userRepository.findBy(userId1) mustBe Failure(exception)
     }
@@ -75,7 +75,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userDao.insert(newUserDto1) returns Failure(exception)
       userRepository.save(newUser1) mustBe Failure(exception)
     }
@@ -88,7 +88,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userDao.updateName(userIdDto1, userNameDto1) returns Failure(exception)
       userRepository.updateName(userId1, userName1) mustBe Failure(exception)
     }
@@ -101,7 +101,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userDao.deleteBy(userIdDto1) returns Failure(exception)
       userRepository.removeBy(userId1) mustBe Failure(exception)
     }
