@@ -1,7 +1,7 @@
 package service
 
 import domain.`object`.note.NoteStatus.{ Active, Trashed }
-import domain.`object`.note.{ NewNote, NoteId }
+import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
 import repository.{ NoteRepository, RelayNoteFolderRepository }
 
 import scala.util.{ Failure, Success, Try }
@@ -21,6 +21,12 @@ class NoteService(
       case Failure(e) => Failure(e)
     }
 
-  def trash(noteId: NoteId): Try[Int] = noteRepository.updateStatus(noteId, Trashed)
-  def activate(noteId: NoteId): Try[Int] = noteRepository.updateStatus(noteId, Active)
+  def updateTitleAndContent(noteId: NoteId, title: Title, content: NoteContent): Try[Int] =
+    noteRepository.updateTitleAndContent(noteId, title, content)
+
+  def trash(noteId: NoteId): Try[Int] =
+    noteRepository.updateStatus(noteId, Trashed)
+
+  def activate(noteId: NoteId): Try[Int] =
+    noteRepository.updateStatus(noteId, Active)
 }

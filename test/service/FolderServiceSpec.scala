@@ -69,6 +69,19 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
     }
   }
 
+  "#updateName" should {
+    "return Success" in new Context {
+      folderRepository.updateName(folderId1, folderName1) returns Success(1)
+      folderService.updateName(folderId1, folderName1) returns Success(1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception(s"DB connection error")
+      folderRepository.updateName(folderId1, folderName1) returns Failure(exception)
+      folderService.updateName(folderId1, folderName1) returns Failure(exception)
+    }
+  }
+
   "#removeBy" should {
     "return Success" in new Context {
       relayFoldersRepository.findAllBy(Seq(folderId1)) returns Success(Seq(relayFolders1))

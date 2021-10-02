@@ -58,6 +58,27 @@ class NoteDaoSpec extends PlaySpec {
     }
   }
 
+  "#updateTitleAndContent" should {
+    "update title and content of note associated with noteId" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          DBAccessor.execute(insertSql(newNoteDto1))
+          val beforeNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
+
+          beforeNoteDtos(0).title mustBe title1
+          beforeNoteDtos(0).content mustBe content1
+          val noteId = beforeNoteDtos(0).id
+
+          noteDao.updateTitleAndContent(noteId, title2, content2)
+
+          val updatedNoteDtos = DBAccessor.selectRecords(selectAllSql, noteDto).get
+          updatedNoteDtos(0).title mustBe title2
+          updatedNoteDtos(0).content mustBe content2
+        }
+      )
+    }
+  }
+
   "#updateStatus(noteId: Int, noteStatus: String)" should {
     "update note.status record associated with noteId" in new Context {
       DBSupport.dbTest(

@@ -1,6 +1,6 @@
 package controllers
 
-import domain.`object`.folder.{ FolderId, NewFolder }
+import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
 import domain.`object`.folder.NewFolder.NewFolderDto
 import javax.inject.Inject
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
@@ -24,6 +24,8 @@ class FolderController @Inject()(val controllerComponents: ControllerComponents)
       (JsPath \ "parent_folder_id").readNullable[Int]
   )(NewFolderDto)
 
+  implicit val folderNameReads = reads("name", FolderName)
+
   def save(): Action[AnyContent] =
     Action { request =>
       val maybeNewFolderDto = request.getObject[NewFolderDto]
@@ -32,6 +34,20 @@ class FolderController @Inject()(val controllerComponents: ControllerComponents)
           val newFolder = NewFolder(newFolderDto)
           folderService.save(newFolder) match {
             case Success(_) => Ok("Folder saved successfully")
+            case Failure(e) => BadRequest(e.toString)
+          }
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
+
+  def updateName(folderId: Int): Action[AnyContent] =
+    Action { request =>
+      val maybeFolderName = request.getObject[FolderName]
+      val result = maybeFolderName match {
+        case Success(folderName) =>
+          folderService.updateName(FolderId(folderId), folderName) match {
+            case Success(_) => Ok("Folder name updated successfully")
             case Failure(e) => BadRequest(e.toString)
           }
         case Failure(e) => BadRequest(e.toString)
