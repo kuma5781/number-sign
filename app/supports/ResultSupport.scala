@@ -2,6 +2,9 @@ package supports
 
 import play.api.mvc.Result
 
+/**
+ * Resultのheader設定をしやすくするためのサポートトレイト
+ */
 trait ResultSupport {
   implicit class RichResult(result: Result) {
     // フロントエンドからのhttpアクセスを許可する

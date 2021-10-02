@@ -44,25 +44,25 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
   }
 
   "#save" should {
-    "return Success when newFolder has parentFolderId" in new Context {
+    "return Success when newFolder doesn't have parentFolderId" in new Context {
       folderRepository.saveAndGetFolderId(newFolder1) returns Success(folderId1)
       folderService.save(newFolder1) mustBe Success(1)
     }
 
-    "return Success when newFolder doesn't have parentFolderId" in new Context {
+    "return Success when newFolder has parentFolderId" in new Context {
       folderRepository.saveAndGetFolderId(newFolder2) returns Success(folderId2)
       relayFoldersRepository.save(folderId2, parentFolderId2) returns Success(2)
       folderService.save(newFolder2) mustBe Success(2)
     }
 
-    "return Exception when newFolder has parentFolderId" in new Context {
-      val exception = new Exception(s"DB connection error")
+    "return Exception when newFolder doesn't have parentFolderId" in new Context {
+      val exception = new Exception("DB connection error")
       folderRepository.saveAndGetFolderId(newFolder1) returns Failure(exception)
       folderService.save(newFolder1) mustBe Failure(exception)
     }
 
-    "return Exception when newFolder doesn't have parentFolderId" in new Context {
-      val exception = new Exception(s"DB connection error")
+    "return Exception when newFolder has parentFolderId" in new Context {
+      val exception = new Exception("DB connection error")
       folderRepository.saveAndGetFolderId(newFolder2) returns Success(folderId2)
       relayFoldersRepository.save(folderId2, parentFolderId2) returns Failure(exception)
       folderService.save(newFolder2) mustBe Failure(exception)
@@ -83,7 +83,7 @@ class FolderServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       relayFoldersRepository.findAllBy(Seq(folderId1)) returns Failure(exception)
 
       folderService.removeBy(folderId1) mustBe Failure(exception)

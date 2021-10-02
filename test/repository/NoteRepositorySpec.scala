@@ -37,7 +37,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteDao.insertAndGetId(newNoteDto) returns Failure(exception)
       noteRepository.saveAndGetNoteId(newNote) mustBe Failure(exception)
     }
@@ -50,7 +50,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteDao.updateStatus(noteIdDto, Active.value) returns Failure(exception)
       noteRepository.updateStatus(noteId, Active) mustBe Failure(exception)
     }
@@ -63,7 +63,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteDao.updateStatus(Seq(noteIdDto), Active.value) returns Failure(exception)
       noteRepository.updateStatus(Seq(noteId), Active) mustBe Failure(exception)
     }

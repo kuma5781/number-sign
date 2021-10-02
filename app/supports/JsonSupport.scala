@@ -5,6 +5,9 @@ import play.api.mvc.{ AnyContent, Request }
 
 import scala.util.Try
 
+/**
+ * Jsonのオブジェクト化をしやすくするためのサポートトレイト
+ */
 trait JsonSupport {
   implicit class RichRequest(request: Request[AnyContent]) {
     def getObject[T](implicit rds: Reads[T]): Try[T] =

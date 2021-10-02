@@ -71,7 +71,7 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
     }
 
     "return BadRequest" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       folderService.save(newFolder1) returns Failure(exception)
 
       val home =
@@ -93,7 +93,7 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
     }
 
     "return BadRequest" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       folderService.removeBy(folderId1) returns Failure(exception)
 
       val home = folderController.remove(folderIdDto1).apply(FakeRequest(DELETE, s"/folder/$folderIdDto1"))

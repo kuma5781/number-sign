@@ -58,7 +58,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
 
   "#save" should {
 
-    "return OK when newNote has parent_folder_id" in new Context {
+    "return OK when newNote doesn't have parent_folder_id" in new Context {
       noteService.save(newNote1) returns Success(1)
 
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNoteDto(newNote1))))
@@ -67,7 +67,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(home) mustBe "Note saved successfully"
     }
 
-    "return OK2 when newNote doesn't have parent_folder_id" in new Context {
+    "return OK when newNote has parent_folder_id" in new Context {
       noteService.save(newNote2) returns Success(1)
 
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNoteDto(newNote2))))
@@ -77,7 +77,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     }
 
     "return BadRequest" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteService.save(newNote1) returns Failure(exception)
 
       val home = noteController.save().apply(FakeRequest(POST, "/note").withJsonBody(Json.toJson(newNoteDto(newNote1))))
@@ -98,7 +98,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     }
 
     "return BadRequest" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteService.trash(noteId1) returns Failure(exception)
 
       val home = noteController.trash(noteIdDto1).apply(FakeRequest(PUT, s"/note/$noteIdDto1"))
@@ -119,7 +119,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     }
 
     "return BadRequest" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteService.activate(noteId1) returns Failure(exception)
 
       val home = noteController.activate(noteIdDto1).apply(FakeRequest(PUT, s"/note/activate/$noteIdDto1"))

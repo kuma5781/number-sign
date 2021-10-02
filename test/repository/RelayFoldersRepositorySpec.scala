@@ -32,7 +32,7 @@ class RelayFoldersRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       relayFoldersDao.selectAllBy(Seq(parentFolderIdDto)) returns Failure(exception)
       relayFoldersRepository.findAllBy(Seq(parentFolderId)) returns Failure(exception)
     }
@@ -45,7 +45,7 @@ class RelayFoldersRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       relayFoldersDao.insert(folderIdDto, parentFolderIdDto) returns Failure(exception)
       relayFoldersRepository.save(folderId, parentFolderId) returns Failure(exception)
     }
@@ -58,7 +58,7 @@ class RelayFoldersRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       relayFoldersDao.deleteBy(Seq(parentFolderIdDto)) returns Failure(exception)
       relayFoldersRepository.removeBy(Seq(parentFolderId)) returns Failure(exception)
     }
