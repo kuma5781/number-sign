@@ -45,13 +45,13 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception when newNote has parentFolderId" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteRepository.saveAndGetNoteId(newNote1) returns Failure(exception)
       noteService.save(newNote1) mustBe Failure(exception)
     }
 
     "return Exception when newNote doesn't have parentFolderId" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteRepository.saveAndGetNoteId(newNote2) returns Success(noteId2)
       relayNoteFolderRepository.save(noteId2, parentFolderId2) returns Failure(exception)
       noteService.save(newNote2) mustBe Failure(exception)
@@ -78,7 +78,7 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteRepository.updateStatus(noteId1, Trashed) returns Failure(exception)
       noteService.trash(noteId1) mustBe Failure(exception)
     }
@@ -91,7 +91,7 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       noteRepository.updateStatus(noteId1, Active) returns Failure(exception)
       noteService.activate(noteId1) mustBe Failure(exception)
     }

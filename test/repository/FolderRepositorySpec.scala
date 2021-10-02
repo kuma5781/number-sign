@@ -34,7 +34,7 @@ class FolderRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       folderDao.insertAndGetId(newFolderDto) returns Failure(exception)
       folderRepository.saveAndGetFolderId(newFolder) returns Failure(exception)
     }
@@ -60,7 +60,7 @@ class FolderRepositorySpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       folderDao.deleteBy(Seq(folderIdDto)) returns Failure(exception)
       folderRepository.removeBy(Seq(folderId)) returns Failure(exception)
     }

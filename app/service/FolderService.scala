@@ -47,8 +47,8 @@ class FolderService(
 
   private def findAllChildFolders(parentFolderIds: Seq[FolderId]): Try[Seq[FolderId]] =
     for {
-      relays <- relayFoldersRepository.findAllBy(parentFolderIds)
-      foundFolderIds = relays.map(_.folderId)
+      relaysFolders <- relayFoldersRepository.findAllBy(parentFolderIds)
+      foundFolderIds = relaysFolders.map(_.folderId)
       allChildFolderIds <- if (foundFolderIds.isEmpty) {
         Success(parentFolderIds)
       } else {

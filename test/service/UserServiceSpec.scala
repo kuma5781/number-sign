@@ -35,7 +35,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userRepository.findAll() returns Failure(exception)
       userService.findAll() mustBe Failure(exception)
     }
@@ -48,7 +48,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userRepository.findBy(userId1) returns Failure(exception)
       userService.findBy(userId1) mustBe Failure(exception)
     }
@@ -61,7 +61,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userRepository.save(newUser1) returns Failure(exception)
       userService.save(newUser1) mustBe Failure(exception)
     }
@@ -74,7 +74,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userRepository.updateName(userId1, userName1) returns Failure(exception)
       userService.updateName(userId1, userName1) mustBe Failure(exception)
     }
@@ -87,7 +87,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
 
     "return Exception" in new Context {
-      val exception = new Exception(s"DB connection error")
+      val exception = new Exception("DB connection error")
       userRepository.removeBy(userId1) returns Failure(exception)
       userService.removeBy(userId1) mustBe Failure(exception)
     }
