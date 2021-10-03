@@ -1,5 +1,6 @@
 package domain.`object`.note
 
+import domain.`object`.folder.FolderId
 import domain.`object`.user.UserId
 
 case class Note(
@@ -7,7 +8,8 @@ case class Note(
     userId: UserId,
     title: Title,
     content: NoteContent,
-    status: NoteStatus
+    status: NoteStatus,
+    parentFolderId: Option[FolderId]
 )
 
 object Note {
@@ -20,7 +22,8 @@ object Note {
         UserId(noteDto.userId),
         Title(noteDto.title),
         NoteContent(noteDto.content),
-        status
+        status,
+        noteDto.parentFolderId.map(FolderId)
       )
 
   case class NoteDto(
@@ -28,6 +31,7 @@ object Note {
       userId: Int,
       title: String,
       content: String,
-      status: String
+      status: String,
+      parentFolderId: Option[Int]
   )
 }

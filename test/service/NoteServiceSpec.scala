@@ -23,7 +23,7 @@ class NoteServiceSpec extends PlaySpec with MockitoSugar {
     val title1 = Title("title1")
     val content1 = NoteContent("content1")
     val status1 = Active
-    val note1 = Note(noteId1, userId1, title1, content1, status1)
+    val note1 = Note(noteId1, userId1, title1, content1, status1, None)
     val newNote1 = NewNote(userId1, title1, content1, None)
 
     val noteId2 = NoteId(4)

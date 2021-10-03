@@ -12,4 +12,15 @@ object DBSupport {
     DBAccessor.execute(deleteAllSql)
     result
   }
+
+  def dbTest(tableNames: Seq[String], execute: Assertion): Assertion = {
+    def resetTables(): Unit = tableNames.foreach { tableName =>
+      val deleteAllSql = s"delete from $tableName"
+      DBAccessor.execute(deleteAllSql)
+    }
+    resetTables()
+    val result = execute
+    resetTables()
+    result
+  }
 }

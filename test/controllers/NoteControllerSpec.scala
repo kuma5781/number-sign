@@ -33,7 +33,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     val title1 = Title("title1")
     val content1 = NoteContent("content1")
     val status1 = Active
-    val note1 = Note(noteId1, userId1, title1, content1, status1)
+    val note1 = Note(noteId1, userId1, title1, content1, status1, None)
     val newNote1 = NewNote(userId1, title1, content1, None)
 
     val noteIdDto2 = 2
@@ -79,7 +79,7 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
       val home = noteController.show(noteIdDto1).apply(FakeRequest(GET, s"/user/$noteIdDto1"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "{\"id\":1,\"user_id\":\"1\",\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}"
+      contentAsString(home) mustBe "{\"id\":1,\"user_id\":1,\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}"
     }
 
     "return BadRequest" in new Context {

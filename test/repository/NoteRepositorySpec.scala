@@ -23,7 +23,7 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
     val titleDto = "title"
     val contentDto = "content"
     val statusDto = "active"
-    val noteDto = NoteDto(noteIdDto, userIdDto, titleDto, contentDto, statusDto)
+    val noteDto = NoteDto(noteIdDto, userIdDto, titleDto, contentDto, statusDto, None)
     val newNoteDto = NewNoteDto(userIdDto, titleDto, contentDto, None)
 
     val noteId = NoteId(noteIdDto)
@@ -44,6 +44,19 @@ class NoteRepositorySpec extends PlaySpec with MockitoSugar {
       val exception = new Exception("DB connection error")
       noteDao.selectBy(noteIdDto) returns Failure(exception)
       noteRepository.findBy(noteId) mustBe Failure(exception)
+    }
+  }
+
+  "#findAllBy" should {
+    "return all Notes associated with userId" in new Context {
+      noteDao.selectAllByUserId(userIdDto) returns Success(Seq(noteDto))
+      noteRepository.findAllBy(userId) mustBe Success(Seq(note))
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception("DB connection error")
+      noteDao.selectAllByUserId(userIdDto) returns Failure(exception)
+      noteRepository.findAllBy(userId) mustBe Failure(exception)
     }
   }
 

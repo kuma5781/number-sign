@@ -39,6 +39,11 @@ class NoteController @Inject()(val controllerComponents: ControllerComponents)
   implicit val titleReads = reads("title", Title)
   implicit val contentReads = reads("content", NoteContent)
 
+//  def showAllBy(userId: Int): Action[AnyContent] =
+//    Action {
+//
+//    }
+
   def show(noteId: Int): Action[AnyContent] =
     Action {
       val result = noteService.findBy(NoteId(noteId)) match {
