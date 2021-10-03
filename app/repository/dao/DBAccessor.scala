@@ -31,7 +31,7 @@ object DBAccessor {
     val readRecord = (stmt: Statement) => {
       val rs = stmt.executeQuery(sql)
       if (rs.next) getRecord(rs)
-      else throw new Exception(s"Not found record")
+      else throw new Exception("Not found record")
     }
     connect(readRecord)
   }
@@ -42,7 +42,7 @@ object DBAccessor {
       stmt.executeUpdate(sql)
       val rs = stmt.executeQuery("select LAST_INSERT_ID()")
       if (rs.next) rs.getInt("LAST_INSERT_ID()")
-      else throw new Exception(s"Not found LAST_INSERT_ID()")
+      else throw new Exception("Not found LAST_INSERT_ID()")
     }
     connect(executeSql)
   }
@@ -52,13 +52,12 @@ object DBAccessor {
     val executeSql = (stmt: Statement) => {
       stmt.executeUpdate(sqlInsert)
       val rsInsert = stmt.executeQuery("select LAST_INSERT_ID()")
-      if (rsInsert.next){
+      if (rsInsert.next) {
         val insertId = rsInsert.getInt("LAST_INSERT_ID()")
         val rsSelect = stmt.executeQuery(sqlSelect(insertId))
         if (rsSelect.next) getRecord(rsSelect)
-        else throw new Exception(s"Not found record")
-      }
-      else throw new Exception(s"Not found LAST_INSERT_ID()")
+        else throw new Exception("Not found record")
+      } else throw new Exception("Not found LAST_INSERT_ID()")
     }
     connect(executeSql)
   }

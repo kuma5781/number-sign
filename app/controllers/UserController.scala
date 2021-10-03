@@ -54,15 +54,10 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
       result.enableCors
     }
 
-  def showEmail(): Action[AnyContent] =
-    Action { request =>
-      val maybeEmail = request.getObject[Email]
-      val result = maybeEmail match {
-        case Success(email) =>
-          userService.findBy(email) match {
-            case Success(_) => Ok("User saved successfully")
-            case Failure(e) => BadRequest(e.toString)
-          }
+  def showFrom(email: String): Action[AnyContent] =
+    Action {
+      val result = userService.findBy(Email(email)) match {
+        case Success(user) => Ok(Json.toJson(user))
         case Failure(e) => BadRequest(e.toString)
       }
       result.enableCors
