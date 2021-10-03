@@ -9,6 +9,9 @@ GET    /user                           controllers.UserController.index()
 # ユーザを1件取得
 GET    /user/:userId                   controllers.UserController.show(userId: Int)
 
+# ユーザを登録 (必要なリクエストボディ: {"email": {メールアドレス}})
+POST   /email                          controllers.UserController.showEmail()
+
 # ユーザを登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})
 POST   /user                           controllers.UserController.save()
 

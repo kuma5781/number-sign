@@ -16,11 +16,11 @@ object DBAccessor {
   Class.forName(driver)
 
   // 複数のレコードを取得
-  def selectRecords[T](sql: String, getRecoed: ResultSet => T): Try[Seq[T]] = {
+  def selectRecords[T](sql: String, getRecord: ResultSet => T): Try[Seq[T]] = {
     val readRecords = (stmt: Statement) => {
       val rs = stmt.executeQuery(sql)
       var records = Seq.empty[T]
-      while (rs.next) records = records :+ getRecoed(rs)
+      while (rs.next) records = records :+ getRecord(rs)
       records
     }
     connect(readRecords)
@@ -47,6 +47,22 @@ object DBAccessor {
     connect(executeSql)
   }
 
+  // 実行$最後にinsertしたレコードを返す
+  def executeAndSelectRecord[T](sqlInsert: String, sqlSelect: Int => String, getRecord: ResultSet => T): Try[T] = {
+    val executeSql = (stmt: Statement) => {
+      stmt.executeUpdate(sqlInsert)
+      val rsInsert = stmt.executeQuery("select LAST_INSERT_ID()")
+      if (rsInsert.next){
+        val insertId = rsInsert.getInt("LAST_INSERT_ID()")
+        val rsSelect = stmt.executeQuery(sqlSelect(insertId))
+        if (rsSelect.next) getRecord(rsSelect)
+        else throw new Exception(s"Not found record")
+      }
+      else throw new Exception(s"Not found LAST_INSERT_ID()")
+    }
+    connect(executeSql)
+  }
+
   // insert, update, deleteの実行
   def execute(sql: String): Try[Int] = {
     val executeSql = (stmt: Statement) => stmt.executeUpdate(sql)
@@ -55,11 +71,11 @@ object DBAccessor {
 
   private def connect[T](fun: Statement => T): Try[T] = {
     val con = DriverManager.getConnection(url, username, password)
-    val createRecord = Try {
+    val result = Try {
       val stmt = con.createStatement
       fun(stmt)
     }
     con.close()
-    createRecord
+    result
   }
 }

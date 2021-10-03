@@ -1,7 +1,7 @@
 package controllers
 
 import domain.`object`.user.NewUser.NewUserDto
-import domain.`object`.user.{ NewUser, User, UserId, UserName, Email }
+import domain.`object`.user.{ Email, NewUser, User, UserId, UserName }
 import javax.inject._
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.Format.GenericFormat
@@ -31,7 +31,6 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
   implicit val userNameReads = reads("name", UserName(_))
   implicit val emailReads = reads("email", Email)
 
-
   implicit val newUserDtoReads = (
     (JsPath \ "name").read[String] and
       (JsPath \ "email").read[String]
@@ -55,7 +54,36 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
       result.enableCors
     }
 
+  def showEmail(): Action[AnyContent] =
+    Action { request =>
+      val maybeEmail = request.getObject[Email]
+      val result = maybeEmail match {
+        case Success(email) =>
+          userService.findBy(email) match {
+            case Success(_) => Ok("User saved successfully")
+            case Failure(e) => BadRequest(e.toString)
+          }
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
+
   def save(): Action[AnyContent] =
+    Action { request =>
+      val maybeNewUserDto = request.getObject[NewUserDto]
+      val result = maybeNewUserDto match {
+        case Success(newUserDto) =>
+          val newUser = NewUser(newUserDto)
+          userService.save(newUser) match {
+            case Success(_) => Ok("User saved successfully")
+            case Failure(e) => BadRequest(e.toString)
+          }
+        case Failure(e) => BadRequest(e.toString)
+      }
+      result.enableCors
+    }
+
+  def saveEmail(): Action[AnyContent] =
     Action { request =>
       val maybeEmail = request.getObject[Email]
       val result = maybeEmail match {

@@ -89,6 +89,16 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     }
   }
 
+//  "#showEmail" should {
+//    "return Json phased User" in new Context {
+//      userService.findBy(email1) returns Success(user1)
+//      val home = userController.showEmail().apply(FakeRequest(POST, s"/email/"))
+//      status(home) mustBe OK
+//      contentAsString(home) mustBe
+//
+//    }
+//  }
+
   "#save" should {
     "return OK" in new Context {
       userService.save(newUser1) returns Success(1)
