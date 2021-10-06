@@ -23,13 +23,13 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
 
     val userIdDto1 = 1
     val userId1 = UserId(userIdDto1)
-    val userName1 = UserName("太郎")
+    val userName1 = UserName("taro")
     val email1 = Email("taro@xxx.com")
     val user1 = User(userId1, userName1, email1)
     val newUser1 = NewUser(userName1, email1)
 
     val userId2 = UserId(2)
-    val userName2 = UserName("次郎")
+    val userName2 = UserName("jiro")
     val email2 = Email("jiro@xxx.com")
     val user2 = User(userId2, userName2, email2)
 
@@ -54,7 +54,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.index().apply(FakeRequest(GET, "/user"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "[{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"},{\"id\":2,\"name\":\"次郎\",\"email\":\"jiro@xxx.com\"}]"
+      contentAsString(home) mustBe "[{\"id\":1,\"name\":\"taro\",\"email\":\"taro@xxx.com\"},{\"id\":2,\"name\":\"jiro\",\"email\":\"jiro@xxx.com\"}]"
     }
 
     "return BadRequest" in new Context {
@@ -75,7 +75,7 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
       val home = userController.show(userIdDto1).apply(FakeRequest(GET, s"/user/$userIdDto1"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "{\"id\":1,\"name\":\"太郎\",\"email\":\"taro@xxx.com\"}"
+      contentAsString(home) mustBe "{\"id\":1,\"name\":\"taro\",\"email\":\"taro@xxx.com\"}"
     }
 
     "return BadRequest" in new Context {
@@ -89,15 +89,24 @@ class UserControllerSpec extends PlaySpec with MockitoSugar {
     }
   }
 
-//  "#showEmail" should {
-//    "return Json phased User" in new Context {
-//      userService.findBy(email1) returns Success(user1)
-//      val home = userController.showEmail().apply(FakeRequest(POST, s"/email/"))
-//      status(home) mustBe OK
-//      contentAsString(home) mustBe
-//
-//    }
-//  }
+  "#showFrom" should {
+    "return Json phased User" in new Context {
+      userService.findBy(email1) returns Success(user1)
+
+      val home = userController.showFrom(email1.value).apply(FakeRequest(GET, s"/user/email/$email1"))
+      status(home) mustBe OK
+      contentAsString(home) mustBe "{\"id\":1,\"name\":\"taro\",\"email\":\"taro@xxx.com\"}"
+    }
+
+    "return BadRequest" in new Context {
+      val exception = new Exception("DB connection error")
+      userService.findBy(email1) returns Failure(exception)
+
+      val home = userController.showFrom(email1.value).apply(FakeRequest(GET, s"/user/email/$email1"))
+      status(home) mustBe BAD_REQUEST
+      contentAsString(home) mustBe exception.toString
+    }
+  }
 
   "#save" should {
     "return OK" in new Context {

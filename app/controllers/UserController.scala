@@ -78,20 +78,6 @@ class UserController @Inject()(val controllerComponents: ControllerComponents)
       result.enableCors
     }
 
-  def saveEmail(): Action[AnyContent] =
-    Action { request =>
-      val maybeEmail = request.getObject[Email]
-      val result = maybeEmail match {
-        case Success(email) =>
-          userService.saveEmail(email) match {
-            case Success(_) => Ok("User saved successfully")
-            case Failure(e) => BadRequest(e.toString)
-          }
-        case Failure(e) => BadRequest(e.toString)
-      }
-      result.enableCors
-    }
-
   def updateName(userId: Int): Action[AnyContent] =
     Action { request =>
       val maybeUserName = request.getObject[UserName]
