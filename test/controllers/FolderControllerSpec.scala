@@ -80,7 +80,7 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
       val home = folderController.showAllBy(userIdDto).apply(FakeRequest(GET, s"/folder/$userIdDto"))
 
       status(home) mustBe OK
-      contentAsString(home) mustBe "{\"folders\":[{\"folder_id\":1,\"user_id\":1,\"name\":\"name1\"},{\"folder_id\":2,\"user_id\":1,\"name\":\"name2\",\"parent_folder_id\":1}],\"notes\":[{\"note_id\":1,\"user_id\":1,\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}]}"
+      contentAsString(home) mustBe "{\"folders\":[{\"id\":1,\"user_id\":1,\"name\":\"name1\"},{\"id\":2,\"user_id\":1,\"name\":\"name2\",\"parent_folder_id\":1}],\"notes\":[{\"id\":1,\"user_id\":1,\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}]}"
     }
 
     "return BadRequest" in new Context {

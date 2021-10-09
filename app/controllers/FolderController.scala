@@ -31,14 +31,14 @@ class FolderController @Inject()(val controllerComponents: ControllerComponents)
   implicit val folderNameReads = reads("name", FolderName)
 
   implicit val folderDtoWrites: OWrites[FolderDto] = (
-    (JsPath \ "folder_id").write[Int] and
+    (JsPath \ "id").write[Int] and
       (JsPath \ "user_id").write[Int] and
       (JsPath \ "name").write[String] and
       (JsPath \ "parent_folder_id").writeNullable[Int]
   )(unlift(FolderDto.unapply))
 
   implicit val noteDtoWrites: OWrites[NoteDto] = (
-    (JsPath \ "note_id").write[Int] and
+    (JsPath \ "id").write[Int] and
       (JsPath \ "user_id").write[Int] and
       (JsPath \ "title").write[String] and
       (JsPath \ "content").write[String] and
