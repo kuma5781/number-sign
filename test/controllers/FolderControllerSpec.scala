@@ -1,7 +1,9 @@
 package controllers
 
 import domain.`object`.folder.NewFolder.NewFolderDto
-import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
+import domain.`object`.folder.{ Folder, FolderId, FolderName, FoldersNotes, NewFolder }
+import domain.`object`.note.NoteStatus.Active
+import domain.`object`.note.{ Note, NoteContent, NoteId, Title }
 import domain.`object`.user.UserId
 import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
@@ -17,6 +19,7 @@ import play.api.test.Helpers.{
   status,
   stubControllerComponents,
   DELETE,
+  GET,
   POST,
   PUT
 }
@@ -34,15 +37,24 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
     Whitebox.setInternalState(folderController, "folderService", folderService)
 
     val folderIdDto1 = 1
+    val userIdDto = 1
     val folderId1 = FolderId(folderIdDto1)
-    val userId1 = UserId(1)
-    val folderName1 = FolderName("name")
-    val newFolder1 = NewFolder(userId1, folderName1, None)
+    val userId = UserId(userIdDto)
+    val folderName1 = FolderName("name1")
+    val folder1 = Folder(folderId1, userId, folderName1, None)
+    val newFolder1 = NewFolder(userId, folderName1, None)
 
-    val userId2 = UserId(2)
+    val folderId2 = FolderId(2)
     val folderName2 = FolderName("name2")
     val parentFolderId2 = folderId1
-    val newFolder2 = NewFolder(userId2, folderName2, Some(parentFolderId2))
+    val folder2 = Folder(folderId2, userId, folderName2, Some(parentFolderId2))
+    val newFolder2 = NewFolder(userId, folderName2, Some(parentFolderId2))
+
+    val noteId1 = NoteId(1)
+    val title1 = Title("title1")
+    val content1 = NoteContent("content1")
+    val status1 = Active
+    val note1 = Note(noteId1, userId, title1, content1, status1, None)
 
     def newFolderDto(newFolder: NewFolder): NewFolderDto = NewFolderDto(
       newFolder.userId.value,
@@ -59,6 +71,27 @@ class FolderControllerSpec extends PlaySpec with MockitoSugar {
         (JsPath \ "name").write[String] and
         (JsPath \ "parent_folder_id").writeNullable[Int]
     )(unlift(NewFolderDto.unapply))
+  }
+
+  "showAllBy" should {
+    "return FoldersNotes associated with userId" in new Context {
+      folderService.findFoldersNotesBy(userId) returns Success(FoldersNotes(Seq(folder1, folder2), Seq(note1)))
+
+      val home = folderController.showAllBy(userIdDto).apply(FakeRequest(GET, s"/folder/$userIdDto"))
+
+      status(home) mustBe OK
+      contentAsString(home) mustBe "{\"folders\":[{\"folder_id\":1,\"user_id\":1,\"name\":\"name1\"},{\"folder_id\":2,\"user_id\":1,\"name\":\"name2\",\"parent_folder_id\":1}],\"notes\":[{\"note_id\":1,\"user_id\":1,\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}]}"
+    }
+
+    "return BadRequest" in new Context {
+      val exception = new Exception("DB connection error")
+      folderService.findFoldersNotesBy(userId) returns Failure(exception)
+
+      val home = folderController.showAllBy(userIdDto).apply(FakeRequest(GET, s"/folder/$userIdDto"))
+
+      status(home) mustBe BAD_REQUEST
+      contentAsString(home) mustBe exception.toString
+    }
   }
 
   "#save" should {
