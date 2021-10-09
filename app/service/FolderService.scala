@@ -1,7 +1,8 @@
 package service
 
-import domain.`object`.folder.{ FolderId, FolderName, NewFolder }
+import domain.`object`.folder.{ FolderId, FolderName, FoldersNotes, NewFolder }
 import domain.`object`.note.NoteStatus.Trashed
+import domain.`object`.user.UserId
 import repository.{ FolderRepository, NoteRepository, RelayFoldersRepository, RelayNoteFolderRepository }
 
 import scala.util.{ Failure, Success, Try }
@@ -12,6 +13,12 @@ class FolderService(
     relayFoldersRepository: RelayFoldersRepository = new RelayFoldersRepository,
     relayNoteFolderRepository: RelayNoteFolderRepository = new RelayNoteFolderRepository
 ) {
+
+  def findFoldersNotesBy(userId: UserId): Try[FoldersNotes] =
+    for {
+      folders <- folderRepository.findAllBy(userId)
+      notes <- noteRepository.findAllBy(userId)
+    } yield FoldersNotes(folders, notes)
 
   def save(newFolder: NewFolder): Try[Int] =
     folderRepository.saveAndGetFolderId(newFolder) match {
@@ -54,11 +61,7 @@ class FolderService(
       } else {
         for {
           folderIds <- findAllChildFolders(foundFolderIds)
-        } yield {
-          parentFolderIds ++ folderIds
-        }
+        } yield parentFolderIds ++ folderIds
       }
-    } yield {
-      allChildFolderIds
-    }
+    } yield allChildFolderIds
 }

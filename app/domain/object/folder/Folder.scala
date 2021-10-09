@@ -1,5 +1,6 @@
 package domain.`object`.folder
 
+import domain.`object`.folder.Folder.FolderDto
 import domain.`object`.user.UserId
 
 case class Folder(
@@ -7,7 +8,15 @@ case class Folder(
     userId: UserId,
     name: FolderName,
     parentFolderId: Option[FolderId]
-)
+) {
+  def dto: FolderDto =
+    FolderDto(
+      id.value,
+      userId.value,
+      name.value,
+      parentFolderId.map(_.value)
+    )
+}
 
 object Folder {
   def apply(folderDto: FolderDto): Folder =

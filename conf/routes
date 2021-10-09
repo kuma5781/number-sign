@@ -33,6 +33,9 @@ PUT    /note/trash/:noteId             controllers.NoteController.trash(noteId: 
 # ノートをゴミ箱から戻す
 PUT    /note/activate/:noteId          controllers.NoteController.activate(noteId: Int)
 
+# 特定のユーザのactiveなフォルダとノートをすべて返す
+GET   /folder/:userId                  controllers.FolderController.showAllBy(userId: Int)
+
 # フォルダを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "name": {フォルダ名}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /folder                         controllers.FolderController.save()
 

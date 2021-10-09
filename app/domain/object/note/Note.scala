@@ -1,6 +1,7 @@
 package domain.`object`.note
 
 import domain.`object`.folder.FolderId
+import domain.`object`.note.Note.NoteDto
 import domain.`object`.user.UserId
 
 case class Note(
@@ -10,7 +11,17 @@ case class Note(
     content: NoteContent,
     status: NoteStatus,
     parentFolderId: Option[FolderId]
-)
+) {
+  def dto: NoteDto =
+    NoteDto(
+      id.value,
+      userId.value,
+      title.value,
+      content.value,
+      status.value,
+      parentFolderId.map(_.value)
+    )
+}
 
 object Note {
   def apply(noteDto: NoteDto): Option[Note] =

@@ -7,6 +7,7 @@ import domain.`object`.user.UserId
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito.theStubbed
+import play.api.libs.json.Json
 import repository.{ NoteRepository, RelayNoteFolderRepository }
 
 import scala.util.{ Failure, Success }
