@@ -42,12 +42,12 @@ class NoteDao {
   def selectAllByUserId(userId: Int): Try[Seq[NoteDto]] = {
     val sql =
       s"""
-				 |select n.id, user_id, title, content, status, parent_folder_id
-				 |from $tableName as n
-				 |left join $relayNoteFolderTableName as rnf
-				 |on n.id = rnf.note_id
-				 |where user_id = $userId
-			""".stripMargin
+         |select n.id, user_id, title, content, status, parent_folder_id
+         |from $tableName as n
+         |left join $relayNoteFolderTableName as rnf
+         |on n.id = rnf.note_id
+         |where user_id = $userId
+      """.stripMargin
     DBAccessor.selectRecords(sql, noteDtoWithParent)
   }
 
