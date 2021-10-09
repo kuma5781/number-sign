@@ -33,6 +33,9 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
+#    GUIからのアクセスでエラーログが出たため追加
+    cap_add:
+      - SYS_NICE
 
   play-test:
     build: ./docker/play
