@@ -54,7 +54,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const getUserInfo = async () => {
         try {
           if (typeof (loginedUser?.email) === 'string') {
-            const response = await fetch(`${backendUrl}/user/${loginedUser.email}`, {
+            const response = await fetch(`${backendUrl}/user/email/${loginedUser.email}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
