@@ -1,19 +1,29 @@
 import React, {
   createContext, useState, useContext, useEffect,
 } from 'react';
+import firebase from 'firebase/compat/app';
 import { auth } from '../../firebase';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
-// Todo: any型をなくす
-
 type createContextType = {
-  user: any,
-  loading: boolean
+  user: firebase.User | null,
+  loading: boolean,
+  userInfo: {
+    id: number | null,
+    name: string,
+    email: string,
+  },
+  error: string
 };
 
-// Todo: Missing return type on function の警告を解消
-export function contextFilteringByType<ContextType>() {
+type userInfoType = {
+  id: number | null,
+  name: string,
+  email: string
+};
+
+function contextFilteringByType<ContextType>() {
   const AuthContext = createContext<ContextType | undefined>(undefined);
   const useAuthContext = () => {
     const context = useContext(AuthContext);
@@ -27,24 +37,35 @@ export function contextFilteringByType<ContextType>() {
 
 export const [useAuthContext, SetAuthProvider] = contextFilteringByType<createContextType>();
 
-export const AuthProvider: React.FC = ({ children }: any) => {
-  const [user, setUser] = useState<any>('');
+export const AuthProvider: React.FC = ({ children }) => {
+  const [user, setUser] = useState < firebase.User | null >(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState<userInfoType>({ id: null, name: '', email: '' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const unsubscribed = auth.onAuthStateChanged((loginedUser) => {
       setUser(loginedUser);
-      console.log(loginedUser?.email);
       setLoading(false);
-      fetch(`${backendUrl}/user`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: loginedUser?.email }),
-      })
-        .then((response) => response.json())
-        .catch((err) => console.error(err));
+
+      // response.json()の返り値の型がPromise型のためasyncとawaitを使ってPromise解決後の値を取得
+      const getUserInfo = async () => {
+        try {
+          if (typeof (loginedUser?.email) === 'string') {
+            const response = await fetch(`${backendUrl}/user/email/${loginedUser.email}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const result = await response.json();
+            setUserInfo({ id: result.id, name: result.name, email: result.email });
+          }
+        } catch (e) {
+          setError('ログインエラー');
+        }
+      };
+      getUserInfo();
     });
 
     return () => {
@@ -56,7 +77,10 @@ export const AuthProvider: React.FC = ({ children }: any) => {
     return <p>loading...</p>;
   }
   return (
-    <SetAuthProvider value={{ user, loading }}>
+    <SetAuthProvider value={{
+      user, loading, userInfo, error,
+    }}
+    >
       {!loading && children}
     </SetAuthProvider>
   );
