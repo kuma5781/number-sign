@@ -1,0 +1,14 @@
+.container {
+    text-align: center;
+}
+.errorMessage {
+    font-size: 50px;
+}
+.button {
+    padding: 10px 15px;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-radius: 5%;
+}
+.button:hover{
+    background-color: rgba(255, 255, 255, .2);
+}

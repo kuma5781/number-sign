@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { useAuthContext } from '../context/AuthContext';
+import './TopError.css';
 
 const TopError: React.FC = () => {
   const history = useHistory();
@@ -11,11 +12,11 @@ const TopError: React.FC = () => {
   };
   const { error } = useAuthContext() || {};
   return (
-    <div>
-      <div>
+    <div className="container">
+      <p className="errorMessage">
         {error}
-      </div>
-      <button onClick={handleLogout}>ログアウト</button>
+      </p>
+      <button className="button" onClick={handleLogout}>ログインページに戻る</button>
     </div>
   );
 };

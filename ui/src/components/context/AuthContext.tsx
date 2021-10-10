@@ -4,6 +4,8 @@ import React, {
 import firebase from 'firebase/compat/app';
 import { auth } from '../../firebase';
 
+// Todo: any型なくす
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
 type createContextType = {
@@ -28,7 +30,7 @@ function contextFilteringByType<ContextType>() {
   const useAuthContext = () => {
     const context = useContext(AuthContext);
     if (!context) {
-      throw new Error('useCtx must be inside a Provider with a value');
+      throw new Error('useContext must be inside a Provider with a value');
     }
     return context;
   };
@@ -52,17 +54,20 @@ export const AuthProvider: React.FC = ({ children }) => {
       const getUserInfo = async () => {
         try {
           if (typeof (loginedUser?.email) === 'string') {
-            const response = await fetch(`${backendUrl}/user/email/${loginedUser.email}`, {
+            const response = await fetch(`${backendUrl}/user/${loginedUser.email}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
               },
             });
+            if (!response.ok) {
+              throw Error(`${response.status} ${response.statusText}`);
+            }
             const result = await response.json();
             setUserInfo({ id: result.id, name: result.name, email: result.email });
           }
-        } catch (e) {
-          setError('ログインエラー');
+        } catch (e: any) {
+          setError(e.message);
         }
       };
       getUserInfo();
