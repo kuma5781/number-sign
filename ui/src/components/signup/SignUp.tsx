@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
 import './SignUp.css';
@@ -8,9 +8,9 @@ import './SignUp.css';
 const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
+    const { email, password } = event.currentTarget;
     try {
       await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');

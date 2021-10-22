@@ -4,8 +4,6 @@ import React, {
 import firebase from 'firebase/compat/app';
 import { auth } from '../../firebase';
 
-// Todo: any型なくす
-
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
 type createContextType = {
@@ -66,8 +64,10 @@ export const AuthProvider: React.FC = ({ children }) => {
             const result = await response.json();
             setUserInfo({ id: result.id, name: result.name, email: result.email });
           }
-        } catch (e: any) {
-          setError(e.message);
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            setError(e.message);
+          }
         }
       };
       getUserInfo();
