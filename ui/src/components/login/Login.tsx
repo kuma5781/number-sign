@@ -3,8 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
 import './Login.css';
 
-// Todo: any型なくす
-
 const Login: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
@@ -14,6 +12,7 @@ const Login: React.FC = () => {
     try {
       await auth.signInWithEmailAndPassword(email.value, password.value);
       history.push('/');
+      // firebaseのログインエラーの型が分からなかったためany型にしている、分かり次第変更
     } catch (e: any) {
       switch (e.code) {
         case 'network-request-failed':
