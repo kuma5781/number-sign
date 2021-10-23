@@ -17,7 +17,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     val userRepository = new UserRepository(userDao)
 
     val userIdDto1 = 1
-    val userNameDto1 = "太郎"
+    val userNameDto1 = "taro"
     val emailDto1 = "taro@xxx.com"
     val userDto1 = UserDto(userIdDto1, userNameDto1, emailDto1)
     val newUserDto1 = NewUserDto(userNameDto1, emailDto1)
@@ -29,7 +29,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     val newUser1 = NewUser(userName1, email1)
 
     val userIdDto2 = 2
-    val userNameDto2 = "次郎"
+    val userNameDto2 = "jiro"
     val emailDto2 = "jiro@xxx.com"
     val userDto2 = UserDto(userIdDto2, userNameDto2, emailDto2)
 
@@ -55,7 +55,7 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#findBy" should {
+  "#findBy(userId: UserId)" should {
     "return User associated with userId" in new Context {
       userDao.selectBy(userIdDto1) returns Success(userDto1)
       userRepository.findBy(userId1) mustBe Success(user1)
@@ -65,6 +65,19 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
       val exception = new Exception("DB connection error")
       userDao.selectBy(userIdDto1) returns Failure(exception)
       userRepository.findBy(userId1) mustBe Failure(exception)
+    }
+  }
+
+  "#findBy(email: Email)" should {
+    "return User associated with userId" in new Context {
+      userDao.selectBy(email1.value) returns Success(userDto1)
+      userRepository.findBy(email1) returns Success(user1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception("DB connection error")
+      userDao.selectBy(email1.value) returns Failure(exception)
+      userRepository.findBy(email1) returns Failure(exception)
     }
   }
 
@@ -78,6 +91,19 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
       val exception = new Exception("DB connection error")
       userDao.insert(newUserDto1) returns Failure(exception)
       userRepository.save(newUser1) mustBe Failure(exception)
+    }
+  }
+
+  "#saveAndFind" should {
+    "return Success" in new Context {
+      userDao.insertAndSelect(newUserDto1) returns Success(userDto1)
+      userRepository.saveAndFind(newUser1) returns Success(user1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception("DB connection error")
+      userDao.insertAndSelect(newUserDto1) returns Failure(exception)
+      userRepository.saveAndFind(newUser1) returns Failure(exception)
     }
   }
 

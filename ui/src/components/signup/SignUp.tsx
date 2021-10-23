@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
 import './SignUp.css';
 
-// Todo: any型なくす
-
 const SignUp: React.FC = () => {
   const history = useHistory();
   const [error, setError] = useState('');
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
+    const { email, password } = event.currentTarget;
     try {
       await auth.createUserWithEmailAndPassword(email.value, password.value);
       history.push('/');
+      // firebaseのログインエラーの型が分からなかったためany型にしている、分かり次第変更
     } catch (e: any) {
       switch (e.code) {
         case 'network-request-failed':
