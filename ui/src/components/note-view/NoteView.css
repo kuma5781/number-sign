@@ -1,3 +1,18 @@
+.allow {
+  width: 12px;
+}
+.folder {
+  margin: 0 0 0 3px;
+  width: 12px;
+}
+.folder-name {
+  display: inline-block;
+  margin: 0 0 0 3px;
+}
+.note-title {
+  display: inline-block;
+  margin: 0 0 0 3px;
+}
 .child-folder-box {
-  padding-left: 10px;
+  padding-left: 16px;
 }

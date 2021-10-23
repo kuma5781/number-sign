@@ -1,14 +1,30 @@
 import React, { useLayoutEffect } from 'react';
 import './NoteView.css';
+import { useAuthContext } from '../context/AuthContext';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
 const NoteView: React.FC = () => {
   const userId = 1;
+  const { userInfo } = useAuthContext() || {};
   const addFolderElment = async (folder: any) => {
     // フォルダ要素
     const folderBox = document.createElement('div');
     folderBox.classList.add('folder-box');
+
+    // 矢印画像
+    const allowImg = document.createElement('img');
+    allowImg.setAttribute('alt', 'arrow');
+    allowImg.setAttribute('src', `${process.env.PUBLIC_URL}/img/arrow.png`);
+    allowImg.classList.add('allow');
+    folderBox.appendChild(allowImg);
+
+    // フォルダ画像
+    const folderImg = document.createElement('img');
+    folderImg.setAttribute('alt', 'folder');
+    folderImg.setAttribute('src', `${process.env.PUBLIC_URL}/img/folder.png`);
+    folderImg.classList.add('folder');
+    folderBox.appendChild(folderImg);
 
     // フォルダ名
     const folderNameBox = document.createElement('p');
@@ -26,7 +42,7 @@ const NoteView: React.FC = () => {
     if (folder.parent_folder_id) {
       document.getElementById(`child_folders_box${folder.parent_folder_id}`)?.appendChild(folderBox);
     } else {
-      document.getElementById('side')?.appendChild(folderBox);
+      document.getElementById('notes')?.appendChild(folderBox);
     }
   };
   const addNoteElment = async (note: any) => {
@@ -44,11 +60,11 @@ const NoteView: React.FC = () => {
     if (note.parent_folder_id) {
       document.getElementById(`child_folders_box${note.parent_folder_id}`)?.appendChild(noteBox);
     } else {
-      document.getElementById('side')?.appendChild(noteBox);
+      document.getElementById('notes')?.appendChild(noteBox);
     }
   };
   const createSide = async (folders: never[], notes: never[]) => {
-    document.getElementById('side')!.innerHTML = '';
+    document.getElementById('notes')!.innerHTML = '';
     folders.forEach((folder) => {
       addFolderElment(folder);
     });
@@ -70,9 +86,10 @@ const NoteView: React.FC = () => {
   }, [userId]);
   return (
     <div>
-      <div id="side" />
-      <img alt="arrow" src={`${process.env.PUBLIC_URL}/img/arrow.png`} />
-      <img alt="folder" src={`${process.env.PUBLIC_URL}/img/folder.png`} />
+      <div id="side">
+        <p>{`${userInfo.name}さんのワークスペース`}</p>
+        <div id="notes" />
+      </div>
       <img alt="note" src={`${process.env.PUBLIC_URL}/img/note.png`} />
       <img alt="pencil" src={`${process.env.PUBLIC_URL}/img/pencil.png`} />
     </div>
