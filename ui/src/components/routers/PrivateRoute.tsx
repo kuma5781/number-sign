@@ -11,13 +11,13 @@ const PrivateRoute: React.FC<{
     }> = (props) => {
       const { exact, path, component } = props;
       const { user, error } = useAuthContext() || {};
-      if (user) {
-        if (error) {
-          return <RequestError />;
-        }
-        return <Route exact={exact} path={path} component={component} />;
+      if (!user) {
+        return <Redirect to="/login" />;
       }
-      return <Redirect to="/login" />;
+      if (error) {
+        return <RequestError />;
+      }
+      return <Route exact={exact} path={path} component={component} />;
     };
 
 export default PrivateRoute;
