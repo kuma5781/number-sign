@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from '../login/Login';
-import TopRouter from '../top/TopRouter';
 import NoteEditer from '../note-editder/NoteEditer';
 import NoteView from '../note-view/NoteView';
+import Top from '../top/Top';
 import SignUp from '../signup/SignUp';
 import { AuthProvider } from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
@@ -14,7 +14,7 @@ const Router: React.FC = () => (
   <AuthProvider>
     <BrowserRouter>
       <Switch>
-        <PrivateRoute exact path="/" component={TopRouter} />
+        <PrivateRoute exact path="/" component={Top} />
         <PrivateRoute exact path="/view/:noteId" component={NoteView} />
         <PrivateRoute exact path="/edit/:noteId" component={NoteEditer} />
         <PublicRoute path="/signup" component={SignUp} />
