@@ -1,14 +1,14 @@
-.top-error-container {
+.request-error-container {
     text-align: center;
 }
-.top-error-message {
+.request-error-message {
     font-size: 50px;
 }
-.top-error-button {
+.request-error-button {
     padding: 10px 15px;
     border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
     border-radius: 5%;
 }
-.top-error-button:hover {
+.request-error-button:hover {
     background-color: rgba(255, 255, 255, .2);
 }
