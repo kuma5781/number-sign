@@ -12,11 +12,11 @@ const TopError: React.FC = () => {
   };
   const { error } = useAuthContext() || {};
   return (
-    <div className="topErrorContainer">
-      <h1 className="topErrorMessage">
+    <div className="top-error-container">
+      <h1 className="top-error-message">
         {error}
       </h1>
-      <button className="topErrorButton" onClick={handleLogout}>ログインページに戻る</button>
+      <button className="top-error-button" onClick={handleLogout}>ログインページに戻る</button>
     </div>
   );
 };

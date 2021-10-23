@@ -74,7 +74,6 @@ class UserDaoSpec extends PlaySpec {
     "return a user record associated with email" in new Context {
       DBSupport.dbTest(
         tableName, {
-          // userIdも考慮すべきか確認
           DBAccessor.execute(insertSql(newUserDto1))
 
           val userDtos = DBAccessor.selectRecords(selectAllSql, userDto).get
