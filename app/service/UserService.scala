@@ -11,7 +11,7 @@ class UserService(userRepository: UserRepository = new UserRepository) {
 
   def findBy(userId: UserId): Try[User] = userRepository.findBy(userId)
 
-  def findBy(email: Email): Try[User] = {
+  def findBy(email: Email): Try[User] =
     userRepository.findBy(email) match {
       case Success(user) => Success(user)
       case Failure(e) if e.toString == "java.lang.Exception: Not found record" =>
@@ -19,7 +19,6 @@ class UserService(userRepository: UserRepository = new UserRepository) {
         userRepository.saveAndFind(newUser)
       case Failure(e) => Failure(e)
     }
-  }
 
   def save(newUser: NewUser): Try[Int] = userRepository.save(newUser)
 
