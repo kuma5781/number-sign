@@ -69,7 +69,13 @@ const NoteView: React.FC = () => {
       .catch((err) => console.error(err));
   }, [userId]);
   return (
-    <div id="side" />
+    <div>
+      <div id="side" />
+      <img alt="arrow" src={`${process.env.PUBLIC_URL}/img/arrow.png`} />
+      <img alt="folder" src={`${process.env.PUBLIC_URL}/img/folder.png`} />
+      <img alt="note" src={`${process.env.PUBLIC_URL}/img/note.png`} />
+      <img alt="pencil" src={`${process.env.PUBLIC_URL}/img/pencil.png`} />
+    </div>
   );
 };
 
