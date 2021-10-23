@@ -13,11 +13,12 @@ class UserDaoSpec extends PlaySpec {
     val userDao = new UserDao
     val tableName = "user"
 
-    val userName1 = "太郎"
+    val userIdDto1 = 1
+    val userName1 = "taro"
     val email1 = "taro@xxx.com"
     val newUserDto1 = NewUserDto(userName1, email1)
 
-    val userName2 = "次郎"
+    val userName2 = "jiro"
     val email2 = "jiro@xxx.com"
     val newUserDto2 = NewUserDto(userName2, email2)
 
@@ -52,7 +53,7 @@ class UserDaoSpec extends PlaySpec {
     }
   }
 
-  "#selectBy" should {
+  "#selectBy(userId: Int)" should {
     "return a user record associated with userId" in new Context {
       DBSupport.dbTest(
         tableName, {
@@ -69,6 +70,24 @@ class UserDaoSpec extends PlaySpec {
     }
   }
 
+  "#selectBy(email: Email)" should {
+    "return a user record associated with email" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          DBAccessor.execute(insertSql(newUserDto1))
+
+          val userDtos = DBAccessor.selectRecords(selectAllSql, userDto).get
+          val email = userDtos(0).email
+          val userId = userDtos(0).id
+
+          val selectUser = userDao.selectBy(email).get
+          selectUser.id mustBe userId
+          selectUser.name mustBe userName1
+        }
+      )
+    }
+  }
+
   "#insert" should {
     "insert user record" in new Context {
       DBSupport.dbTest(
@@ -79,6 +98,22 @@ class UserDaoSpec extends PlaySpec {
 
           userDtos(0).name mustBe userName1
           userDtos(0).email mustBe email1
+        }
+      )
+    }
+  }
+
+  "#insertAndSelect" should {
+    "insert user record and return last inserted record" in new Context {
+      DBSupport.dbTest(
+        tableName, {
+          val resultUserDto = userDao.insertAndSelect(newUserDto1)
+
+          val userDtos = DBAccessor.selectRecords(selectAllSql, userDto).get
+
+          resultUserDto.get.id mustBe userDtos(0).id
+          resultUserDto.get.name mustBe userDtos(0).name
+          resultUserDto.get.email mustBe userDtos(0).email
         }
       )
     }

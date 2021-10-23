@@ -15,13 +15,13 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     val userService = new UserService(userRepository)
 
     val userId1 = UserId(1)
-    val userName1 = UserName("太郎")
+    val userName1 = UserName("taro")
     val email1 = Email("taro@xxx.com")
     val user1 = User(userId1, userName1, email1)
     val newUser1 = NewUser(userName1, email1)
 
     val userId2 = UserId(2)
-    val userName2 = UserName("次郎")
+    val userName2 = UserName("jiro")
     val email2 = Email("jiro@xxx.com")
     val user2 = User(userId2, userName2, email2)
 
@@ -41,7 +41,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#findBy" should {
+  "#findBy(userId: UserId)" should {
     "return a user associated with userId" in new Context {
       userRepository.findBy(userId1) returns Success(user1)
       userService.findBy(userId1) mustBe Success(user1)
@@ -52,6 +52,30 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
       userRepository.findBy(userId1) returns Failure(exception)
       userService.findBy(userId1) mustBe Failure(exception)
     }
+  }
+
+  "#findBy(email: Email)" should {
+    "return a user associated with email" in new Context {
+      userRepository.findBy(email1) returns Success(user1)
+      userService.findBy(email1) mustBe Success(user1)
+    }
+
+    "return a new user" in new Context {
+      val exception = new Exception("Not found record")
+      userRepository.findBy(email1) returns Failure(exception)
+
+      val newUser = NewUser(userName1, email1)
+      userRepository.saveAndFind(newUser) returns Success(user1)
+
+      userService.findBy(email1) mustBe Success(user1)
+    }
+
+    "return Exception" in new Context {
+      val exception = new Exception("DB connection error")
+      userRepository.findBy(email1) returns Failure(exception)
+      userService.findBy(email1) mustBe Failure(exception)
+    }
+
   }
 
   "#save" should {

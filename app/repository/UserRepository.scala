@@ -16,12 +16,22 @@ class UserRepository(userDao: UserDao = new UserDao) {
   def findBy(userId: UserId): Try[User] =
     userDao.selectBy(userId.value).map(User(_))
 
+  def findBy(email: Email): Try[User] = userDao.selectBy(email.value).map(User(_))
+
   def save(newUser: NewUser): Try[Int] = {
     val newUserDto = NewUserDto(
       newUser.name.value,
       newUser.email.value
     )
     userDao.insert(newUserDto)
+  }
+
+  def saveAndFind(newUser: NewUser): Try[User] = {
+    val newUserDto = NewUserDto(
+      newUser.name.value,
+      newUser.email.value
+    )
+    userDao.insertAndSelect(newUserDto).map(User(_))
   }
 
   def updateName(userId: UserId, userName: UserName): Try[Int] =
