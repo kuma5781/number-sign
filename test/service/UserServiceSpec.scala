@@ -60,7 +60,7 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
       userService.findBy(email1) mustBe Success(user1)
     }
 
-    "return java.lang.Exception: Not found record" in new Context {
+    "return a new user" in new Context {
       val exception = new Exception("Not found record")
       userRepository.findBy(email1) returns Failure(exception)
 

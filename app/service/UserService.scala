@@ -8,7 +8,9 @@ import scala.util.{ Failure, Success, Try }
 class UserService(userRepository: UserRepository = new UserRepository) {
 
   def findAll(): Try[Seq[User]] = userRepository.findAll()
+
   def findBy(userId: UserId): Try[User] = userRepository.findBy(userId)
+
   def findBy(email: Email): Try[User] = {
     userRepository.findBy(email) match {
       case Success(user) => Success(user)
@@ -18,7 +20,10 @@ class UserService(userRepository: UserRepository = new UserRepository) {
       case Failure(e) => Failure(e)
     }
   }
+
   def save(newUser: NewUser): Try[Int] = userRepository.save(newUser)
+
   def updateName(userId: UserId, userName: UserName): Try[Int] = userRepository.updateName(userId, userName)
+
   def removeBy(userId: UserId): Try[Int] = userRepository.removeBy(userId)
 }

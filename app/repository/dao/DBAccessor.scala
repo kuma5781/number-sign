@@ -47,7 +47,7 @@ object DBAccessor {
     connect(executeSql)
   }
 
-  // 実行$最後にinsertしたレコードを返す
+  // 実行&最後にinsertしたレコードを返す
   def executeAndSelectRecord[T](sqlInsert: String, sqlSelect: Int => String, getRecord: ResultSet => T): Try[T] = {
     val executeSql = (stmt: Statement) => {
       stmt.executeUpdate(sqlInsert)

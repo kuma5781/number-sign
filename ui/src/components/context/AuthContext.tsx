@@ -23,7 +23,7 @@ type userInfoType = {
   email: string
 };
 
-function contextFilteringByType<ContextType>() {
+function contextFilterByType<ContextType>() {
   const AuthContext = createContext<ContextType | undefined>(undefined);
   const useAuthContext = () => {
     const context = useContext(AuthContext);
@@ -35,7 +35,7 @@ function contextFilteringByType<ContextType>() {
   return [useAuthContext, AuthContext.Provider] as const;
 }
 
-export const [useAuthContext, SetAuthProvider] = contextFilteringByType<createContextType>();
+export const [useAuthContext, SetAuthProvider] = contextFilterByType<createContextType>();
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState < firebase.User | null >(null);

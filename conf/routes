@@ -9,7 +9,7 @@ GET    /user                           controllers.UserController.index()
 # ユーザを1件取得
 GET    /user/id/:userId                controllers.UserController.show(userId: Int)
 
-# ユーザを登録
+# クエリパラメータのemailがDBにあればユーザ情報を取得、なければemailからユーザ情報をDBに追加してそのユーザ情報を取得
 GET   /user/email/:email               controllers.UserController.showFrom(email: String)
 
 # ユーザを登録 (必要なリクエストボディ: {"name": {ユーザ名}, "email": {メールアドレス}})

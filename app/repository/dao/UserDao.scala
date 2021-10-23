@@ -1,7 +1,5 @@
 package repository.dao
 
-import domain.`object`.user.Email
-
 import java.sql.ResultSet
 import domain.`object`.user.NewUser.NewUserDto
 import domain.`object`.user.User.UserDto
@@ -39,7 +37,7 @@ class UserDao {
     DBAccessor.execute(sql)
   }
 
-  def insertAndFind(newUserDto: NewUserDto): Try[UserDto] = {
+  def insertAndSelect(newUserDto: NewUserDto): Try[UserDto] = {
     val sqlInsert = s"insert into $tableName (name, email) values ('${newUserDto.name}', '${newUserDto.email}')"
     val sqlSelect = (userId: Int) => s"select * from $tableName where id = $userId"
     DBAccessor.executeAndSelectRecord(sqlInsert, sqlSelect, userDto)

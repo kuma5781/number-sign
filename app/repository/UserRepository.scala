@@ -31,7 +31,7 @@ class UserRepository(userDao: UserDao = new UserDao) {
       newUser.name.value,
       newUser.email.value
     )
-    userDao.insertAndFind(newUserDto).map(User(_))
+    userDao.insertAndSelect(newUserDto).map(User(_))
   }
 
   def updateName(userId: UserId, userName: UserName): Try[Int] =
