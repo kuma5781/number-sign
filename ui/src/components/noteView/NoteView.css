@@ -1,31 +1,21 @@
-button, input, select, textarea {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-.main {
-  overflow: hidden;
-}
-.editer {
-  float: left;
-  width: 50%;
-}
-.input-title {
-  font-size: 24px;
-  padding: 1px 2px;
-  width: calc(100% - 8px);
-}
-.input-content {
-  height: calc(100vh - 66px);
-  padding: 1px 2px;
-  resize: none;
-  width: calc(100% - 6px);
-}
-.preview {
-  border-left: 1px solid #ddd;
-  float: left;
+.noteview-main {
   height: 100vh;
   overflow: auto;
   padding: 0 10px;
-  width: calc(50% - 21px);
+}
+.noteview-edit-link {
+  background-color: #eee;
+  border: #ccc 1px solid;
+  border-radius: 50%;
+  position: fixed;
+  top: 15px;
+  right: 25px;
+  width: 30px;
+  height: 30px;
+}
+.noteview-pencil {
+  padding: 7px 0 0 7px;
+  width: 16px;
 }
 .markdown h1 {
   border-bottom: 1px solid #ddd;

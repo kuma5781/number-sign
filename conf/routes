@@ -43,7 +43,7 @@ GET   /folder/:userId                  controllers.FolderController.showAllBy(us
 POST   /folder                         controllers.FolderController.save()
 
 # フォルダ名を更新 (必要なリクエストボディ: {"name": {フォルダ名}})
-PUT   /folder/name/:folderId          controllers.FolderController.updateName(folderId: Int)
+PUT   /folder/name/:folderId           controllers.FolderController.updateName(folderId: Int)
 
 # フォルダを削除
 DELETE /folder/:folderId               controllers.FolderController.remove(folderId: Int)

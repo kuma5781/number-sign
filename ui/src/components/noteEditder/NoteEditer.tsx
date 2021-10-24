@@ -10,6 +10,7 @@ const NoteEditer: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [markdown, setMarkdown] = useState('');
+  const [savedMessage, setSavedMessage] = useState('');
   useLayoutEffect(() => {
     fetch(`${backendUrl}/note/${noteId}`, {
       method: 'GET',
@@ -30,8 +31,18 @@ const NoteEditer: React.FC = () => {
       },
       method: 'PUT',
       body: JSON.stringify({ title: editTitle.value, content: editContent.value }),
-    }).then((response) => console.log(response))
-      .catch((err) => console.error(err));
+    }).then((response) => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      const msec = now.getMilliseconds();
+      setSavedMessage(`保存しました[${year}年${month}月${date}日 ${hour}:${min}:${sec}:${msec}]`);
+      console.log(response);
+    }).catch((err) => console.error(err));
   };
   return (
     <div className="main">
@@ -49,7 +60,11 @@ const NoteEditer: React.FC = () => {
               onChange={(e) => setMarkdown(e.target.value)}
             />
           </div>
-          <button>保存</button>
+          <div className="noteediter-footer">
+            <button className="noteediter-save-button">保存</button>
+            <a href={`/view/${noteId}`} className="noteediter-to-view-link">戻る</a>
+            {savedMessage && <span className="noteediter-saved-message">{savedMessage}</span>}
+          </div>
         </form>
       </div>
       <div className="preview markdown">

@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from '../login/Login';
-import NoteEditer from '../note-editder/NoteEditer';
-import NoteView from '../note-view/NoteView';
+import NoteEditer from '../noteEditder/NoteEditer';
+import NoteView from '../noteView/NoteView';
 import Top from '../top/Top';
 import SignUp from '../signup/SignUp';
 import { AuthProvider } from '../context/AuthContext';
