@@ -27,10 +27,10 @@ class FolderDao {
     val sql =
       s"""
          |select f.id, user_id, name, parent_folder_id
-				 |from $tableName as f
-				 |left join $relayFoldersTableName as rf
-				 |on f.id = rf.folder_id
-				 |where user_id = $userId
+         |from $tableName as f
+         |left join $relayFoldersTableName as rf
+         |on f.id = rf.folder_id
+         |where user_id = $userId
 			""".stripMargin
     DBAccessor.selectRecords(sql, folderDto)
   }
