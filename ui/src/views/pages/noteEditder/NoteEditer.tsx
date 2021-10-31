@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import marked from 'marked';
 import './NoteEditer.css';
+import Header from '../../components/header/Header';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -64,6 +65,7 @@ const NoteEditer: React.FC = () => {
 
   return (
     <div className="noteediter-main">
+      <Header />
       <div className="noteediter-editer">
         <form onSubmit={noteSubmit}>
           <div>

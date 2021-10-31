@@ -13,7 +13,7 @@
 }
 .noteediter-input-content {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-  height: calc(100vh - 86px);
+  height: calc(100vh - 86px - 51px);
   padding: 1px 2px;
   resize: none;
   width: calc(100% - 6px);
@@ -51,7 +51,7 @@
 .noteediter-preview {
   border-left: 1px solid #ddd;
   float: left;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 48px - 51px);
   overflow: auto;
   padding: 0 10px;
   width: calc(50% - 21px);
