@@ -10,8 +10,10 @@ const NoteEditer: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [markdown, setMarkdown] = useState('');
+
   const [isSaved, setIsSaved] = useState(true);
   const [savedMessage, setSavedMessage] = useState('');
+
   useLayoutEffect(() => {
     fetch(`${backendUrl}/note/${noteId}`, {
       method: 'GET',
@@ -27,6 +29,7 @@ const NoteEditer: React.FC = () => {
     setMarkdown(event.target.value);
     setIsSaved(false);
   };
+
   const noteSubmit = async (event: any) => {
     event.preventDefault();
     const { editTitle, editContent } = event.target.elements;
@@ -50,6 +53,7 @@ const NoteEditer: React.FC = () => {
     }).catch((err) => console.error(err));
     setIsSaved(true);
   };
+
   window.onbeforeunload = function confirm(event) {
     if (!isSaved) {
       return 'ok?';
@@ -57,6 +61,7 @@ const NoteEditer: React.FC = () => {
     event.preventDefault();
     return null;
   };
+
   return (
     <div className="main">
       <div className="editer">
