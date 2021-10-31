@@ -4,6 +4,7 @@ import './Side.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
+// TODO: any型を使わない
 // フォルダを開いたり閉じたりする
 const folderOpenToggle = async (event: any) => {
   event.preventDefault();
@@ -19,6 +20,7 @@ const folderOpenToggle = async (event: any) => {
 
 const Side: React.FC = () => {
   const { userInfo } = useAuthContext() || {};
+  // TODO: any型を使わない
   const addFolderElment = async (folder: any) => {
     // フォルダ要素
     const folderBox = document.createElement('div');
@@ -64,6 +66,7 @@ const Side: React.FC = () => {
       document.getElementById('notes')?.appendChild(folderBox);
     }
   };
+  // TODO: any型を使わない
   const addNoteElment = async (note: any) => {
     // ノート要素
     const noteBox = document.createElement('div');

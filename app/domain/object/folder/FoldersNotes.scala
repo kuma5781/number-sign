@@ -23,6 +23,7 @@ object FoldersNotes {
       notes
     )
 
+  // 親フォルダが子フォルダより前になるように並び替える
   private def sortFolders(folders: Seq[Folder]): Seq[Folder] =
     getChildFolders(Seq(None), folders)
 
