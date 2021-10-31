@@ -1,0 +1,71 @@
+.login-container {
+    background: rgba(239, 239, 239, 0.63);
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+.login-inner-container {
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 5% 10%;
+    position: absolute;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: 20%;
+}
+.login-label-email {
+    font-weight: bold;
+}
+.login-input-email {
+    border-radius: 10px;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 15px 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.login-label-password{
+    font-weight: bold;
+}
+.login-input-password {
+    border-radius: 10px;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.login-box-error {
+    color: #F31F1F;
+    text-align: center;
+}
+.login-box-button {
+    text-align: center;
+}
+.login-button {
+    background: rgba(44, 142, 198, 0.76);
+    border-radius: 10px;
+    border-color: rgba(44, 142, 198, 0.76);
+    cursor : pointer;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px 5px;
+    margin: 10px 0 20px 0;
+    width: 100%;
+}
+.login-button:hover {
+    background-color: rgba(44, 142, 198, .5);
+}
+.login-box-to-signup {
+    text-align: center;
+}
+.login-box-to-signup-link {
+    color: rgba(44, 142, 198, 0.76);
+    text-decoration: none;
+}
+.login-box-to-signup-link:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,68 @@
+@font-face {
+	font-family: 'BebasNeus';
+	src: url(../../../resouces/font/BebasNeue-Regular.ttf);
+}
+p {
+    margin: 0;
+}
+button {
+    padding: 0;
+}
+.header-container {
+    position: relative;
+    border-bottom: 1px solid #000;
+    box-shadow: 4px 4px 4px rgb(191, 190, 190);
+}
+.header-inner-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+.header-subject {
+    font-family: 'BebasNeus';
+    font-size: 35px;
+    padding-top: 7px;
+}
+.header-subject-to-top {
+    color:#000;
+    text-decoration: none;
+}
+.header-box-user-info {
+    border: none;
+    background: transparent;
+    outline: none;
+    display: flex;
+}
+.header-box-user-info:hover {
+    cursor: pointer;
+}
+.header-user-name-text {
+    font-size: 20px;
+    line-height: 50px;
+}
+.header-user-name-icon {
+    transform: scale(1,-1);
+    margin: 22px 0 0 5px;
+    width: 8px;
+}
+.header-popup-close {
+    display: none;
+}
+.header-popup-open {
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    position: absolute;
+    right: 20px;
+    padding: 10px 40px;
+    top: 45px;
+    text-align: center;
+}
+.header-button-sign-out {
+    border: none;
+    background: transparent;
+    outline: none;
+}
+.header-button-sign-out:hover {
+    cursor: pointer;
+}

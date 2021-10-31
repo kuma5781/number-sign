@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { auth } from '../../firebase';
-import { useAuthContext } from '../context/AuthContext';
+import { auth } from '../../../firebase';
+import { useAuthContext } from '../../components/context/AuthContext';
 import './RequestError.css';
 
 const TopError: React.FC = () => {
