@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
-import RequestError from '../requestError/RequestError';
+import { useAuthContext } from '../components/context/AuthContext';
+import RequestError from '../pages/requestError/RequestError';
 
 // PrivateRoute: ログイン済みのユーザが入れるページ
 const PrivateRoute: React.FC<{

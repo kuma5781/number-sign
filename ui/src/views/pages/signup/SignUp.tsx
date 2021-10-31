@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 import './SignUp.css';
 
 const SignUp: React.FC = () => {
@@ -40,27 +40,30 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>ユーザ登録</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>メールアドレス</label>
-          <input name="email" type="email" placeholder="email" />
-        </div>
-        <div>
-          <label>パスワード</label>
-          <input name="password" type="password" placeholder="password" />
-        </div>
-        <div>
-          <button>登録</button>
-        </div>
-        <div>
-          ユーザ登録済の場合は
-          <Link to="/login">こちら</Link>
-          から
-        </div>
-      </form>
+    <div className="sign-up-container">
+      <div className="sign-up-inner-container">
+        <form onSubmit={handleSubmit}>
+          <div className="sign-up-box-email">
+            <label htmlFor="email" className="sign-up-label-email">メールアドレス</label>
+            <input id="email" className="sign-up-input-email" name="email" type="email" />
+          </div>
+          <div className="sign-up-box-password">
+            <label htmlFor="password" className="sign-up-label-password">パスワード</label>
+            <input id="password" className="sign-up-input-password" name="password" type="password" />
+          </div>
+          <p className="sign-up-box-error">
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+          </p>
+          <div className="sign-up-box-button">
+            <button className="sign-up-button">アカウント登録</button>
+          </div>
+          <div className="sign-up-box-to-login">
+            <Link to="/login" className="sign-up-box-to-login-link">
+              <span>アカウント登録お済みの方はこちら</span>
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../components/context/AuthContext';
 
 // PublicRoute: 未ログインユーザでも入れるページ
 const PublicRoute: React.FC<{
