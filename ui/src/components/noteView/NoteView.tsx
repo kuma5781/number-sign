@@ -4,14 +4,11 @@ import marked from 'marked';
 import './NoteView.css';
 import './Markdown.css';
 import Side from '../side/Side';
-import { useAuthContext } from '../context/AuthContext';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
 const NoteView: React.FC = () => {
   const { noteId } = useParams<{noteId: string}>();
-  const userId = 1;
-  const { userInfo } = useAuthContext() || {};
   const [title, setTitle] = useState('');
   const [markdown, setMarkdown] = useState('');
   useLayoutEffect(() => {
