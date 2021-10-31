@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import marked from 'marked';
 import './NoteEditer.css';
@@ -26,14 +26,14 @@ const NoteEditer: React.FC = () => {
       })
       .catch((err) => console.error(err));
   }, [noteId]);
-  const updateMarkdown = async (event: any) => {
+  const updateMarkdown = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMarkdown(event.target.value);
     setIsSaved(false);
   };
 
-  const noteSubmit = async (event: any) => {
+  const noteSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { editTitle, editContent } = event.target.elements;
+    const { editTitle, editContent } = event.currentTarget;
     fetch(`${backendUrl}/note/title-and-content/${noteId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -41,16 +41,19 @@ const NoteEditer: React.FC = () => {
       method: 'PUT',
       body: JSON.stringify({ title: editTitle.value, content: editContent.value }),
     }).then((response) => {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1;
-      const date = now.getDate();
-      const hour = now.getHours();
-      const min = now.getMinutes();
-      const sec = now.getSeconds();
-      const msec = now.getMilliseconds();
-      setSavedMessage(`保存しました[${year}年${month}月${date}日 ${hour}:${min}:${sec}:${msec}]`);
-      console.log(response);
+      if (response.ok) {
+        const currentTime = new Date();
+        const year = currentTime.getFullYear();
+        const month = currentTime.getMonth() + 1;
+        const date = currentTime.getDate();
+        const hour = currentTime.getHours();
+        const min = currentTime.getMinutes();
+        const sec = currentTime.getSeconds();
+        const msec = currentTime.getMilliseconds();
+        setSavedMessage(`保存しました[${year}年${month}月${date}日 ${hour}:${min}:${sec}:${msec}]`);
+      } else {
+        console.error(response);
+      }
     }).catch((err) => console.error(err));
     setIsSaved(true);
   };
