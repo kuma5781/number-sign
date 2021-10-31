@@ -47,9 +47,9 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     // buttonをオプションなしでもOK
     'react/button-has-type': 'off',
-    // typescriptでReactのimportを許可
+    // typescriptでReactのimportを許可, valiables:falseは後方で宣言した変数を利用可能
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     // named exportを許可
     'import/prefer-default-export': 'off',
     //

@@ -2,7 +2,7 @@ import React, {
   createContext, useState, useContext, useEffect,
 } from 'react';
 import firebase from 'firebase/compat/app';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
