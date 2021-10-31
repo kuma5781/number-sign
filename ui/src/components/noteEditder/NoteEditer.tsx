@@ -10,6 +10,7 @@ const NoteEditer: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [markdown, setMarkdown] = useState('');
+  const [isSaved, setIsSaved] = useState(true);
   const [savedMessage, setSavedMessage] = useState('');
   useLayoutEffect(() => {
     fetch(`${backendUrl}/note/${noteId}`, {
@@ -22,6 +23,10 @@ const NoteEditer: React.FC = () => {
       })
       .catch((err) => console.error(err));
   }, [noteId]);
+  const updateMarkdown = async (event: any) => {
+    setMarkdown(event.target.value);
+    setIsSaved(false);
+  };
   const noteSubmit = async (event: any) => {
     event.preventDefault();
     const { editTitle, editContent } = event.target.elements;
@@ -43,6 +48,14 @@ const NoteEditer: React.FC = () => {
       setSavedMessage(`保存しました[${year}年${month}月${date}日 ${hour}:${min}:${sec}:${msec}]`);
       console.log(response);
     }).catch((err) => console.error(err));
+    setIsSaved(true);
+  };
+  window.onbeforeunload = function confirm(event) {
+    if (!isSaved) {
+      return 'ok?';
+    }
+    event.preventDefault();
+    return null;
   };
   return (
     <div className="main">
@@ -57,7 +70,7 @@ const NoteEditer: React.FC = () => {
               name="editContent"
               className="input-content"
               defaultValue={content}
-              onChange={(e) => setMarkdown(e.target.value)}
+              onChange={(e) => updateMarkdown(e)}
             />
           </div>
           <div className="noteediter-footer">
