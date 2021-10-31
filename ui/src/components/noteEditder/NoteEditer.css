@@ -1,17 +1,17 @@
-.main {
+.noteediter-main {
   overflow: hidden;
 }
-.editer {
+.noteediter-editer {
   float: left;
   width: 50%;
 }
-.input-title {
+.noteediter-input-title {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-size: 24px;
   padding: 1px 2px;
   width: calc(100% - 8px);
 }
-.input-content {
+.noteediter-input-content {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   height: calc(100vh - 86px);
   padding: 1px 2px;
@@ -48,7 +48,7 @@
 .noteediter-save-button:hover {
   background-color: #0075b9;
 }
-.preview {
+.noteediter-preview {
   border-left: 1px solid #ddd;
   float: left;
   height: calc(100vh - 48px);

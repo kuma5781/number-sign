@@ -63,17 +63,17 @@ const NoteEditer: React.FC = () => {
   };
 
   return (
-    <div className="main">
-      <div className="editer">
+    <div className="noteediter-main">
+      <div className="noteediter-editer">
         <form onSubmit={noteSubmit}>
           <div>
-            <input name="editTitle" type="text" className="input-title" defaultValue={title} placeholder="" />
+            <input name="editTitle" type="text" className="noteediter-input-title" defaultValue={title} placeholder="" />
           </div>
           <div>
             <textarea
               id="content"
               name="editContent"
-              className="input-content"
+              className="noteediter-input-content"
               defaultValue={content}
               onChange={(e) => updateMarkdown(e)}
             />
@@ -85,7 +85,7 @@ const NoteEditer: React.FC = () => {
           </div>
         </form>
       </div>
-      <div className="preview markdown">
+      <div className="noteediter-preview markdown">
         <span dangerouslySetInnerHTML={{ __html: marked(markdown) }} />
       </div>
     </div>

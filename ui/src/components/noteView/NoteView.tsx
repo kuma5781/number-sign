@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import marked from 'marked';
 import './NoteView.css';
+import './Markdown.css';
 import Side from '../side/Side';
 import { useAuthContext } from '../context/AuthContext';
 
