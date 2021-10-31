@@ -54,7 +54,7 @@ const Header: React.FC = () => {
           { userInfo.name && (
           <button onClick={openButtonClickHandler} className="header-box-user-info" ref={buttonRef}>
             <div className="header-user-name-text">{userInfo.name}</div>
-            <img className="header-user-name-icon" src={`${process.env.PUBLIC_URL}/img/iconmonstr-triangle-3.svg`} alt="" />
+            <img className="header-user-name-icon" src={`${process.env.PUBLIC_URL}/img/triangle.svg`} alt="" />
           </button>
           )}
         </div>

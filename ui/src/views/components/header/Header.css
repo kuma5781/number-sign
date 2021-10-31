@@ -5,11 +5,13 @@
 p {
     margin: 0;
 }
+button {
+    padding: 0;
+}
 .header-container {
     position: relative;
     border-bottom: 1px solid #000;
     box-shadow: 4px 4px 4px rgb(191, 190, 190);
-    padding: 5px 0;
 }
 .header-inner-container {
     display: flex;
@@ -18,8 +20,8 @@ p {
 }
 .header-subject {
     font-family: 'BebasNeus';
-    font-size: 40px;
-    padding-top: 5px;
+    font-size: 35px;
+    padding-top: 7px;
 }
 .header-subject-to-top {
     color:#000;
@@ -31,9 +33,12 @@ p {
     outline: none;
     display: flex;
 }
+.header-box-user-info:hover {
+    cursor: pointer;
+}
 .header-user-name-text {
     font-size: 20px;
-    line-height: 53px;
+    line-height: 50px;
 }
 .header-user-name-icon {
     transform: scale(1,-1);
@@ -57,4 +62,7 @@ p {
     border: none;
     background: transparent;
     outline: none;
+}
+.header-button-sign-out:hover {
+    cursor: pointer;
 }
