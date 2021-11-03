@@ -47,21 +47,6 @@ object DBAccessor {
     connect(executeSql)
   }
 
-  // 実行&最後にinsertしたレコードを返す
-  def executeAndSelectRecord[T](sqlInsert: String, sqlSelect: Int => String, getRecord: ResultSet => T): Try[T] = {
-    val executeSql = (stmt: Statement) => {
-      stmt.executeUpdate(sqlInsert)
-      val rsInsert = stmt.executeQuery("select LAST_INSERT_ID()")
-      if (rsInsert.next) {
-        val insertId = rsInsert.getInt("LAST_INSERT_ID()")
-        val rsSelect = stmt.executeQuery(sqlSelect(insertId))
-        if (rsSelect.next) getRecord(rsSelect)
-        else throw new Exception("Not found record")
-      } else throw new Exception("Not found LAST_INSERT_ID()")
-    }
-    connect(executeSql)
-  }
-
   // insert, update, deleteの実行
   def execute(sql: String): Try[Int] = {
     val executeSql = (stmt: Statement) => stmt.executeUpdate(sql)

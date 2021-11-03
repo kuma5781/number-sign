@@ -65,7 +65,8 @@ class UserServiceSpec extends PlaySpec with MockitoSugar {
       userRepository.findBy(email1) returns Failure(exception)
 
       val newUser = NewUser(userName1, email1)
-      userRepository.saveAndFind(newUser) returns Success(user1)
+      userRepository.saveAndGetUserId(newUser) returns Success(userId1)
+      userRepository.findBy(userId1) returns Success(user1)
 
       userService.findBy(email1) mustBe Success(user1)
     }

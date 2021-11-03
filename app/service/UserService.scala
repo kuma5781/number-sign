@@ -16,7 +16,14 @@ class UserService(userRepository: UserRepository = new UserRepository) {
       case Success(user) => Success(user)
       case Failure(e) if e.toString == "java.lang.Exception: Not found record" =>
         val newUser = NewUser(UserName.generateFrom(email), email)
-        userRepository.saveAndFind(newUser)
+        userRepository.saveAndGetUserId(newUser) match {
+          case Success(savedUserId) =>
+            userRepository.findBy(savedUserId) match {
+              case Success(user) => Success(user)
+              case Failure(e) => Failure(e)
+            }
+          case Failure(e) => Failure(e)
+        }
       case Failure(e) => Failure(e)
     }
 

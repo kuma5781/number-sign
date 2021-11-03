@@ -94,16 +94,16 @@ class UserRepositorySpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  "#saveAndFind" should {
+  "#saveAndGetFolderId" should {
     "return Success" in new Context {
-      userDao.insertAndSelect(newUserDto1) returns Success(userDto1)
-      userRepository.saveAndFind(newUser1) returns Success(user1)
+      userDao.insertAndGetId(newUserDto1) returns Success(userIdDto1)
+      userRepository.saveAndGetUserId(newUser1) mustBe Success(userId1)
     }
 
     "return Exception" in new Context {
       val exception = new Exception("DB connection error")
-      userDao.insertAndSelect(newUserDto1) returns Failure(exception)
-      userRepository.saveAndFind(newUser1) returns Failure(exception)
+      userDao.insertAndGetId(newUserDto1) returns Failure(exception)
+      userRepository.saveAndGetUserId(newUser1) mustBe Failure(exception)
     }
   }
 

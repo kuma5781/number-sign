@@ -103,17 +103,17 @@ class UserDaoSpec extends PlaySpec {
     }
   }
 
-  "#insertAndSelect" should {
-    "insert user record and return last inserted record" in new Context {
+  "#insertAndGetId" should {
+    "insert user record and return last inserted id" in new Context {
       DBSupport.dbTest(
         tableName, {
-          val resultUserDto = userDao.insertAndSelect(newUserDto1)
+          val userId = userDao.insertAndGetId(newUserDto1).get
 
           val userDtos = DBAccessor.selectRecords(selectAllSql, userDto).get
 
-          resultUserDto.get.id mustBe userDtos(0).id
-          resultUserDto.get.name mustBe userDtos(0).name
-          resultUserDto.get.email mustBe userDtos(0).email
+          userDtos(0).id mustBe userId
+          userDtos(0).name mustBe userName1
+          userDtos(0).email mustBe email1
         }
       )
     }

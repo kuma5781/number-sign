@@ -26,12 +26,12 @@ class UserRepository(userDao: UserDao = new UserDao) {
     userDao.insert(newUserDto)
   }
 
-  def saveAndFind(newUser: NewUser): Try[User] = {
+  def saveAndGetUserId(newUser: NewUser): Try[UserId] = {
     val newUserDto = NewUserDto(
       newUser.name.value,
       newUser.email.value
     )
-    userDao.insertAndSelect(newUserDto).map(User(_))
+    userDao.insertAndGetId(newUserDto).map(UserId)
   }
 
   def updateName(userId: UserId, userName: UserName): Try[Int] =
