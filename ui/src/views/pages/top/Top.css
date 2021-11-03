@@ -1,0 +1,13 @@
+.top-box-text {
+    padding: 100px 0 0 400px;
+}
+.top-text-hello {
+    margin-left: 5px;
+}
+.top-box-text p {
+    margin-bottom: 10px;
+}
+.top-box-text p:first-child {
+    margin-bottom: 20px;
+}
+
