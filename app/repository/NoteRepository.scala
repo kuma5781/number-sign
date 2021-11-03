@@ -1,12 +1,26 @@
 package repository
 
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, NoteStatus, Title }
+import cats.syntax.traverse._
 import domain.`object`.note.NewNote.NewNoteDto
+import domain.`object`.note._
+import domain.`object`.user.UserId
 import repository.dao.NoteDao
 
-import scala.util.Try
+import scala.util.{ Failure, Success, Try }
 
 class NoteRepository(noteDao: NoteDao = new NoteDao) {
+
+  def findBy(noteId: NoteId): Try[Note] =
+    noteDao
+      .selectBy(noteId.value)
+      .flatMap(Note(_).fold[Try[Note]](Failure(new Exception("Failed to get Note")))(Success(_)))
+
+  def findAllBy(userId: UserId): Try[Seq[Note]] =
+    noteDao.selectAllByUserId(userId.value).flatMap { dtos =>
+      dtos
+        .map(Note(_).fold[Try[Note]](Failure(new Exception("Failed to get Note")))(Success(_)))
+        .sequence
+    }
 
   def saveAndGetNoteId(newNote: NewNote): Try[NoteId] = {
     val newNoteDto = NewNoteDto(

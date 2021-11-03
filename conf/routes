@@ -21,6 +21,9 @@ PUT    /user/name/:userId              controllers.UserController.updateName(use
 # ユーザを削除
 DELETE /user/:userId                   controllers.UserController.remove(userId: Int)
 
+# ノートを1件取得
+GET    /note/:noteId                   controllers.NoteController.show(noteId: Int)
+
 # ノートを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "title": {タイトル}, "content": {内容}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /note                           controllers.NoteController.save()
 
@@ -33,11 +36,14 @@ PUT    /note/trash/:noteId             controllers.NoteController.trash(noteId: 
 # ノートをゴミ箱から戻す
 PUT    /note/activate/:noteId          controllers.NoteController.activate(noteId: Int)
 
+# 特定のユーザのactiveなフォルダとノートをすべて返す
+GET   /folder/:userId                  controllers.FolderController.showAllBy(userId: Int)
+
 # フォルダを登録 (必要なリクエストボディ: {"user_id": {ユーザID}, "name": {フォルダ名}, "parent_folder_id": {親フォルダID}} ※parent_folder_idはオプション)
 POST   /folder                         controllers.FolderController.save()
 
 # フォルダ名を更新 (必要なリクエストボディ: {"name": {フォルダ名}})
-PUT   /folder/name/:folderId          controllers.FolderController.updateName(folderId: Int)
+PUT   /folder/name/:folderId           controllers.FolderController.updateName(folderId: Int)
 
 # フォルダを削除
 DELETE /folder/:folderId               controllers.FolderController.remove(folderId: Int)

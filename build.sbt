@@ -21,7 +21,8 @@ libraryDependencies ++= Seq(
   "org.powermock" % "powermock-core" % "2.0.0-RC.4" % "test",
   "org.powermock" % "powermock-module-junit4" % "2.0.0-beta.5" % "test",
   "org.powermock" % "powermock-api-mockito2" % "2.0.0-beta.5" % "test",
-  "com.novocode" % "junit-interface" % "0.10" % "test->default"
+  "com.novocode" % "junit-interface" % "0.10" % "test->default",
+  "org.typelevel" %% "cats-core" % "2.3.0"
 )
 
 // Adds additional packages into Twirl
