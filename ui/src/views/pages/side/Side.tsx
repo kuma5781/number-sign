@@ -18,6 +18,31 @@ const folderOpenToggle = async (event: any) => {
   childFoldersBox?.classList.toggle('side-child-folder-box-close');
 };
 
+// フォルダメニューを開く
+const openMenu = async (event: any) => {
+  event.preventDefault();
+  let { target } = event;
+  while (!target.id.match(/folder_box/)) {
+    target = target.parentNode;
+  }
+  const openedMenus = document.querySelectorAll('.side-folder-menu.side-folder-menu-open');
+  openedMenus.forEach((menu) => {
+    menu?.classList.remove('side-folder-menu-open');
+  });
+  const folderMenu = document.querySelector(`#${target.id} .side-folder-menu`);
+  folderMenu?.classList.add('side-folder-menu-open');
+};
+
+// 開いているフォルダメニュー以外がクリックされたとき, フォルダメニューを閉じる
+document.addEventListener('click', (e: any) => {
+  if (!e.target.closest('.side-folder-menu.side-folder-menu-open')) {
+    const openedMenus = document.querySelectorAll('.side-folder-menu.side-folder-menu-open');
+    openedMenus.forEach((menu) => {
+      menu?.classList.remove('side-folder-menu-open');
+    });
+  }
+});
+
 const Side: React.FC = () => {
   const { userInfo } = useAuthContext() || {};
   // TODO: any型を使わない
@@ -31,6 +56,7 @@ const Side: React.FC = () => {
     const folderNameBox = document.createElement('div');
     folderNameBox.classList.add('side-folder-name-box');
     folderNameBox.onclick = folderOpenToggle;
+    folderNameBox.oncontextmenu = openMenu;
     folderBox.appendChild(folderNameBox);
 
     // 矢印画像
@@ -52,6 +78,19 @@ const Side: React.FC = () => {
     folderName.classList.add('side-folder-name');
     folderName.textContent = folder.name;
     folderNameBox.appendChild(folderName);
+
+    // フォルダメニュー
+    const folderMenu = document.createElement('div');
+    folderMenu.classList.add('side-folder-menu');
+    folderBox.appendChild(folderMenu);
+
+    const newNote = document.createElement('button');
+    newNote.textContent = '新しいノート';
+    folderMenu.appendChild(newNote);
+
+    const newFolder = document.createElement('button');
+    newFolder.textContent = '新しいフォルダ';
+    folderMenu.appendChild(newFolder);
 
     // 子フォルダ, 子ノートを格納する要素
     const childFoldersBox = document.createElement('div');

@@ -45,6 +45,12 @@
   -moz-user-select: none;
   -ms-user-select: none;
 }
+.side-folder-menu {
+  display: none;
+}
+.side-folder-menu-open {
+  display: block;
+}
 .side-note {
   height: 12px;
   margin: 9px 0 0 0;

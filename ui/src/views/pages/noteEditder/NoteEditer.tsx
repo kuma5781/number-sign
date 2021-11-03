@@ -47,9 +47,9 @@ const NoteEditer: React.FC = () => {
         const month = currentTime.getMonth() + 1;
         const date = currentTime.getDate();
         const hour = currentTime.getHours();
-        const min = currentTime.getMinutes();
-        const sec = currentTime.getSeconds();
-        const msec = currentTime.getMilliseconds();
+        const min = (`00${currentTime.getMinutes()}`).slice(-2);
+        const sec = (`00${currentTime.getSeconds()}`).slice(-2);
+        const msec = (`000${currentTime.getMilliseconds()}`).slice(-3);
         setSavedMessage(`保存しました[${year}年${month}月${date}日 ${hour}:${min}:${sec}:${msec}]`);
       } else {
         console.error(response);
