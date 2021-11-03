@@ -4,7 +4,7 @@ import { auth } from '../../../firebase';
 import { useAuthContext } from '../../components/context/AuthContext';
 import './RequestError.css';
 
-const TopError: React.FC = () => {
+const RequestError: React.FC = () => {
   const history = useHistory();
   const handleLogout = () => {
     auth.signOut();
@@ -21,4 +21,4 @@ const TopError: React.FC = () => {
   );
 };
 
-export default TopError;
+export default RequestError;
