@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import marked from 'marked';
 import './NoteView.css';
 import './Markdown.css';
-import Side from '../side/Side';
+import Side from '../../components/side/Side';
 import Header from '../../components/header/Header';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;

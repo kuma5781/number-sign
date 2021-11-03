@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { useAuthContext } from '../../components/context/AuthContext';
+import { useAuthContext } from '../context/AuthContext';
 import './Side.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
@@ -138,7 +138,7 @@ const Side: React.FC = () => {
     }
   };
   const createSide = async (folders: never[], notes: never[]) => {
-    document.getElementById('notes')!.innerHTML = '';
+    (document.getElementById('notes') as HTMLElement).innerHTML = '';
     folders.forEach((folder) => {
       addFolderElment(folder);
     });

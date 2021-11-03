@@ -1,4 +1,9 @@
-import React, { useLayoutEffect, useState, FormEvent } from 'react';
+import React, {
+  useLayoutEffect,
+  useState,
+  FormEvent,
+  ChangeEvent,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import marked from 'marked';
 import './NoteEditer.css';
@@ -26,7 +31,7 @@ const NoteEditer: React.FC = () => {
       })
       .catch((err) => console.error(err));
   }, [noteId]);
-  const updateMarkdown = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const updateMarkdown = async (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMarkdown(event.target.value);
     setIsSaved(false);
   };

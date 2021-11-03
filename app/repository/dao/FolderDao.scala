@@ -31,7 +31,7 @@ class FolderDao {
          |left join $relayFoldersTableName as rf
          |on f.id = rf.folder_id
          |where user_id = $userId
-			""".stripMargin
+      """.stripMargin
     DBAccessor.selectRecords(sql, folderDto)
   }
 
