@@ -2,7 +2,8 @@ package controllers
 
 import domain.`object`.folder.FolderId
 import domain.`object`.note.NewNote.NewNoteDto
-import domain.`object`.note.{ NewNote, NoteContent, NoteId, Title }
+import domain.`object`.note.NoteStatus.Active
+import domain.`object`.note._
 import domain.`object`.user.UserId
 import org.powermock.reflect.Whitebox
 import org.scalatestplus.mockito.MockitoSugar
@@ -12,7 +13,7 @@ import play.api.http.Status.{ BAD_REQUEST, OK }
 import play.api.libs.functional.syntax.{ toFunctionalBuilderOps, unlift }
 import play.api.libs.json.{ JsObject, JsPath, Json, Writes }
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{ contentAsString, defaultAwaitTimeout, status, stubControllerComponents, POST, PUT }
+import play.api.test.Helpers.{ contentAsString, defaultAwaitTimeout, status, stubControllerComponents, GET, POST, PUT }
 import service.NoteService
 
 import scala.util.{ Failure, Success }
@@ -31,6 +32,8 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
     val userId1 = UserId(1)
     val title1 = Title("title1")
     val content1 = NoteContent("content1")
+    val status1 = Active
+    val note1 = Note(noteId1, userId1, title1, content1, status1, None)
     val newNote1 = NewNote(userId1, title1, content1, None)
 
     val noteIdDto2 = 2
@@ -66,6 +69,27 @@ class NoteControllerSpec extends PlaySpec with MockitoSugar {
         "title" -> titleAndContent.title.value,
         "content" -> titleAndContent.content.value
       )
+    }
+  }
+
+  "#show" should {
+    "return Json phased Note" in new Context {
+      noteService.findBy(noteId1) returns Success(note1)
+
+      val home = noteController.show(noteIdDto1).apply(FakeRequest(GET, s"/user/$noteIdDto1"))
+
+      status(home) mustBe OK
+      contentAsString(home) mustBe "{\"id\":1,\"user_id\":1,\"title\":\"title1\",\"content\":\"content1\",\"status\":\"active\"}"
+    }
+
+    "return BadRequest" in new Context {
+      val exception = new Exception("DB connection error")
+      noteService.findBy(noteId1) returns Failure(exception)
+
+      val home = noteController.show(noteIdDto1).apply(FakeRequest(GET, s"/user/$noteIdDto1"))
+
+      status(home) mustBe BAD_REQUEST
+      contentAsString(home) mustBe exception.toString
     }
   }
 

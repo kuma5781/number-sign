@@ -1,0 +1,58 @@
+.noteediter-main {
+  overflow: hidden;
+}
+.noteediter-editer {
+  float: left;
+  width: 50%;
+}
+.noteediter-input-title {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 24px;
+  padding: 1px 2px;
+  width: calc(100% - 8px);
+}
+.noteediter-input-content {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  height: calc(100vh - 86px - 51px);
+  padding: 1px 2px;
+  resize: none;
+  width: calc(100% - 6px);
+}
+.noteediter-footer {
+  background-color: #F5F5F5;
+  bottom: 0;
+  left: 0;
+  height: 48px;
+  position: fixed;
+  width: 100%;
+}
+.noteediter-to-view-link,
+.noteediter-save-button {
+  background-color: #00A3FF;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  float: right;
+  font-size: 16px;
+  margin: 7px 15px 0 0;
+  padding: 5px 18px;
+  text-decoration: none;
+}
+.noteediter-saved-message {
+  float: right;
+  margin: 15px 15px 0 0;
+}
+.noteediter-to-view-link:hover,
+.noteediter-save-button:hover {
+  background-color: #0075b9;
+}
+.noteediter-preview {
+  border-left: 1px solid #ddd;
+  float: left;
+  height: calc(100vh - 48px - 51px);
+  overflow: auto;
+  padding: 0 10px;
+  width: calc(50% - 21px);
+}

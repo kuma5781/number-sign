@@ -1,0 +1,19 @@
+.noteview-main {
+  height: calc(100vh - 51px);
+  overflow: auto;
+  padding: 0 10px;
+}
+.noteview-edit-link {
+  background-color: #eee;
+  border: #ccc 1px solid;
+  border-radius: 50%;
+  position: fixed;
+  top: 65px;
+  right: 25px;
+  width: 30px;
+  height: 30px;
+}
+.noteview-pencil {
+  padding: 7px 0 0 7px;
+  width: 16px;
+}

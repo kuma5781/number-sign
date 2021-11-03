@@ -12,25 +12,54 @@ class FolderDaoSpec extends PlaySpec {
   trait Context {
     val folderDao = new FolderDao
     val tableName = "folder"
+    val relayFoldersTableName = "relay_folders"
 
-    val userId1 = 1
+    val userId = 1
     val name1 = "name1"
-    val newFolderDto1 = NewFolderDto(userId1, name1, None)
+    val parentFolderId1 = 1
+    val newFolderDto1 = NewFolderDto(userId, name1, None)
 
-    val userId2 = 2
     val name2 = "name2"
-    val newFolderDto2 = NewFolderDto(userId2, name2, None)
+    val newFolderDto2 = NewFolderDto(userId, name2, None)
 
     val folderDto = (rs: ResultSet) => {
       val id = rs.getInt("id")
       val userId = rs.getInt("user_id")
       val name = rs.getString("name")
-      FolderDto(id, userId, name)
+      FolderDto(id, userId, name, None)
     }
 
     val selectAllSql = s"select * from $tableName"
-    val insertSql = (newFolderDto: NewFolderDto) =>
-      s"insert into $tableName (user_id, name) values ('${newFolderDto.userId}', '${newFolderDto.name}')"
+    val insertFolderSql = (newFolderDto: NewFolderDto) =>
+      s"insert into $tableName (user_id, name) values (${newFolderDto.userId}, '${newFolderDto.name}')"
+    val insertRelayFoldersSql = (folderId: Int, parentFolderId: Int) =>
+      s"insert into $relayFoldersTableName (folder_id, parent_folder_id) values ($folderId, $parentFolderId)"
+  }
+
+  "#selectAllByUserId" should {
+    "return all folder record associated with userId" in new Context {
+      DBSupport.dbTest(
+        Seq(tableName, relayFoldersTableName), {
+          DBAccessor.execute(insertFolderSql(newFolderDto1))
+          DBAccessor.execute(insertFolderSql(newFolderDto2))
+
+          val folderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
+          val folderId = folderDtos(0).id
+
+          DBAccessor.execute(insertRelayFoldersSql(folderId, parentFolderId1))
+
+          val selectFolderDtos = folderDao.selectAllByUserId(userId).get
+
+          selectFolderDtos.length mustBe 2
+          selectFolderDtos(0).userId mustBe userId
+          selectFolderDtos(0).name mustBe name1
+          selectFolderDtos(0).parentFolderId mustBe Some(parentFolderId1)
+          selectFolderDtos(1).userId mustBe userId
+          selectFolderDtos(1).name mustBe name2
+          selectFolderDtos(1).parentFolderId mustBe None
+        }
+      )
+    }
   }
 
   "#insertAndGetId" should {
@@ -42,7 +71,7 @@ class FolderDaoSpec extends PlaySpec {
           val folderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
 
           folderDtos(0).id mustBe folderId
-          folderDtos(0).userId mustBe userId1
+          folderDtos(0).userId mustBe userId
           folderDtos(0).name mustBe name1
         }
       )
@@ -53,7 +82,7 @@ class FolderDaoSpec extends PlaySpec {
     "update folder name associated with folderIds" in new Context {
       DBSupport.dbTest(
         tableName, {
-          DBAccessor.execute(insertSql(newFolderDto1))
+          DBAccessor.execute(insertFolderSql(newFolderDto1))
           val beforeFolderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
 
           beforeFolderDtos(0).name mustBe name1
@@ -73,8 +102,8 @@ class FolderDaoSpec extends PlaySpec {
     "delete folder records associated with folderIds" in new Context {
       DBSupport.dbTest(
         tableName, {
-          DBAccessor.execute(insertSql(newFolderDto1))
-          DBAccessor.execute(insertSql(newFolderDto2))
+          DBAccessor.execute(insertFolderSql(newFolderDto1))
+          DBAccessor.execute(insertFolderSql(newFolderDto2))
           val beforeFolderDtos = DBAccessor.selectRecords(selectAllSql, folderDto).get
 
           beforeFolderDtos.length mustBe 2
