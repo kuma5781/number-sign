@@ -37,10 +37,9 @@ class UserDao {
     DBAccessor.execute(sql)
   }
 
-  def insertAndSelect(newUserDto: NewUserDto): Try[UserDto] = {
-    val sqlInsert = s"insert into $tableName (name, email) values ('${newUserDto.name}', '${newUserDto.email}')"
-    val sqlSelect = (userId: Int) => s"select * from $tableName where id = $userId"
-    DBAccessor.executeAndSelectRecord(sqlInsert, sqlSelect, userDto)
+  def insertAndGetId(newUserDto: NewUserDto): Try[Int] = {
+    val sql = s"insert into $tableName (name, email) values ('${newUserDto.name}', '${newUserDto.email}')"
+    DBAccessor.executeAndGetId(sql)
   }
 
   def updateName(userId: Int, userName: String): Try[Int] = {
