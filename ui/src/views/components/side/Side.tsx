@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { useAuthContext } from '../../components/context/AuthContext';
+import { useAuthContext } from '../context/AuthContext';
 import './Side.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
