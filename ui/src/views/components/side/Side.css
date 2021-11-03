@@ -8,6 +8,9 @@
 .side-workspace-title {
   margin: 7px 0 0 5px;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .side-notes {
   padding: 7px;
@@ -50,6 +53,16 @@
 }
 .side-folder-menu-open {
   display: block;
+}
+.side-new-note-form {
+  padding-left: 19px;
+  display: none;
+}
+.side-new-note-form-open {
+  display: block;
+}
+.side-input-note-title {
+  margin-left: 6px;
 }
 .side-note {
   height: 12px;

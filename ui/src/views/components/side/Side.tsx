@@ -1,50 +1,98 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import './Side.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL as string;
 
-// TODO: any型を使わない
-// フォルダを開いたり閉じたりする
-const folderOpenToggle = async (event: any) => {
-  event.preventDefault();
-  let { target } = event;
-  while (!target.id.match(/folder_box/)) {
-    target = target.parentNode;
-  }
-  const allowImg = document.querySelector(`#${target.id} .side-allow`);
-  allowImg?.classList.toggle('side-allow-close');
-  const childFoldersBox = document.querySelector(`#${target.id} .side-child-folder-box`);
-  childFoldersBox?.classList.toggle('side-child-folder-box-close');
-};
+const Side: React.FC = () => {
+  const { userInfo } = useAuthContext() || {};
 
-// フォルダメニューを開く
-const openMenu = async (event: any) => {
-  event.preventDefault();
-  let { target } = event;
-  while (!target.id.match(/folder_box/)) {
-    target = target.parentNode;
-  }
-  const openedMenus = document.querySelectorAll('.side-folder-menu.side-folder-menu-open');
-  openedMenus.forEach((menu) => {
-    menu?.classList.remove('side-folder-menu-open');
-  });
-  const folderMenu = document.querySelector(`#${target.id} .side-folder-menu`);
-  folderMenu?.classList.add('side-folder-menu-open');
-};
+  // TODO: any型を使わない
+  // フォルダを開いたり閉じたりする
+  const folderOpenToggle = async (event: any) => {
+    event.preventDefault();
+    let { target } = event;
+    while (!target.id.match(/folder_box/)) {
+      target = target.parentNode;
+    }
+    const allowImg = document.querySelector(`#${target.id} .side-allow`);
+    allowImg?.classList.toggle('side-allow-close');
+    const childFoldersBox = document.querySelector(`#${target.id} .side-child-folder-box`);
+    childFoldersBox?.classList.toggle('side-child-folder-box-close');
+  };
 
-// 開いているフォルダメニュー以外がクリックされたとき, フォルダメニューを閉じる
-document.addEventListener('click', (e: any) => {
-  if (!e.target.closest('.side-folder-menu.side-folder-menu-open')) {
+  // フォルダメニューを開く
+  const openMenu = async (event: any) => {
+    event.preventDefault();
+    let { target } = event;
+    while (!target.id.match(/folder_box/)) {
+      target = target.parentNode;
+    }
     const openedMenus = document.querySelectorAll('.side-folder-menu.side-folder-menu-open');
     openedMenus.forEach((menu) => {
       menu?.classList.remove('side-folder-menu-open');
     });
-  }
-});
+    const folderMenu = document.querySelector(`#${target.id} .side-folder-menu`);
+    folderMenu?.classList.add('side-folder-menu-open');
+  };
 
-const Side: React.FC = () => {
-  const { userInfo } = useAuthContext() || {};
+  // ノート作成フォームを開く
+  const openNewNoteForm = async (event: any) => {
+    event.preventDefault();
+    let { target } = event;
+    while (!target.id.match(/folder_box/)) {
+      target = target.parentNode;
+    }
+    const folderMenu = document.querySelector(`#${target.id} .side-folder-menu`);
+    folderMenu?.classList.remove('side-folder-menu-open');
+    const newNoteForm = document.querySelector(`#${target.id} .side-new-note-form`);
+    newNoteForm?.classList.add('side-new-note-form-open');
+  };
+
+  document.addEventListener('click', (e: any) => {
+    // 開いているフォルダメニュー以外がクリックされたとき, フォルダメニューを閉じる
+    if (!e.target.closest('.side-folder-menu.side-folder-menu-open')) {
+      const openedMenus = document.querySelectorAll('.side-folder-menu.side-folder-menu-open');
+      openedMenus.forEach((menu) => {
+        menu?.classList.remove('side-folder-menu-open');
+      });
+    }
+    // 開いているノート作成フォーム以外がクリックされたとき, ノート作成フォームを閉じる
+    if (!e.target.closest('.side-new-note-form.side-new-note-form-open') && !e.target.closest('.side-open-new-note-form')) {
+      const openedForms = document.querySelectorAll('.side-new-note-form.side-new-note-form-open');
+      openedForms.forEach((form) => {
+        form?.classList.remove('side-new-note-form-open');
+      });
+    }
+  });
+
+  // エンターキー押下でノート作成
+  const createNote = async (event: any) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      const { parentFolderId, noteTitle } = event.target.parentNode;
+      fetch(`${backendUrl}/note`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: userInfo.id,
+          title: noteTitle.value,
+          content: '',
+          parent_folder_id: Number(parentFolderId.value),
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log(response);
+          getFoldersNotes();
+        } else {
+          console.error(response);
+        }
+      });
+    }
+  };
+
   // TODO: any型を使わない
   const addFolderElment = async (folder: any) => {
     // フォルダ要素
@@ -86,11 +134,38 @@ const Side: React.FC = () => {
 
     const newNote = document.createElement('button');
     newNote.textContent = '新しいノート';
+    newNote.classList.add('side-open-new-note-form');
+    newNote.onclick = openNewNoteForm;
     folderMenu.appendChild(newNote);
 
     const newFolder = document.createElement('button');
     newFolder.textContent = '新しいフォルダ';
     folderMenu.appendChild(newFolder);
+
+    // ノート作成フォーム
+    const newNoteForm = document.createElement('form');
+    newNoteForm.onsubmit = createNote;
+    newNoteForm.classList.add('side-new-note-form');
+    folderBox.appendChild(newNoteForm);
+
+    const noteImg = document.createElement('img');
+    noteImg.setAttribute('alt', 'note');
+    noteImg.setAttribute('src', `${process.env.PUBLIC_URL}/img/note.png`);
+    noteImg.classList.add('side-note');
+    newNoteForm.appendChild(noteImg);
+
+    const inputParentFolerId = document.createElement('input');
+    inputParentFolerId.name = 'parentFolderId';
+    inputParentFolerId.type = 'hidden';
+    inputParentFolerId.value = folder.id;
+    newNoteForm.appendChild(inputParentFolerId);
+
+    const inputNoteTitle = document.createElement('input');
+    inputNoteTitle.name = 'noteTitle';
+    inputNoteTitle.type = 'text';
+    inputNoteTitle.classList.add('side-input-note-title');
+    inputNoteTitle.onkeydown = createNote;
+    newNoteForm.appendChild(inputNoteTitle);
 
     // 子フォルダ, 子ノートを格納する要素
     const childFoldersBox = document.createElement('div');
@@ -117,7 +192,7 @@ const Side: React.FC = () => {
     noteLink.classList.add('side-note-link');
     noteBox.appendChild(noteLink);
 
-    // フォルダ画像
+    // ノート画像
     const noteImg = document.createElement('img');
     noteImg.setAttribute('alt', 'note');
     noteImg.setAttribute('src', `${process.env.PUBLIC_URL}/img/note.png`);
@@ -146,7 +221,9 @@ const Side: React.FC = () => {
       addNoteElment(note);
     });
   };
-  useLayoutEffect(() => {
+
+  // ログイン中のユーザのフォルダとノートを全て取得して描画
+  const getFoldersNotes = async () => {
     fetch(`${backendUrl}/folder/${userInfo.id}`, {
       method: 'GET',
     }).then((response) => response.json())
@@ -155,7 +232,11 @@ const Side: React.FC = () => {
         createSide(folders, notes);
       })
       .catch((err) => console.error(err));
+  };
+  useLayoutEffect(() => {
+    getFoldersNotes();
   }, [userInfo.id]);
+
   return (
     <div id="side" className="side">
       <p className="side-workspace-title">{`${userInfo.name}さんのワークスペース`}</p>
