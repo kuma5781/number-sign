@@ -44,6 +44,87 @@ const Side: React.FC = () => {
     });
   };
 
+  // ワークスペース直下のノート作成フォームを開く
+  const openTopNewNoteForm = async (event: any) => {
+    event.preventDefault();
+    const folderMenu = document.getElementById('top_folder_menu');
+    folderMenu?.classList.remove('side-folder-menu-open');
+    const newNoteForm = document.getElementById('top_new_note_form');
+    newNoteForm?.classList.add('side-new-note-form-open');
+    const inputNoteTitle = document.getElementById('top_input_note_title') as HTMLInputElement;
+    inputNoteTitle.focus();
+  };
+
+  // ワークスペース直下のフォルダ作成フォームを開く
+  const openTopNewFolderForm = async (event: any) => {
+    event.preventDefault();
+    const folderMenu = document.getElementById('top_folder_menu');
+    folderMenu?.classList.remove('side-folder-menu-open');
+    const newFolderForm = document.getElementById('top_new_folder_form');
+    newFolderForm?.classList.add('side-new-folder-form-open');
+    const inputFolderName = document.getElementById('top_input_folder_name') as HTMLInputElement;
+    inputFolderName.focus();
+  };
+
+  // エンターキー押下でワークスペース直下のノート作成
+  const createTopNote = async (event: any) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      const { noteTitle } = event.target.parentNode;
+      fetch(`${backendUrl}/note`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: userInfo.id,
+          title: noteTitle.value,
+          content: '',
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log(response);
+          getFoldersNotes();
+          const newNoteForm = document.getElementById('top_new_note_form');
+          newNoteForm?.classList.remove('side-new-note-form-open');
+          const inputNoteTitle = document.getElementById('top_input_note_title') as HTMLInputElement;
+          inputNoteTitle.value = '';
+        } else {
+          console.error(response);
+        }
+      });
+    }
+  };
+
+  // エンターキー押下でワークスペース直下のフォルダ作成
+  const createTopFolder = async (event: any) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      const { folderName } = event.target.parentNode;
+      fetch(`${backendUrl}/folder`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: userInfo.id,
+          name: folderName.value,
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log(response);
+          getFoldersNotes();
+          const newFolderForm = document.getElementById('top_new_folder_form');
+          newFolderForm?.classList.remove('side-new-folder-form-open');
+          const inputFolderName = document.getElementById('top_input_folder_name') as HTMLInputElement;
+          inputFolderName.value = '';
+        } else {
+          console.error(response);
+        }
+      });
+    }
+  };
+
   // フォルダメニューを開く
   const openMenu = async (event: any) => {
     event.preventDefault();
@@ -359,17 +440,17 @@ const Side: React.FC = () => {
     <div id="side" className="side">
       <p className="side-workspace-title" onContextMenu={openTopMenu}>{`${userInfo.name}さんのワークスペース`}</p>
       <div id="top_folder_menu" className="side-folder-menu side-top-folder-menu">
-        <button className="side-open-new-note-form">新しいノート</button>
-        <button className="side-open-new-folder-form">新しいフォルダ</button>
+        <button className="side-open-new-note-form" onClick={openTopNewNoteForm}>新しいノート</button>
+        <button className="side-open-new-folder-form" onClick={openTopNewFolderForm}>新しいフォルダ</button>
       </div>
-      <form className="side-new-note-form side-top-new-note-form">
+      <form id="top_new_note_form" className="side-new-note-form side-top-new-note-form">
         <img alt="note" src="/img/note.png" className="side-note" />
-        <input name="noteTitle" type="text" className="side-input-note-title" />
+        <input id="top_input_note_title" name="noteTitle" type="text" className="side-input-note-title" onKeyDown={createTopNote} />
       </form>
-      <form className="side-new-folder-form side-top-new-folder-form">
+      <form id="top_new_folder_form" className="side-new-folder-form side-top-new-folder-form">
         <img alt="arrow" src="/img/arrow.png" className="side-allow" />
         <img alt="folder" src="/img/folder.png" className="side-folder" />
-        <input name="folderName" type="text" className="side-input-folder-name" />
+        <input id="top_input_folder_name" name="folderName" type="text" className="side-input-folder-name" onKeyDown={createTopFolder} />
       </form>
       <div id="notes" className="side-notes" />
     </div>
