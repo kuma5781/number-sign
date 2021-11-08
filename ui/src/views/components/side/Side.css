@@ -8,6 +8,9 @@
 .side-workspace-title {
   margin: 7px 0 0 5px;
   white-space: nowrap;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-notes {
   padding: 7px;
@@ -21,9 +24,9 @@
   margin-top: 9px;
   width: 12px;
   transform: rotate(90deg);
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-allow-close {
   transform: rotate(0deg);
@@ -32,9 +35,9 @@
   height: 12px;
   margin: 9px 0 0 7px;
   width: 12px;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-folder-name {
   display: inline-block;
@@ -45,13 +48,73 @@
   -moz-user-select: none;
   -ms-user-select: none;
 }
+.side-folder-menu {
+  background-color: #fff;
+  border: #ccc 1px solid;
+  border-radius: 5px;
+  padding: 3px;
+  width: 200px;
+}
+.side-open-new-note-form,
+.side-open-new-folder-form {
+  background-color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  padding: 2px 4px;
+  text-align: left;
+  width: 200px;
+}
+.side-open-new-note-form:hover,
+.side-open-new-folder-form:hover {
+  background-color: #ffeb91;
+}
+.side-folder-menu {
+  display: none;
+}
+.side-top-folder-menu {
+  margin-left: 7px;
+}
+.side-folder-menu-open {
+  display: block;
+}
+.side-new-note-form {
+  display: none;
+  padding-left: 38px;
+}
+.side-top-new-note-form {
+  padding-left: 26px;
+}
+.side-new-note-form-open {
+  display: inline-flex;
+}
+.side-input-note-title {
+  margin: 3px 0 0 6px;
+}
+.side-new-folder-form {
+  display: none;
+  padding-left: 19px;
+}
+.side-top-new-folder-form {
+  padding-left: 7px;
+}
+.side-new-folder-form-open {
+  display: inline-flex;
+}
+.side-input-folder-name {
+  margin: 3px 0 0 6px;
+}
+.side-note-box {
+  padding-left: 19px;
+}
 .side-note {
   height: 12px;
   margin: 9px 0 0 0;
   width: 12px;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-note-link {
   display: inline-flex;
@@ -61,9 +124,9 @@
   margin: 4px 0 0 7px;
   padding-right: 10px;
   white-space: nowrap;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-child-folder-box {
   padding-left: 19px;
