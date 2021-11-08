@@ -8,9 +8,9 @@
 .side-workspace-title {
   margin: 7px 0 0 5px;
   white-space: nowrap;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-notes {
   padding: 7px;
@@ -24,9 +24,9 @@
   margin-top: 9px;
   width: 12px;
   transform: rotate(90deg);
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-allow-close {
   transform: rotate(0deg);
@@ -35,9 +35,9 @@
   height: 12px;
   margin: 9px 0 0 7px;
   width: 12px;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-folder-name {
   display: inline-block;
@@ -112,9 +112,9 @@
   height: 12px;
   margin: 9px 0 0 0;
   width: 12px;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-note-link {
   display: inline-flex;
@@ -124,9 +124,9 @@
   margin: 4px 0 0 7px;
   padding-right: 10px;
   white-space: nowrap;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-user-select: none;
 }
 .side-child-folder-box {
   padding-left: 19px;
