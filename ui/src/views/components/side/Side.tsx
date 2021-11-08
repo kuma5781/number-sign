@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import './Side.css';
 
