@@ -412,7 +412,8 @@ const Side: React.FC = () => {
     }
   };
   const createSide = async (folders: never[], notes: never[]) => {
-    (document.getElementById('notes') as HTMLElement).innerHTML = '';
+    const notesEl = document.getElementById('notes');
+    if (notesEl !== null) notesEl.innerHTML = '';
     folders.forEach((folder) => {
       addFolderElment(folder);
     });
